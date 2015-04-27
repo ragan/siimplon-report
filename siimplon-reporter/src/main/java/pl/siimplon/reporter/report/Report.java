@@ -74,7 +74,6 @@ public class Report {
 
     public List<Record> getValuesByContent(List<String> expValues, List<Integer> expCols) {
         List<Record> values = new ArrayList<Record>();
-//        getRecords().stream().filter(record -> record.hasValues(expValues, expCols)).forEach(values::add);
         for (Record record : getRecords()) {
             if (record.hasValues(expValues, expCols)) values.add(record);
         }
@@ -109,7 +108,6 @@ public class Report {
 
     public void addRecord(List<String> values) {
         List<Object> vls = new ArrayList<Object>();
-//        values.forEach(s -> vls.add((Object) s));
         for (String value : values) {
             vls.add(value);
         }

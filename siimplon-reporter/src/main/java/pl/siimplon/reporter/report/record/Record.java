@@ -44,7 +44,6 @@ public class Record {
 
     public final List<String> getStringValues() {
         List<String> result = new ArrayList<String>();
-//        values.forEach(t -> result.add(valueToString(t)));
         for (Value value : values) {
             result.add(valueToString(value));
         }
