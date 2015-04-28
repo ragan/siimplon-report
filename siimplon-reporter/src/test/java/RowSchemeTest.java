@@ -23,9 +23,6 @@ public class RowSchemeTest {
 
     private static final Object VALUE = "VALUE";
 
-//    @Mock
-//    SimpleFeature simpleFeature;
-
     @Mock
     Report report;
 

@@ -485,6 +485,23 @@ public class ContextMaker {
             NUMBER
     );
 
+    //TODO: plot count summary report
+    private static List<TransferPair> plotCountAllSLU = Arrays.asList(
+            // ~~~~~~~~~~~ SŁUŻEBNOŚĆ PRZESYŁU
+            new TransferPair(VALUE, "służebność przesyłu"),
+            new TransferPair(COUNT_DISTINCT_VALUES, "zero-turbine-report", 4),
+            new TransferPair(PERCENT_CONDITION, "zero-turbine-report", 3, Arrays.asList("służebność przesyłu"), Arrays.asList(9)),
+            new TransferPair(COUNT_DISTINCT_VALUES, "zero-sweep-report", 3, Arrays.asList("służebność przesyłu"), Arrays.asList(9)),
+            new TransferPair(PERCENT_CONDITION, "zero-sweep-report", 3, Arrays.asList("służebność przesyłu"), Arrays.asList(9)),
+            new TransferPair(COUNT_DISTINCT_VALUES, "zero-cable-report", 3, Arrays.asList("służebność przesyłu"), Arrays.asList(9)),
+            new TransferPair(PERCENT_CONDITION, "zero-cable-report", 3, Arrays.asList("służebność przesyłu"), Arrays.asList(9)),
+            new TransferPair(COUNT_DISTINCT_VALUES, "zero-finRd-report", 3, Arrays.asList("służebność przesyłu"), Arrays.asList(9)),
+            new TransferPair(PERCENT_CONDITION, "zero-finRd-report", 3, Arrays.asList("służebność przesyłu"), Arrays.asList(9)),
+            new TransferPair(COUNT_DISTINCT_VALUES, "zero-tmpRd-report", 3, Arrays.asList("służebność przesyłu"), Arrays.asList(9)),
+            new TransferPair(PERCENT_CONDITION, "zero-tmpRd-report", 3, Arrays.asList("służebność przesyłu"), Arrays.asList(9))
+    );
+
+
     private static List<TransferPair> summaryAllSLU = Arrays.asList(
             // ~~~~~~~~~~~ SŁUŻEBNOŚĆ PRZESYŁU
             new TransferPair(VALUE, "służebność przesyłu"),
@@ -680,21 +697,6 @@ public class ContextMaker {
             new TransferPair(PERCENT_CONDITION, "zero-tmpRd-report", 3, Arrays.asList("brak umowy"), Arrays.asList(9))
     );
 
-//    private static List<TransferPair> summaryAllUPR = Arrays.asList(
-//            // ~~~~~~~~~~~ umowa przedwstępna
-//            new TransferPair(VALUE, "umowa przedwstępna"),
-//            new TransferPair(GET_PART_NUM_AND_SUM, "zero-turbine-report", 3, Arrays.asList(9), Arrays.asList("umowa przedwstępna")),
-//            new TransferPair(PERCENT_CONDITION, "zero-turbine-report", 3, Arrays.asList(9), Arrays.asList("umowa przedwstępna")),
-//            new TransferPair(GET_PART_NUM_AND_SUM, "zero-sweep-report", 3, Arrays.asList(9), Arrays.asList("umowa przedwstępna")),
-//            new TransferPair(PERCENT_CONDITION, "zero-sweep-report", 3, Arrays.asList(9), Arrays.asList("umowa przedwstępna")),
-//            new TransferPair(GET_PART_NUM_AND_SUM, "zero-cable-report", 3, Arrays.asList(9), Arrays.asList("umowa przedwstępna")),
-//            new TransferPair(PERCENT_CONDITION, "zero-cable-report", 3, Arrays.asList(9), Arrays.asList("umowa przedwstępna")),
-//            new TransferPair(GET_PART_NUM_AND_SUM, "zero-finRd-report", 3, Arrays.asList(9), Arrays.asList("umowa przedwstępna")),
-//            new TransferPair(PERCENT_CONDITION, "zero-finRd-report", 3, Arrays.asList(9), Arrays.asList("umowa przedwstępna")),
-//            new TransferPair(GET_PART_NUM_AND_SUM, "zero-tmpRd-report", 3, Arrays.asList(9), Arrays.asList("umowa przedwstępna")),
-//            new TransferPair(PERCENT_CONDITION, "zero-tmpRd-report", 3, Arrays.asList(9), Arrays.asList("umowa przedwstępna"))
-//    );
-
     private static List<TransferPair> summaryAllHeader = Arrays.asList(
             new TransferPair(VALUE, ""),
             new TransferPair(VALUE, "Wartość"),
@@ -823,6 +825,8 @@ public class ContextMaker {
         context.putReport(new Report(summaryAllColumns), "summary-all-report-WTN");
         context.putReport(new Report(summaryAllColumns), "summary-all-report-BRU");
 
+        context.putReport(new Report(summaryAllColumns), "summary-all-merge");
+
         context.putTransfer(zeroCableTransfer, "zero-cable-transfer");
         context.putTransfer(zeroSweepTransfer, "zero-sweep-transfer");
         context.putTransfer(zeroTurbineTransfer, "zero-turbine-transfer");
@@ -905,6 +909,11 @@ public class ContextMaker {
         context.make("summary-all-report-WTN", "", "", "summary-all-transfer-WTN", "", cb);
         context.make("summary-all-report-BRU", "", "", "summary-all-transfer-BRU", "", cb);
 
+        context.merge("summary-all-merge", "summary-all-report-SLU", "summary-all-report-UDZ", "summary-all-report-UNA",
+                "summary-all-report-UPR", "summary-all-report-SLG", "summary-all-report-DAD", "summary-all-report-POR",
+                "summary-all-report-UZG", "summary-all-report-WSZ", "summary-all-report-WKN", "summary-all-report-WPR",
+                "summary-all-report-WTN", "summary-all-report-BRU");
+
         assert (context != null);
 
         ContextExporter exporter = new ContextExporter(context);
@@ -918,21 +927,26 @@ public class ContextMaker {
         exporter.export(Arrays.asList("summary-finRd-report", "count-finRd-report", "plotList-finRd-report"), "DROGI DOCELOWE", file);
         exporter.export(Arrays.asList("summary-turbine-report", "count-turbine-report", "plotList-turbine-report"), "TURBINY", file);
 
+//        exporter.export(Arrays.asList(
+//                "summary-all-report-HEAD",
+//                "summary-all-report-SLU",
+//                "summary-all-report-UDZ",
+//                "summary-all-report-UNA",
+//                "summary-all-report-UPR",
+//                "summary-all-report-SLG",
+//                "summary-all-report-DAD",
+//                "summary-all-report-POR",
+//                "summary-all-report-UZG",
+//                "summary-all-report-WSZ",
+//                "summary-all-report-WKN",
+//                "summary-all-report-WPR",
+//                "summary-all-report-WTN",
+//                "summary-all-report-BRU"), "ZESTAWIENIE", file);
+
         exporter.export(Arrays.asList(
                 "summary-all-report-HEAD",
-                "summary-all-report-SLU",
-                "summary-all-report-UDZ",
-                "summary-all-report-UNA",
-                "summary-all-report-UPR",
-                "summary-all-report-SLG",
-                "summary-all-report-DAD",
-                "summary-all-report-POR",
-                "summary-all-report-UZG",
-                "summary-all-report-WSZ",
-                "summary-all-report-WKN",
-                "summary-all-report-WPR",
-                "summary-all-report-WTN",
-                "summary-all-report-BRU"), "ZESTAWIENIE", file);
+                "summary-all-merge"
+        ), "ZESTAWIENIE", file);
 
         Desktop.getDesktop().open(file);
     }
