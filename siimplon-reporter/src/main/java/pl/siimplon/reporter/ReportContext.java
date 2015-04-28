@@ -70,6 +70,8 @@ public class ReportContext {
                 case GET_PART_NUM_AND_SUM:
                 case GET_PART_VAL:
                 case COUNT_DISTINCT_VALUES:
+                case COUNT_DISTINCT_VALUES_CONDITIONAL:
+                case PERCENT_FROM_DISTINCT_VALUES:
                     pair.getAttributes()[0] = getReport(((String) attrs[0]));
                     break;
                 default:

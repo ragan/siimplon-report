@@ -166,4 +166,13 @@ public class Report {
             add(record);
         }
     }
+
+    public Report filter(List<String> values, List<Integer> columns) {
+        List<Record> content = getValuesByContent(values, columns);
+        Report report = new Report(this.types, this.styles);
+        for (Record record : content) {
+            report.add(record);
+        }
+        return report;
+    }
 }

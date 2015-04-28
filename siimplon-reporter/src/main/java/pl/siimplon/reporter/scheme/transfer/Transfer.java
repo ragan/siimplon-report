@@ -93,5 +93,16 @@ public enum Transfer {
      */
     PERCENT_FROM_DISTINCT_VALUES,
 
-    COUNT_DISTINCT_VALUES
+    COUNT_DISTINCT_VALUES,
+
+    /**
+     * Counts distinct column values from found records.
+     * <ul>
+     * <li>[0] - report</li>
+     * <li>[1] - distinct value column</li>
+     * <li>[2] - list of values (conditions)</li>
+     * <li>[3] - list of column indices (conditions)</li>
+     * </ul>
+     */
+    COUNT_DISTINCT_VALUES_CONDITIONAL
 }

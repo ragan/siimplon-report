@@ -7,6 +7,7 @@ import pl.siimplon.reporter.report.value.Value;
 import java.util.*;
 
 import static org.junit.Assert.*;
+import static pl.siimplon.reporter.report.value.Value.Type.*;
 
 public class ReportTest {
 
@@ -58,15 +59,31 @@ public class ReportTest {
     }
 
     @Test
+    public void testFilterReport() throws Exception {
+        Report report = new Report(LITERAL, NUMBER, LITERAL);
+        report.add(Arrays.<Object>asList("a", 10.0, "b"));
+        report.add(Arrays.<Object>asList("b", 12.0, "c"));
+        report.add(Arrays.<Object>asList("d", 12.0, "c"));
+
+        Report output = report.filter(Arrays.asList("c"), Arrays.asList(2));
+        assertEquals(report.getLength(), output.getLength());
+        assertEquals(2, output.getCount());
+
+        Report output2 = report.filter(Arrays.asList("12.0"), Arrays.asList(1));
+        assertEquals(report.getLength(), output2.getLength());
+        assertEquals(2, output2.getCount());
+    }
+
+    @Test
     public void testCreationWithTypes() throws Exception {
         Report report = createReport();
-        assertEquals(report.getType(0), Value.Type.NUMBER);
-        assertEquals(report.getType(1), Value.Type.LITERAL);
+        assertEquals(report.getType(0), NUMBER);
+        assertEquals(report.getType(1), LITERAL);
     }
 
     @Test
     public void testDictionaryByColumn() throws Exception {
-        Report report = new Report(Arrays.asList(Value.Type.LITERAL, Value.Type.DICTIONARY));
+        Report report = new Report(Arrays.asList(LITERAL, DICTIONARY));
         report.setDict(makeDict("A", "B", "C"), 1);
         assertNull(report.getDict(0));
         Set<String> dict = report.getDict(1);
@@ -79,7 +96,7 @@ public class ReportTest {
 
     @Test
     public void testFindColumnByHeaderName() throws Exception {
-        Report report = new Report(Arrays.asList(Value.Type.LITERAL, Value.Type.LITERAL));
+        Report report = new Report(Arrays.asList(LITERAL, LITERAL));
         report.setHeader(Arrays.asList("COLUMN A", "COLUMN B"));
         assertEquals(0, report.getColumnIxByName("COLUMN A"));
         assertEquals(0, report.getColumnIxByName("column a"));
@@ -91,8 +108,8 @@ public class ReportTest {
     public void testWrongValueType() throws Exception {
         Report report = createReport();
         report.add(new Record(Arrays.asList(
-                new Value(Value.Type.LITERAL),
-                new Value(Value.Type.NUMBER)
+                new Value(LITERAL),
+                new Value(NUMBER)
         )));
     }
 
@@ -116,7 +133,7 @@ public class ReportTest {
     public void testCreateLiteralBySize() throws Exception {
         Report simpleReport = new Report(3);
         for (int i = 0; i < 3; i++) {
-            assertEquals(Value.Type.LITERAL, simpleReport.getType(i));
+            assertEquals(LITERAL, simpleReport.getType(i));
         }
     }
 
@@ -153,7 +170,7 @@ public class ReportTest {
     }
 
     private Report createReport() {
-        return new Report(Arrays.asList(Value.Type.NUMBER, Value.Type.LITERAL));
+        return new Report(Arrays.asList(NUMBER, LITERAL));
     }
 
     private Set<String> makeDict(String... values) {

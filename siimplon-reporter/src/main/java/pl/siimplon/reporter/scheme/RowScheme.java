@@ -56,6 +56,14 @@ public class RowScheme {
                             ((List<Integer>) p.getAttributes()[3])
                     );
                     break;
+                case COUNT_DISTINCT_VALUES_CONDITIONAL:
+                    values[i] = onCountDistinctValuesConditional(
+                            ((Report) p.getAttributes()[0]),
+                            ((Integer) p.getAttributes()[1]),
+                            ((List<String>) p.getAttributes()[2]),
+                            ((List<Integer>) p.getAttributes()[3])
+                    );
+                    break;
                 case EMPTY:
                     values[i] = "";
                     break;
@@ -142,6 +150,12 @@ public class RowScheme {
         return values;
     }
 
+    private String onCountDistinctValuesConditional(Report report, Integer distinctColumn, List<String> values,
+                                                    List<Integer> columns) {
+        List<Record> content = report.getValuesByContent(values, columns);
+        return String.valueOf(countDistinctValues(content, distinctColumn));
+    }
+
     private String onPercentFromDistinctValues(Report report, Integer distinctColumn, List<String> values,
                                                List<Integer> columns) {
         List<Record> content = report.getValuesByContent(values, columns);
@@ -156,17 +170,27 @@ public class RowScheme {
 
     private String onPercentRecordCount(Report report, List<String> values, List<Integer> columns) {
         List<Record> content = report.getValuesByContent(values, columns);
-        double val = (double)content.size() / ((double) report.getCount());
+        double val = (double) content.size() / ((double) report.getCount());
         return new BigDecimal(val * 100.0).setScale(2, RoundingMode.HALF_UP).toString();
     }
 
-    private int countDistinctValues(Report report, int columnIx) {
+    private int countDistinctValues(List<Record> records, int columnIx) {
         List<String> values = new ArrayList<String>();
-        for (Record record : report.getRecords()) {
+        for (Record record : records) {
             String v = String.valueOf(record.getValue(columnIx).getValue());
             if (!values.contains(v)) values.add(v);
         }
         return values.size();
+    }
+
+    private int countDistinctValues(Report report, int columnIx) {
+//        List<String> values = new ArrayList<String>();
+//        for (Record record : report.getRecords()) {
+//            String v = String.valueOf(record.getValue(columnIx).getValue());
+//            if (!values.contains(v)) values.add(v);
+//        }
+//        return values.size();
+        return countDistinctValues(report.getRecords(), columnIx);
     }
 
     private String onGetPercentage(Report report, Integer column, List<String> values, List<Integer> cols) {

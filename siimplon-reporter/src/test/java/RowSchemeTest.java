@@ -214,6 +214,40 @@ public class RowSchemeTest {
     }
 
     @Test
+    public void testCountDistinctValuesConditional() throws Exception {
+        Report testReport = new Report(LITERAL, LITERAL, LITERAL);
+        testReport.addRecord("102", "UDZ", "TRB");
+        testReport.addRecord("120", "UDZ", "TRB");
+        testReport.addRecord("102", "UNA", "TRB");
+        testReport.addRecord("120", "UDZ", "TRB");
+
+        RowScheme scheme;
+        scheme = new RowScheme(Arrays.asList(
+                new TransferPair(
+                        Transfer.COUNT_DISTINCT_VALUES_CONDITIONAL,
+                        testReport,
+                        0,
+                        Arrays.asList("UDZ", "TRB"),
+                        Arrays.asList(1, 2)
+                )
+        ));
+        String[] values;
+        values = scheme.getRowValues(null, null);
+        assertEquals("2", values[0]);
+        scheme = new RowScheme(Arrays.asList(
+                new TransferPair(
+                        Transfer.COUNT_DISTINCT_VALUES_CONDITIONAL,
+                        testReport,
+                        0,
+                        Arrays.asList("102", "TRB"),
+                        Arrays.asList(0, 2)
+                )
+        ));
+        values = scheme.getRowValues(null, null);
+        assertEquals("1", values[0]);
+    }
+
+    @Test
     public void testPercentFromDistinctValues() throws Exception {
         Report testReport = new Report(LITERAL, LITERAL, LITERAL);
         testReport.addRecord("102", "UDZ", "TRB");
