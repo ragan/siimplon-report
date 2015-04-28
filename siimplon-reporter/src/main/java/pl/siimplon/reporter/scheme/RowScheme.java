@@ -48,6 +48,14 @@ public class RowScheme {
                             ((List<Integer>) p.getAttributes()[2])
                     );
                     break;
+                case PERCENT_FROM_DISTINCT_VALUES:
+                    values[i] = onPercentFromDistinctValues(
+                            ((Report) p.getAttributes()[0]),
+                            ((Integer) p.getAttributes()[1]),
+                            ((List<String>) p.getAttributes()[2]),
+                            ((List<Integer>) p.getAttributes()[3])
+                    );
+                    break;
                 case EMPTY:
                     values[i] = "";
                     break;
@@ -134,9 +142,21 @@ public class RowScheme {
         return values;
     }
 
+    private String onPercentFromDistinctValues(Report report, Integer distinctColumn, List<String> values,
+                                               List<Integer> columns) {
+        List<Record> content = report.getValuesByContent(values, columns);
+        int distinctValues = countDistinctValues(report, distinctColumn);
+        double val;
+        if (content.size() > 0)
+            val = 1.0 / ((double) distinctValues);
+        else
+            val = 0.0;
+        return new BigDecimal(val * 100.0).setScale(2, RoundingMode.HALF_UP).toString();
+    }
+
     private String onPercentRecordCount(Report report, List<String> values, List<Integer> columns) {
         List<Record> content = report.getValuesByContent(values, columns);
-        double val = ((double) content.size()) / ((double) report.getCount());
+        double val = (double)content.size() / ((double) report.getCount());
         return new BigDecimal(val * 100.0).setScale(2, RoundingMode.HALF_UP).toString();
     }
 

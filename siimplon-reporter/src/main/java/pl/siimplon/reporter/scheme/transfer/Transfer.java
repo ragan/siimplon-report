@@ -80,5 +80,18 @@ public enum Transfer {
      */
     PERCENT_FROM_RECORD_COUNT,
 
+    /**
+     * Finds records with given values at given column indices.
+     * Counts distinct values from indicated column. <br />
+     * Returns percentage (value found / distinct values count).
+     * <ul>
+     * <li>[0] - report</li>
+     * <li>[1] - distinct values column index</li>
+     * <li>[2] - list of searched valued</li>
+     * <li>[3] - list of column indices</li>
+     * </ul>
+     */
+    PERCENT_FROM_DISTINCT_VALUES,
+
     COUNT_DISTINCT_VALUES
 }

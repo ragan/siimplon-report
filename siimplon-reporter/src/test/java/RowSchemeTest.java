@@ -214,6 +214,39 @@ public class RowSchemeTest {
     }
 
     @Test
+    public void testPercentFromDistinctValues() throws Exception {
+        Report testReport = new Report(LITERAL, LITERAL, LITERAL);
+        testReport.addRecord("102", "UDZ", "TRB");
+        testReport.addRecord("120", "UDZ", "TRB");
+        testReport.addRecord("102", "UNA", "TRB");
+        RowScheme scheme;
+        scheme = new RowScheme(Arrays.asList(
+                new TransferPair(
+                        Transfer.PERCENT_FROM_DISTINCT_VALUES,
+                        testReport,
+                        0,
+                        Arrays.asList("102", "UDZ"),
+                        Arrays.asList(0, 1)
+                )
+        ));
+        String[] values;
+        values = scheme.getRowValues(null, null);
+        assertEquals("50.00", values[0]);
+
+        scheme = new RowScheme(Arrays.asList(
+                new TransferPair(
+                        Transfer.PERCENT_FROM_DISTINCT_VALUES,
+                        testReport,
+                        0,
+                        Arrays.asList("102", "TRB"),
+                        Arrays.asList(0, 2)
+                )
+        ));
+        values = scheme.getRowValues(null, null);
+        assertEquals("50.00", values[0]);
+    }
+
+    @Test
     public void testPercentageRecordCount() throws Exception {
         Report testReport = new Report(LITERAL, LITERAL, LITERAL);
         testReport.addRecord("a", "b", "c");
