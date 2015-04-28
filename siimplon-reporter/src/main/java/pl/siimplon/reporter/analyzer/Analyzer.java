@@ -26,7 +26,8 @@ public class Analyzer {
         try {
             String[] values = scheme.getRowValues(null, null, report);
             report.addRecord(Arrays.asList(values));
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

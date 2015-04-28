@@ -48,10 +48,16 @@ public class ReportContext {
             otherSchemeList.add(otherScheme);
         }
         if (mainFeatureName.isEmpty() && otherFeatureName.isEmpty()) {
-            if (!mainSchemeList.isEmpty()) a.putRecord(mainSchemeList.get(0));
-            else if (!otherSchemeList.isEmpty()) a.putRecord(otherSchemeList.get(0));
+            if (!mainSchemeList.isEmpty())
+                a.putRecord(mainSchemeList.get(0));
+            else if (!otherSchemeList.isEmpty())
+                a.putRecord(otherSchemeList.get(0));
         } else {
-            a.analyze(mainFeatures, otherFeatures, mainSchemeList, otherSchemeList, callback);
+            if (otherFeatureName.isEmpty() && otherTransferName.isEmpty() &&
+                    !mainFeatureName.isEmpty() && !mainTransferName.isEmpty())
+                a.analyze(mainFeatures, mainSchemeList);
+            else
+                a.analyze(mainFeatures, otherFeatures, mainSchemeList, otherSchemeList, callback);
         }
     }
 
@@ -60,6 +66,8 @@ public class ReportContext {
         for (TransferPair pair : transfer) {
             Object[] attrs = pair.getAttributes();
             switch (pair.getSource()) {
+                case PERCENT_CONDITION:
+                case GET_PART_NUM_AND_SUM:
                 case GET_PART_VAL:
                 case COUNT_DISTINCT_VALUES:
                     pair.getAttributes()[0] = getReport(((String) attrs[0]));
