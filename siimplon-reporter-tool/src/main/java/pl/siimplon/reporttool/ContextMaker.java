@@ -943,6 +943,10 @@ public class ContextMaker {
 
 
     public static void main(String[] args) throws IOException {
+        doStuff(false);
+    }
+
+    private static void doStuff(boolean importInputData) throws IOException {
         ReportContext context = new ReportContext();
 
         context.putFeature(getFeatures(Resources.getResource("ew/ew.shp").getPath()), "plot-source");
@@ -1065,14 +1069,19 @@ public class ContextMaker {
 
 
         MyCallback cb = new MyCallback();
-        context.make("zero-cable-report", "plot-source", "cable-source", "zero-cable-transfer", "", cb);
-        context.make("zero-sweep-report", "plot-source", "sweep-source", "zero-sweep-transfer", "", cb);
-        context.make("zero-turbine-report", "plot-source", "turbine-source", "zero-turbine-transfer", "", cb);
-        context.make("zero-tmpRd-report", "plot-source", "tmpRd-source", "zero-tmpRd-transfer", "", cb);
-        context.make("zero-finRd-report", "plot-source", "finRd-source", "zero-finRd-transfer", "", cb);
 
-        context.merge("zero-final", "zero-cable-report", "zero-sweep-report", "zero-turbine-report",
-                "zero-tmpRd-report", "zero-finRd-report");
+        if (!importInputData) {
+            context.make("zero-cable-report", "plot-source", "cable-source", "zero-cable-transfer", "", cb);
+            context.make("zero-sweep-report", "plot-source", "sweep-source", "zero-sweep-transfer", "", cb);
+            context.make("zero-turbine-report", "plot-source", "turbine-source", "zero-turbine-transfer", "", cb);
+            context.make("zero-tmpRd-report", "plot-source", "tmpRd-source", "zero-tmpRd-transfer", "", cb);
+            context.make("zero-finRd-report", "plot-source", "finRd-source", "zero-finRd-transfer", "", cb);
+
+            context.merge("zero-final", "zero-cable-report", "zero-sweep-report", "zero-turbine-report",
+                    "zero-tmpRd-report", "zero-finRd-report");
+        } else {
+            //import
+        }
 
         context.make("summary-cable-report", "cable-source", "plot-source", "summary-cable-transfer", "", cb);
         context.make("summary-sweep-report", "sweep-source", "plot-source", "summary-sweep-transfer", "", cb);
