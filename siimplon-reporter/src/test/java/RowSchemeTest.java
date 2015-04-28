@@ -222,7 +222,7 @@ public class RowSchemeTest {
         testReport.addRecord("b", "d", "a");
         RowScheme scheme;
         scheme = new RowScheme(Arrays.asList(
-                new TransferPair(Transfer.PERCENT_RECORD_COUNT,
+                new TransferPair(Transfer.PERCENT_FROM_RECORD_COUNT,
                         testReport,
                         Arrays.asList("a"),
                         Arrays.asList(0)
@@ -232,7 +232,7 @@ public class RowSchemeTest {
         values = scheme.getRowValues(null, null);
         assertEquals("50.00", values[0]);
         scheme = new RowScheme(Arrays.asList(
-                new TransferPair(Transfer.PERCENT_RECORD_COUNT,
+                new TransferPair(Transfer.PERCENT_FROM_RECORD_COUNT,
                         testReport,
                         Arrays.asList("d"),
                         Arrays.asList(1)
@@ -241,7 +241,7 @@ public class RowSchemeTest {
         values = scheme.getRowValues(null, null);
         assertEquals("75.00", values[0]);
         scheme = new RowScheme(Arrays.asList(
-                new TransferPair(Transfer.PERCENT_RECORD_COUNT,
+                new TransferPair(Transfer.PERCENT_FROM_RECORD_COUNT,
                         testReport,
                         Arrays.asList("c"),
                         Arrays.asList(2)

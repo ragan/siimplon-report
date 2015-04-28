@@ -41,7 +41,7 @@ public class RowScheme {
         for (int i = 0; i < pairs.size(); ++i) {
             TransferPair p = pairs.get(i);
             switch (p.getSource()) {
-                case PERCENT_RECORD_COUNT:
+                case PERCENT_FROM_RECORD_COUNT:
                     values[i] = onPercentRecordCount(
                             ((Report) p.getAttributes()[0]),
                             ((List<String>) p.getAttributes()[1]),

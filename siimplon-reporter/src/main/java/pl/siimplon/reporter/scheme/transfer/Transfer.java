@@ -69,5 +69,16 @@ public enum Transfer {
 
     UNION_LENGTH_REVERSED,
 
-    PERCENT_RECORD_COUNT, COUNT_DISTINCT_VALUES
+    /**
+     * Finds records with given values at given column indices
+     * and returns percentage (recordsFound / allReportRecords) <br />
+     * <ul>
+     * <li>[0] - report</li>
+     * <li>[1] - list of values expected</li>
+     * <li>[2] - list of column indices</li>
+     * </ul>
+     */
+    PERCENT_FROM_RECORD_COUNT,
+
+    COUNT_DISTINCT_VALUES
 }
