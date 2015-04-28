@@ -808,6 +808,7 @@ public class ContextMaker {
         context.putReport(new Report(plotListColumns), "plotList-finRd-report");
         context.putReport(new Report(plotListColumns), "plotList-turbine-report");
 
+        context.putReport(new Report(summaryAllHeaderColumns), "summary-all-report-HEAD");
         context.putReport(new Report(summaryAllColumns), "summary-all-report-SLU");
         context.putReport(new Report(summaryAllColumns), "summary-all-report-UDZ");
         context.putReport(new Report(summaryAllColumns), "summary-all-report-UNA");
@@ -846,6 +847,7 @@ public class ContextMaker {
         context.putTransfer(plotListFinRd, "plotList-finRd-transfer");
         context.putTransfer(plotListTurbine, "plotList-turbine-transfer");
 
+        context.putTransfer(summaryAllHeader, "summary-all-transfer-HEAD");
         context.putTransfer(summaryAllSLU, "summary-all-transfer-SLU");
         context.putTransfer(summaryAllUDZ, "summary-all-transfer-UDZ");
         context.putTransfer(summaryAllUNA, "summary-all-transfer-UNA");
@@ -888,6 +890,7 @@ public class ContextMaker {
         context.make("plotList-finRd-report", "plot-source", "", "plotList-finRd-transfer", "", cb);
         context.make("plotList-turbine-report", "plot-source", "", "plotList-turbine-transfer", "", cb);
 
+        context.make("summary-all-report-HEAD", "", "", "summary-all-transfer-HEAD", "", cb);
         context.make("summary-all-report-SLU", "", "", "summary-all-transfer-SLU", "", cb);
         context.make("summary-all-report-UDZ", "", "", "summary-all-transfer-UDZ", "", cb);
         context.make("summary-all-report-UNA", "", "", "summary-all-transfer-UNA", "", cb);
@@ -916,6 +919,7 @@ public class ContextMaker {
         exporter.export(Arrays.asList("summary-turbine-report", "count-turbine-report", "plotList-turbine-report"), "TURBINY", file);
 
         exporter.export(Arrays.asList(
+                "summary-all-report-HEAD",
                 "summary-all-report-SLU",
                 "summary-all-report-UDZ",
                 "summary-all-report-UNA",
