@@ -214,6 +214,44 @@ public class RowSchemeTest {
     }
 
     @Test
+    public void testPercentageRecordCount() throws Exception {
+        Report testReport = new Report(LITERAL, LITERAL, LITERAL);
+        testReport.addRecord("a", "b", "c");
+        testReport.addRecord("a", "d", "e");
+        testReport.addRecord("b", "d", "a");
+        testReport.addRecord("b", "d", "a");
+        RowScheme scheme;
+        scheme = new RowScheme(Arrays.asList(
+                new TransferPair(Transfer.PERCENT_RECORD_COUNT,
+                        testReport,
+                        Arrays.asList("a"),
+                        Arrays.asList(0)
+                )
+        ));
+        String[] values;
+        values = scheme.getRowValues(null, null);
+        assertEquals("50.00", values[0]);
+        scheme = new RowScheme(Arrays.asList(
+                new TransferPair(Transfer.PERCENT_RECORD_COUNT,
+                        testReport,
+                        Arrays.asList("d"),
+                        Arrays.asList(1)
+                )
+        ));
+        values = scheme.getRowValues(null, null);
+        assertEquals("75.00", values[0]);
+        scheme = new RowScheme(Arrays.asList(
+                new TransferPair(Transfer.PERCENT_RECORD_COUNT,
+                        testReport,
+                        Arrays.asList("c"),
+                        Arrays.asList(2)
+                )
+        ));
+        values = scheme.getRowValues(null, null);
+        assertEquals("25.00", values[0]);
+    }
+
+    @Test
     public void testFindAndSumValues() throws Exception {
         Report report;
         report = new Report(LITERAL, NUMBER, LITERAL);
