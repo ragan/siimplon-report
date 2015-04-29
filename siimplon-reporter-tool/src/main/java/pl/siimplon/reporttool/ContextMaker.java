@@ -4,6 +4,7 @@ import com.google.common.io.Resources;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -16,6 +17,7 @@ import pl.siimplon.reporter.scheme.transfer.TransferPair;
 
 import java.awt.*;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -488,196 +490,196 @@ public class ContextMaker {
     private static List<TransferPair> summaryAllSLU = Arrays.asList(
             // ~~~~~~~~~~~ SŁUŻEBNOŚĆ PRZESYŁU
             new TransferPair(VALUE, "służebność przesyłu"),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-turbine-report", 3, Arrays.asList("służebność przesyłu"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-turbine-report", 3, Arrays.asList("służebność przesyłu"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-sweep-report", 3, Arrays.asList("służebność przesyłu"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-sweep-report", 3, Arrays.asList("służebność przesyłu"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-cable-report", 3, Arrays.asList("służebność przesyłu"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-cable-report", 3, Arrays.asList("służebność przesyłu"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-finRd-report", 3, Arrays.asList("służebność przesyłu"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-finRd-report", 3, Arrays.asList("służebność przesyłu"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-tmpRd-report", 3, Arrays.asList("służebność przesyłu"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-tmpRd-report", 3, Arrays.asList("służebność przesyłu"), Arrays.asList(9))
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-turbine-report", 3, Arrays.asList("służebność przesyłu"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-turbine-report", 3, Arrays.asList("służebność przesyłu"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-sweep-report", 3, Arrays.asList("służebność przesyłu"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-sweep-report", 3, Arrays.asList("służebność przesyłu"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-cable-report", 3, Arrays.asList("służebność przesyłu"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-cable-report", 3, Arrays.asList("służebność przesyłu"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-finRd-report", 3, Arrays.asList("służebność przesyłu"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-finRd-report", 3, Arrays.asList("służebność przesyłu"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-tmpRd-report", 3, Arrays.asList("służebność przesyłu"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-tmpRd-report", 3, Arrays.asList("służebność przesyłu"), Arrays.asList(10))
     );
 
     private static List<TransferPair> summaryAllUDZ = Arrays.asList(
             // ~~~~~~~~~~~ UMOWA DZIERŻAWY
             new TransferPair(VALUE, "umowa dzierżawy"),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-turbine-report", 3, Arrays.asList("umowa dzierżawy"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-turbine-report", 3, Arrays.asList("umowa dzierżawy"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-sweep-report", 3, Arrays.asList("umowa dzierżawy"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-sweep-report", 3, Arrays.asList("umowa dzierżawy"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-cable-report", 3, Arrays.asList("umowa dzierżawy"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-cable-report", 3, Arrays.asList("umowa dzierżawy"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-finRd-report", 3, Arrays.asList("umowa dzierżawy"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-finRd-report", 3, Arrays.asList("umowa dzierżawy"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-tmpRd-report", 3, Arrays.asList("umowa dzierżawy"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-tmpRd-report", 3, Arrays.asList("umowa dzierżawy"), Arrays.asList(9))
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-turbine-report", 3, Arrays.asList("umowa dzierżawy"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-turbine-report", 3, Arrays.asList("umowa dzierżawy"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-sweep-report", 3, Arrays.asList("umowa dzierżawy"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-sweep-report", 3, Arrays.asList("umowa dzierżawy"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-cable-report", 3, Arrays.asList("umowa dzierżawy"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-cable-report", 3, Arrays.asList("umowa dzierżawy"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-finRd-report", 3, Arrays.asList("umowa dzierżawy"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-finRd-report", 3, Arrays.asList("umowa dzierżawy"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-tmpRd-report", 3, Arrays.asList("umowa dzierżawy"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-tmpRd-report", 3, Arrays.asList("umowa dzierżawy"), Arrays.asList(10))
     );
 
     private static List<TransferPair> summaryAllUNA = Arrays.asList(
             // ~~~~~~~~~~~ umowa najmu
             new TransferPair(VALUE, "umowa najmu"),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-turbine-report", 3, Arrays.asList("umowa najmu"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-turbine-report", 3, Arrays.asList("umowa najmu"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-sweep-report", 3, Arrays.asList("umowa najmu"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-sweep-report", 3, Arrays.asList("umowa najmu"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-cable-report", 3, Arrays.asList("umowa najmu"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-cable-report", 3, Arrays.asList("umowa najmu"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-finRd-report", 3, Arrays.asList("umowa najmu"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-finRd-report", 3, Arrays.asList("umowa najmu"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-tmpRd-report", 3, Arrays.asList("umowa najmu"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-tmpRd-report", 3, Arrays.asList("umowa najmu"), Arrays.asList(9))
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-turbine-report", 3, Arrays.asList("umowa najmu"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-turbine-report", 3, Arrays.asList("umowa najmu"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-sweep-report", 3, Arrays.asList("umowa najmu"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-sweep-report", 3, Arrays.asList("umowa najmu"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-cable-report", 3, Arrays.asList("umowa najmu"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-cable-report", 3, Arrays.asList("umowa najmu"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-finRd-report", 3, Arrays.asList("umowa najmu"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-finRd-report", 3, Arrays.asList("umowa najmu"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-tmpRd-report", 3, Arrays.asList("umowa najmu"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-tmpRd-report", 3, Arrays.asList("umowa najmu"), Arrays.asList(10))
     );
 
     private static List<TransferPair> summaryAllUPR = Arrays.asList(
             // ~~~~~~~~~~~ umowa przedwstępna
             new TransferPair(VALUE, "umowa przedwstępna"),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-turbine-report", 3, Arrays.asList("umowa przedwstępna"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-turbine-report", 3, Arrays.asList("umowa przedwstępna"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-sweep-report", 3, Arrays.asList("umowa przedwstępna"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-sweep-report", 3, Arrays.asList("umowa przedwstępna"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-cable-report", 3, Arrays.asList("umowa przedwstępna"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-cable-report", 3, Arrays.asList("umowa przedwstępna"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-finRd-report", 3, Arrays.asList("umowa przedwstępna"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-finRd-report", 3, Arrays.asList("umowa przedwstępna"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-tmpRd-report", 3, Arrays.asList("umowa przedwstępna"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-tmpRd-report", 3, Arrays.asList("umowa przedwstępna"), Arrays.asList(9))
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-turbine-report", 3, Arrays.asList("umowa przedwstępna"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-turbine-report", 3, Arrays.asList("umowa przedwstępna"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-sweep-report", 3, Arrays.asList("umowa przedwstępna"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-sweep-report", 3, Arrays.asList("umowa przedwstępna"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-cable-report", 3, Arrays.asList("umowa przedwstępna"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-cable-report", 3, Arrays.asList("umowa przedwstępna"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-finRd-report", 3, Arrays.asList("umowa przedwstępna"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-finRd-report", 3, Arrays.asList("umowa przedwstępna"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-tmpRd-report", 3, Arrays.asList("umowa przedwstępna"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-tmpRd-report", 3, Arrays.asList("umowa przedwstępna"), Arrays.asList(10))
     );
 
     private static List<TransferPair> summaryAllSLG = Arrays.asList(
             // ~~~~~~~~~~~ umowa przedwstępna
             new TransferPair(VALUE, "służebność gruntowa"),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-turbine-report", 3, Arrays.asList("służebność gruntowa"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-turbine-report", 3, Arrays.asList("służebność gruntowa"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-sweep-report", 3, Arrays.asList("służebność gruntowa"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-sweep-report", 3, Arrays.asList("służebność gruntowa"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-cable-report", 3, Arrays.asList("służebność gruntowa"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-cable-report", 3, Arrays.asList("służebność gruntowa"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-finRd-report", 3, Arrays.asList("służebność gruntowa"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-finRd-report", 3, Arrays.asList("służebność gruntowa"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-tmpRd-report", 3, Arrays.asList("służebność gruntowa"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-tmpRd-report", 3, Arrays.asList("służebność gruntowa"), Arrays.asList(9))
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-turbine-report", 3, Arrays.asList("służebność gruntowa"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-turbine-report", 3, Arrays.asList("służebność gruntowa"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-sweep-report", 3, Arrays.asList("służebność gruntowa"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-sweep-report", 3, Arrays.asList("służebność gruntowa"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-cable-report", 3, Arrays.asList("służebność gruntowa"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-cable-report", 3, Arrays.asList("służebność gruntowa"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-finRd-report", 3, Arrays.asList("służebność gruntowa"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-finRd-report", 3, Arrays.asList("służebność gruntowa"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-tmpRd-report", 3, Arrays.asList("służebność gruntowa"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-tmpRd-report", 3, Arrays.asList("służebność gruntowa"), Arrays.asList(10))
     );
 
     private static List<TransferPair> summaryAllDAD = Arrays.asList(
             // ~~~~~~~~~~~ umowa przedwstępna
             new TransferPair(VALUE, "Decyzja adm."),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-turbine-report", 3, Arrays.asList("Decyzja adm."), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-turbine-report", 3, Arrays.asList("Decyzja adm."), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-sweep-report", 3, Arrays.asList("Decyzja adm."), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-sweep-report", 3, Arrays.asList("Decyzja adm."), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-cable-report", 3, Arrays.asList("Decyzja adm."), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-cable-report", 3, Arrays.asList("Decyzja adm."), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-finRd-report", 3, Arrays.asList("Decyzja adm."), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-finRd-report", 3, Arrays.asList("Decyzja adm."), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-tmpRd-report", 3, Arrays.asList("Decyzja adm."), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-tmpRd-report", 3, Arrays.asList("Decyzja adm."), Arrays.asList(9))
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-turbine-report", 3, Arrays.asList("Decyzja adm."), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-turbine-report", 3, Arrays.asList("Decyzja adm."), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-sweep-report", 3, Arrays.asList("Decyzja adm."), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-sweep-report", 3, Arrays.asList("Decyzja adm."), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-cable-report", 3, Arrays.asList("Decyzja adm."), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-cable-report", 3, Arrays.asList("Decyzja adm."), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-finRd-report", 3, Arrays.asList("Decyzja adm."), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-finRd-report", 3, Arrays.asList("Decyzja adm."), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-tmpRd-report", 3, Arrays.asList("Decyzja adm."), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-tmpRd-report", 3, Arrays.asList("Decyzja adm."), Arrays.asList(10))
     );
 
     private static List<TransferPair> summaryAllPOR = Arrays.asList(
             // ~~~~~~~~~~~ umowa przedwstępna
             new TransferPair(VALUE, "porozumienie"),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-turbine-report", 3, Arrays.asList("porozumienie"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-turbine-report", 3, Arrays.asList("porozumienie"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-sweep-report", 3, Arrays.asList("porozumienie"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-sweep-report", 3, Arrays.asList("porozumienie"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-cable-report", 3, Arrays.asList("porozumienie"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-cable-report", 3, Arrays.asList("porozumienie"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-finRd-report", 3, Arrays.asList("porozumienie"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-finRd-report", 3, Arrays.asList("porozumienie"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-tmpRd-report", 3, Arrays.asList("porozumienie"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-tmpRd-report", 3, Arrays.asList("porozumienie"), Arrays.asList(9))
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-turbine-report", 3, Arrays.asList("porozumienie"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-turbine-report", 3, Arrays.asList("porozumienie"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-sweep-report", 3, Arrays.asList("porozumienie"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-sweep-report", 3, Arrays.asList("porozumienie"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-cable-report", 3, Arrays.asList("porozumienie"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-cable-report", 3, Arrays.asList("porozumienie"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-finRd-report", 3, Arrays.asList("porozumienie"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-finRd-report", 3, Arrays.asList("porozumienie"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-tmpRd-report", 3, Arrays.asList("porozumienie"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-tmpRd-report", 3, Arrays.asList("porozumienie"), Arrays.asList(10))
     );
 
     private static List<TransferPair> summaryAllUZG = Arrays.asList(
             // ~~~~~~~~~~~ umowa przedwstępna
             new TransferPair(VALUE, "uzgodnienie"),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-turbine-report", 3, Arrays.asList("uzgodnienie"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-turbine-report", 3, Arrays.asList("uzgodnienie"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-sweep-report", 3, Arrays.asList("uzgodnienie"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-sweep-report", 3, Arrays.asList("uzgodnienie"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-cable-report", 3, Arrays.asList("uzgodnienie"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-cable-report", 3, Arrays.asList("uzgodnienie"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-finRd-report", 3, Arrays.asList("uzgodnienie"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-finRd-report", 3, Arrays.asList("uzgodnienie"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-tmpRd-report", 3, Arrays.asList("uzgodnienie"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-tmpRd-report", 3, Arrays.asList("uzgodnienie"), Arrays.asList(9))
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-turbine-report", 3, Arrays.asList("uzgodnienie"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-turbine-report", 3, Arrays.asList("uzgodnienie"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-sweep-report", 3, Arrays.asList("uzgodnienie"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-sweep-report", 3, Arrays.asList("uzgodnienie"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-cable-report", 3, Arrays.asList("uzgodnienie"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-cable-report", 3, Arrays.asList("uzgodnienie"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-finRd-report", 3, Arrays.asList("uzgodnienie"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-finRd-report", 3, Arrays.asList("uzgodnienie"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-tmpRd-report", 3, Arrays.asList("uzgodnienie"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-tmpRd-report", 3, Arrays.asList("uzgodnienie"), Arrays.asList(10))
     );
 
     private static List<TransferPair> summaryAllWSZ = Arrays.asList(
             // ~~~~~~~~~~~ umowa przedwstępna
             new TransferPair(VALUE, "Wstępna zgoda"),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-turbine-report", 3, Arrays.asList("Wstępna zgoda"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-turbine-report", 3, Arrays.asList("Wstępna zgoda"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-sweep-report", 3, Arrays.asList("Wstępna zgoda"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-sweep-report", 3, Arrays.asList("Wstępna zgoda"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-cable-report", 3, Arrays.asList("Wstępna zgoda"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-cable-report", 3, Arrays.asList("Wstępna zgoda"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-finRd-report", 3, Arrays.asList("Wstępna zgoda"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-finRd-report", 3, Arrays.asList("Wstępna zgoda"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-tmpRd-report", 3, Arrays.asList("Wstępna zgoda"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-tmpRd-report", 3, Arrays.asList("Wstępna zgoda"), Arrays.asList(9))
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-turbine-report", 3, Arrays.asList("Wstępna zgoda"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-turbine-report", 3, Arrays.asList("Wstępna zgoda"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-sweep-report", 3, Arrays.asList("Wstępna zgoda"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-sweep-report", 3, Arrays.asList("Wstępna zgoda"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-cable-report", 3, Arrays.asList("Wstępna zgoda"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-cable-report", 3, Arrays.asList("Wstępna zgoda"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-finRd-report", 3, Arrays.asList("Wstępna zgoda"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-finRd-report", 3, Arrays.asList("Wstępna zgoda"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-tmpRd-report", 3, Arrays.asList("Wstępna zgoda"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-tmpRd-report", 3, Arrays.asList("Wstępna zgoda"), Arrays.asList(10))
     );
 
     private static List<TransferPair> summaryAllWKN = Arrays.asList(
             // ~~~~~~~~~~~ umowa przedwstępna
             new TransferPair(VALUE, "w trakcie końcowych negocjacji"),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-turbine-report", 3, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-turbine-report", 3, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-sweep-report", 3, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-sweep-report", 3, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-cable-report", 3, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-cable-report", 3, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-finRd-report", 3, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-finRd-report", 3, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-tmpRd-report", 3, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-tmpRd-report", 3, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(9))
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-turbine-report", 3, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-turbine-report", 3, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-sweep-report", 3, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-sweep-report", 3, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-cable-report", 3, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-cable-report", 3, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-finRd-report", 3, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-finRd-report", 3, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-tmpRd-report", 3, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-tmpRd-report", 3, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(10))
     );
 
     private static List<TransferPair> summaryAllWPR = Arrays.asList(
             // ~~~~~~~~~~~ umowa przedwstępna
             new TransferPair(VALUE, "w trakcie negocjacji/procedury"),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-turbine-report", 3, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-turbine-report", 3, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-sweep-report", 3, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-sweep-report", 3, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-cable-report", 3, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-cable-report", 3, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-finRd-report", 3, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-finRd-report", 3, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-tmpRd-report", 3, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-tmpRd-report", 3, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(9))
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-turbine-report", 3, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-turbine-report", 3, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-sweep-report", 3, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-sweep-report", 3, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-cable-report", 3, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-cable-report", 3, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-finRd-report", 3, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-finRd-report", 3, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-tmpRd-report", 3, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-tmpRd-report", 3, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(10))
     );
 
     private static List<TransferPair> summaryAllWTN = Arrays.asList(
             // ~~~~~~~~~~~ umowa przedwstępna
             new TransferPair(VALUE, "w trakcie negocjacji"),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-turbine-report", 3, Arrays.asList("w trakcie negocjacji"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-turbine-report", 3, Arrays.asList("w trakcie negocjacji"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-sweep-report", 3, Arrays.asList("w trakcie negocjacji"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-sweep-report", 3, Arrays.asList("w trakcie negocjacji"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-cable-report", 3, Arrays.asList("w trakcie negocjacji"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-cable-report", 3, Arrays.asList("w trakcie negocjacji"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-finRd-report", 3, Arrays.asList("w trakcie negocjacji"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-finRd-report", 3, Arrays.asList("w trakcie negocjacji"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-tmpRd-report", 3, Arrays.asList("w trakcie negocjacji"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-tmpRd-report", 3, Arrays.asList("w trakcie negocjacji"), Arrays.asList(9))
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-turbine-report", 3, Arrays.asList("w trakcie negocjacji"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-turbine-report", 3, Arrays.asList("w trakcie negocjacji"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-sweep-report", 3, Arrays.asList("w trakcie negocjacji"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-sweep-report", 3, Arrays.asList("w trakcie negocjacji"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-cable-report", 3, Arrays.asList("w trakcie negocjacji"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-cable-report", 3, Arrays.asList("w trakcie negocjacji"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-finRd-report", 3, Arrays.asList("w trakcie negocjacji"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-finRd-report", 3, Arrays.asList("w trakcie negocjacji"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-tmpRd-report", 3, Arrays.asList("w trakcie negocjacji"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-tmpRd-report", 3, Arrays.asList("w trakcie negocjacji"), Arrays.asList(10))
     );
 
     private static List<TransferPair> summaryAllBRU = Arrays.asList(
             // ~~~~~~~~~~~ umowa przedwstępna
             new TransferPair(VALUE, "brak umowy"),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-turbine-report", 3, Arrays.asList("brak umowy"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-turbine-report", 3, Arrays.asList("brak umowy"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-sweep-report", 3, Arrays.asList("brak umowy"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-sweep-report", 3, Arrays.asList("brak umowy"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-cable-report", 3, Arrays.asList("brak umowy"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-cable-report", 3, Arrays.asList("brak umowy"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-finRd-report", 3, Arrays.asList("brak umowy"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-finRd-report", 3, Arrays.asList("brak umowy"), Arrays.asList(9)),
-            new TransferPair(GET_PART_NUM_AND_SUM, "zero-tmpRd-report", 3, Arrays.asList("brak umowy"), Arrays.asList(9)),
-            new TransferPair(PERCENT_CONDITION, "zero-tmpRd-report", 3, Arrays.asList("brak umowy"), Arrays.asList(9))
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-turbine-report", 3, Arrays.asList("brak umowy"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-turbine-report", 3, Arrays.asList("brak umowy"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-sweep-report", 3, Arrays.asList("brak umowy"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-sweep-report", 3, Arrays.asList("brak umowy"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-cable-report", 3, Arrays.asList("brak umowy"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-cable-report", 3, Arrays.asList("brak umowy"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-finRd-report", 3, Arrays.asList("brak umowy"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-finRd-report", 3, Arrays.asList("brak umowy"), Arrays.asList(10)),
+            new TransferPair(GET_PART_NUM_AND_SUM, "zero-tmpRd-report", 3, Arrays.asList("brak umowy"), Arrays.asList(10)),
+            new TransferPair(PERCENT_CONDITION, "zero-tmpRd-report", 3, Arrays.asList("brak umowy"), Arrays.asList(10))
     );
 
     private static List<TransferPair> summaryAllHeader = Arrays.asList(
@@ -761,192 +763,195 @@ public class ContextMaker {
     private static List<TransferPair> plotCountAllSLU = Arrays.asList(
             // ~~~~~~~~~~~ SŁUŻEBNOŚĆ PRZESYŁU
             new TransferPair(VALUE, "służebność przesyłu"),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-turbine-report", 4, Arrays.asList("służebność przesyłu"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-turbine-report", 4, Arrays.asList("służebność przesyłu"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-sweep-report", 4, Arrays.asList("służebność przesyłu"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-sweep-report", 4, Arrays.asList("służebność przesyłu"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-cable-report", 4, Arrays.asList("służebność przesyłu"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-cable-report", 4, Arrays.asList("służebność przesyłu"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-finRd-report", 4, Arrays.asList("służebność przesyłu"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-finRd-report", 4, Arrays.asList("służebność przesyłu"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-tmpRd-report", 4, Arrays.asList("służebność przesyłu"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-tmpRd-report", 4, Arrays.asList("służebność przesyłu"), Arrays.asList(9))
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-turbine-report", 4, Arrays.asList("służebność przesyłu"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-turbine-report", 4, Arrays.asList("służebność przesyłu"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-sweep-report", 4, Arrays.asList("służebność przesyłu"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-sweep-report", 4, Arrays.asList("służebność przesyłu"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-cable-report", 4, Arrays.asList("służebność przesyłu"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-cable-report", 4, Arrays.asList("służebność przesyłu"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-finRd-report", 4, Arrays.asList("służebność przesyłu"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-finRd-report", 4, Arrays.asList("służebność przesyłu"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-tmpRd-report", 4, Arrays.asList("służebność przesyłu"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-tmpRd-report", 4, Arrays.asList("służebność przesyłu"), Arrays.asList(10))
     );
     private static List<TransferPair> plotCountAllUDZ = Arrays.asList(
             // ~~~~~~~~~~~ SŁUŻEBNOŚĆ PRZESYŁU
             new TransferPair(VALUE, "umowa dzierżawy"),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-turbine-report", 4, Arrays.asList("umowa dzierżawy"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-turbine-report", 4, Arrays.asList("umowa dzierżawy"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-sweep-report", 4, Arrays.asList("umowa dzierżawy"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-sweep-report", 4, Arrays.asList("umowa dzierżawy"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-cable-report", 4, Arrays.asList("umowa dzierżawy"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-cable-report", 4, Arrays.asList("umowa dzierżawy"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-finRd-report", 4, Arrays.asList("umowa dzierżawy"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-finRd-report", 4, Arrays.asList("umowa dzierżawy"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-tmpRd-report", 4, Arrays.asList("umowa dzierżawy"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-tmpRd-report", 4, Arrays.asList("umowa dzierżawy"), Arrays.asList(9))
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-turbine-report", 4, Arrays.asList("umowa dzierżawy"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-turbine-report", 4, Arrays.asList("umowa dzierżawy"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-sweep-report", 4, Arrays.asList("umowa dzierżawy"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-sweep-report", 4, Arrays.asList("umowa dzierżawy"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-cable-report", 4, Arrays.asList("umowa dzierżawy"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-cable-report", 4, Arrays.asList("umowa dzierżawy"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-finRd-report", 4, Arrays.asList("umowa dzierżawy"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-finRd-report", 4, Arrays.asList("umowa dzierżawy"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-tmpRd-report", 4, Arrays.asList("umowa dzierżawy"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-tmpRd-report", 4, Arrays.asList("umowa dzierżawy"), Arrays.asList(10))
     );
     private static List<TransferPair> plotCountAllUNA = Arrays.asList(
             // ~~~~~~~~~~~ SŁUŻEBNOŚĆ PRZESYŁU
             new TransferPair(VALUE, "umowa najmu"),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-turbine-report", 4, Arrays.asList("umowa najmu"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-turbine-report", 4, Arrays.asList("umowa najmu"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-sweep-report", 4, Arrays.asList("umowa najmu"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-sweep-report", 4, Arrays.asList("umowa najmu"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-cable-report", 4, Arrays.asList("umowa najmu"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-cable-report", 4, Arrays.asList("umowa najmu"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-finRd-report", 4, Arrays.asList("umowa najmu"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-finRd-report", 4, Arrays.asList("umowa najmu"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-tmpRd-report", 4, Arrays.asList("umowa najmu"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-tmpRd-report", 4, Arrays.asList("umowa najmu"), Arrays.asList(9))
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-turbine-report", 4, Arrays.asList("umowa najmu"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-turbine-report", 4, Arrays.asList("umowa najmu"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-sweep-report", 4, Arrays.asList("umowa najmu"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-sweep-report", 4, Arrays.asList("umowa najmu"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-cable-report", 4, Arrays.asList("umowa najmu"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-cable-report", 4, Arrays.asList("umowa najmu"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-finRd-report", 4, Arrays.asList("umowa najmu"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-finRd-report", 4, Arrays.asList("umowa najmu"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-tmpRd-report", 4, Arrays.asList("umowa najmu"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-tmpRd-report", 4, Arrays.asList("umowa najmu"), Arrays.asList(10))
     );
     private static List<TransferPair> plotCountAllUPR = Arrays.asList(
             // ~~~~~~~~~~~ SŁUŻEBNOŚĆ PRZESYŁU
             new TransferPair(VALUE, "umowa przedwstępna"),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-turbine-report", 4, Arrays.asList("umowa przedwstępna"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-turbine-report", 4, Arrays.asList("umowa przedwstępna"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-sweep-report", 4, Arrays.asList("umowa przedwstępna"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-sweep-report", 4, Arrays.asList("umowa przedwstępna"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-cable-report", 4, Arrays.asList("umowa przedwstępna"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-cable-report", 4, Arrays.asList("umowa przedwstępna"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-finRd-report", 4, Arrays.asList("umowa przedwstępna"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-finRd-report", 4, Arrays.asList("umowa przedwstępna"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-tmpRd-report", 4, Arrays.asList("umowa przedwstępna"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-tmpRd-report", 4, Arrays.asList("umowa przedwstępna"), Arrays.asList(9))
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-turbine-report", 4, Arrays.asList("umowa przedwstępna"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-turbine-report", 4, Arrays.asList("umowa przedwstępna"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-sweep-report", 4, Arrays.asList("umowa przedwstępna"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-sweep-report", 4, Arrays.asList("umowa przedwstępna"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-cable-report", 4, Arrays.asList("umowa przedwstępna"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-cable-report", 4, Arrays.asList("umowa przedwstępna"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-finRd-report", 4, Arrays.asList("umowa przedwstępna"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-finRd-report", 4, Arrays.asList("umowa przedwstępna"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-tmpRd-report", 4, Arrays.asList("umowa przedwstępna"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-tmpRd-report", 4, Arrays.asList("umowa przedwstępna"), Arrays.asList(10))
     );
     private static List<TransferPair> plotCountAllSLG = Arrays.asList(
             // ~~~~~~~~~~~ SŁUŻEBNOŚĆ PRZESYŁU
             new TransferPair(VALUE, "służebność gruntowa"),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-turbine-report", 4, Arrays.asList("służebność gruntowa"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-turbine-report", 4, Arrays.asList("służebność gruntowa"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-sweep-report", 4, Arrays.asList("służebność gruntowa"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-sweep-report", 4, Arrays.asList("służebność gruntowa"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-cable-report", 4, Arrays.asList("służebność gruntowa"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-cable-report", 4, Arrays.asList("służebność gruntowa"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-finRd-report", 4, Arrays.asList("służebność gruntowa"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-finRd-report", 4, Arrays.asList("służebność gruntowa"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-tmpRd-report", 4, Arrays.asList("służebność gruntowa"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-tmpRd-report", 4, Arrays.asList("służebność gruntowa"), Arrays.asList(9))
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-turbine-report", 4, Arrays.asList("służebność gruntowa"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-turbine-report", 4, Arrays.asList("służebność gruntowa"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-sweep-report", 4, Arrays.asList("służebność gruntowa"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-sweep-report", 4, Arrays.asList("służebność gruntowa"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-cable-report", 4, Arrays.asList("służebność gruntowa"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-cable-report", 4, Arrays.asList("służebność gruntowa"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-finRd-report", 4, Arrays.asList("służebność gruntowa"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-finRd-report", 4, Arrays.asList("służebność gruntowa"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-tmpRd-report", 4, Arrays.asList("służebność gruntowa"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-tmpRd-report", 4, Arrays.asList("służebność gruntowa"), Arrays.asList(10))
     );
     private static List<TransferPair> plotCountAllDAD = Arrays.asList(
             // ~~~~~~~~~~~ SŁUŻEBNOŚĆ PRZESYŁU
             new TransferPair(VALUE, "Decyzja adm."),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-turbine-report", 4, Arrays.asList("Decyzja adm."), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-turbine-report", 4, Arrays.asList("Decyzja adm."), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-sweep-report", 4, Arrays.asList("Decyzja adm."), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-sweep-report", 4, Arrays.asList("Decyzja adm."), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-cable-report", 4, Arrays.asList("Decyzja adm."), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-cable-report", 4, Arrays.asList("Decyzja adm."), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-finRd-report", 4, Arrays.asList("Decyzja adm."), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-finRd-report", 4, Arrays.asList("Decyzja adm."), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-tmpRd-report", 4, Arrays.asList("Decyzja adm."), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-tmpRd-report", 4, Arrays.asList("Decyzja adm."), Arrays.asList(9))
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-turbine-report", 4, Arrays.asList("Decyzja adm."), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-turbine-report", 4, Arrays.asList("Decyzja adm."), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-sweep-report", 4, Arrays.asList("Decyzja adm."), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-sweep-report", 4, Arrays.asList("Decyzja adm."), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-cable-report", 4, Arrays.asList("Decyzja adm."), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-cable-report", 4, Arrays.asList("Decyzja adm."), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-finRd-report", 4, Arrays.asList("Decyzja adm."), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-finRd-report", 4, Arrays.asList("Decyzja adm."), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-tmpRd-report", 4, Arrays.asList("Decyzja adm."), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-tmpRd-report", 4, Arrays.asList("Decyzja adm."), Arrays.asList(10))
     );
     private static List<TransferPair> plotCountAllPOR = Arrays.asList(
             // ~~~~~~~~~~~ SŁUŻEBNOŚĆ PRZESYŁU
             new TransferPair(VALUE, "porozumienie"),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-turbine-report", 4, Arrays.asList("porozumienie"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-turbine-report", 4, Arrays.asList("porozumienie"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-sweep-report", 4, Arrays.asList("porozumienie"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-sweep-report", 4, Arrays.asList("porozumienie"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-cable-report", 4, Arrays.asList("porozumienie"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-cable-report", 4, Arrays.asList("porozumienie"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-finRd-report", 4, Arrays.asList("porozumienie"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-finRd-report", 4, Arrays.asList("porozumienie"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-tmpRd-report", 4, Arrays.asList("porozumienie"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-tmpRd-report", 4, Arrays.asList("porozumienie"), Arrays.asList(9))
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-turbine-report", 4, Arrays.asList("porozumienie"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-turbine-report", 4, Arrays.asList("porozumienie"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-sweep-report", 4, Arrays.asList("porozumienie"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-sweep-report", 4, Arrays.asList("porozumienie"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-cable-report", 4, Arrays.asList("porozumienie"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-cable-report", 4, Arrays.asList("porozumienie"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-finRd-report", 4, Arrays.asList("porozumienie"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-finRd-report", 4, Arrays.asList("porozumienie"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-tmpRd-report", 4, Arrays.asList("porozumienie"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-tmpRd-report", 4, Arrays.asList("porozumienie"), Arrays.asList(10))
     );
     private static List<TransferPair> plotCountAllUZG = Arrays.asList(
             // ~~~~~~~~~~~ SŁUŻEBNOŚĆ PRZESYŁU
             new TransferPair(VALUE, "uzgodnienie"),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-turbine-report", 4, Arrays.asList("uzgodnienie"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-turbine-report", 4, Arrays.asList("uzgodnienie"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-sweep-report", 4, Arrays.asList("uzgodnienie"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-sweep-report", 4, Arrays.asList("uzgodnienie"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-cable-report", 4, Arrays.asList("uzgodnienie"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-cable-report", 4, Arrays.asList("uzgodnienie"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-finRd-report", 4, Arrays.asList("uzgodnienie"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-finRd-report", 4, Arrays.asList("uzgodnienie"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-tmpRd-report", 4, Arrays.asList("uzgodnienie"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-tmpRd-report", 4, Arrays.asList("uzgodnienie"), Arrays.asList(9))
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-turbine-report", 4, Arrays.asList("uzgodnienie"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-turbine-report", 4, Arrays.asList("uzgodnienie"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-sweep-report", 4, Arrays.asList("uzgodnienie"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-sweep-report", 4, Arrays.asList("uzgodnienie"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-cable-report", 4, Arrays.asList("uzgodnienie"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-cable-report", 4, Arrays.asList("uzgodnienie"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-finRd-report", 4, Arrays.asList("uzgodnienie"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-finRd-report", 4, Arrays.asList("uzgodnienie"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-tmpRd-report", 4, Arrays.asList("uzgodnienie"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-tmpRd-report", 4, Arrays.asList("uzgodnienie"), Arrays.asList(10))
     );
     private static List<TransferPair> plotCountAllWSZ = Arrays.asList(
             // ~~~~~~~~~~~ SŁUŻEBNOŚĆ PRZESYŁU
             new TransferPair(VALUE, "Wstępna zgoda"),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-turbine-report", 4, Arrays.asList("Wstępna zgoda"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-turbine-report", 4, Arrays.asList("Wstępna zgoda"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-sweep-report", 4, Arrays.asList("Wstępna zgoda"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-sweep-report", 4, Arrays.asList("Wstępna zgoda"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-cable-report", 4, Arrays.asList("Wstępna zgoda"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-cable-report", 4, Arrays.asList("Wstępna zgoda"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-finRd-report", 4, Arrays.asList("Wstępna zgoda"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-finRd-report", 4, Arrays.asList("Wstępna zgoda"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-tmpRd-report", 4, Arrays.asList("Wstępna zgoda"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-tmpRd-report", 4, Arrays.asList("Wstępna zgoda"), Arrays.asList(9))
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-turbine-report", 4, Arrays.asList("Wstępna zgoda"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-turbine-report", 4, Arrays.asList("Wstępna zgoda"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-sweep-report", 4, Arrays.asList("Wstępna zgoda"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-sweep-report", 4, Arrays.asList("Wstępna zgoda"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-cable-report", 4, Arrays.asList("Wstępna zgoda"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-cable-report", 4, Arrays.asList("Wstępna zgoda"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-finRd-report", 4, Arrays.asList("Wstępna zgoda"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-finRd-report", 4, Arrays.asList("Wstępna zgoda"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-tmpRd-report", 4, Arrays.asList("Wstępna zgoda"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-tmpRd-report", 4, Arrays.asList("Wstępna zgoda"), Arrays.asList(10))
     );
     private static List<TransferPair> plotCountAllWKN = Arrays.asList(
             // ~~~~~~~~~~~ SŁUŻEBNOŚĆ PRZESYŁU
             new TransferPair(VALUE, "w trakcie końcowych negocjacji"),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-turbine-report", 4, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-turbine-report", 4, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-sweep-report", 4, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-sweep-report", 4, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-cable-report", 4, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-cable-report", 4, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-finRd-report", 4, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-finRd-report", 4, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-tmpRd-report", 4, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-tmpRd-report", 4, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(9))
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-turbine-report", 4, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-turbine-report", 4, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-sweep-report", 4, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-sweep-report", 4, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-cable-report", 4, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-cable-report", 4, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-finRd-report", 4, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-finRd-report", 4, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-tmpRd-report", 4, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-tmpRd-report", 4, Arrays.asList("w trakcie końcowych negocjacji"), Arrays.asList(10))
     );
     private static List<TransferPair> plotCountAllWPR = Arrays.asList(
             // ~~~~~~~~~~~ SŁUŻEBNOŚĆ PRZESYŁU
             new TransferPair(VALUE, "w trakcie negocjacji/procedury"),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-turbine-report", 4, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-turbine-report", 4, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-sweep-report", 4, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-sweep-report", 4, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-cable-report", 4, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-cable-report", 4, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-finRd-report", 4, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-finRd-report", 4, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-tmpRd-report", 4, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-tmpRd-report", 4, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(9))
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-turbine-report", 4, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-turbine-report", 4, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-sweep-report", 4, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-sweep-report", 4, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-cable-report", 4, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-cable-report", 4, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-finRd-report", 4, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-finRd-report", 4, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-tmpRd-report", 4, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-tmpRd-report", 4, Arrays.asList("w trakcie negocjacji/procedury"), Arrays.asList(10))
     );
     private static List<TransferPair> plotCountAllWTN = Arrays.asList(
             // ~~~~~~~~~~~ SŁUŻEBNOŚĆ PRZESYŁU
             new TransferPair(VALUE, "w trakcie negocjacji"),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-turbine-report", 4, Arrays.asList("w trakcie negocjacji"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-turbine-report", 4, Arrays.asList("w trakcie negocjacji"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-sweep-report", 4, Arrays.asList("w trakcie negocjacji"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-sweep-report", 4, Arrays.asList("w trakcie negocjacji"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-cable-report", 4, Arrays.asList("w trakcie negocjacji"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-cable-report", 4, Arrays.asList("w trakcie negocjacji"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-finRd-report", 4, Arrays.asList("w trakcie negocjacji"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-finRd-report", 4, Arrays.asList("w trakcie negocjacji"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-tmpRd-report", 4, Arrays.asList("w trakcie negocjacji"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-tmpRd-report", 4, Arrays.asList("w trakcie negocjacji"), Arrays.asList(9))
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-turbine-report", 4, Arrays.asList("w trakcie negocjacji"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-turbine-report", 4, Arrays.asList("w trakcie negocjacji"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-sweep-report", 4, Arrays.asList("w trakcie negocjacji"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-sweep-report", 4, Arrays.asList("w trakcie negocjacji"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-cable-report", 4, Arrays.asList("w trakcie negocjacji"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-cable-report", 4, Arrays.asList("w trakcie negocjacji"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-finRd-report", 4, Arrays.asList("w trakcie negocjacji"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-finRd-report", 4, Arrays.asList("w trakcie negocjacji"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-tmpRd-report", 4, Arrays.asList("w trakcie negocjacji"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-tmpRd-report", 4, Arrays.asList("w trakcie negocjacji"), Arrays.asList(10))
     );
     private static List<TransferPair> plotCountAllBRU = Arrays.asList(
             // ~~~~~~~~~~~ SŁUŻEBNOŚĆ PRZESYŁU
             new TransferPair(VALUE, "brak umowy"),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-turbine-report", 4, Arrays.asList("brak umowy"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-turbine-report", 4, Arrays.asList("brak umowy"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-sweep-report", 4, Arrays.asList("brak umowy"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-sweep-report", 4, Arrays.asList("brak umowy"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-cable-report", 4, Arrays.asList("brak umowy"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-cable-report", 4, Arrays.asList("brak umowy"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-finRd-report", 4, Arrays.asList("brak umowy"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-finRd-report", 4, Arrays.asList("brak umowy"), Arrays.asList(9)),
-            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-tmpRd-report", 4, Arrays.asList("brak umowy"), Arrays.asList(9)),
-            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-tmpRd-report", 4, Arrays.asList("brak umowy"), Arrays.asList(9))
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-turbine-report", 4, Arrays.asList("brak umowy"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-turbine-report", 4, Arrays.asList("brak umowy"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-sweep-report", 4, Arrays.asList("brak umowy"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-sweep-report", 4, Arrays.asList("brak umowy"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-cable-report", 4, Arrays.asList("brak umowy"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-cable-report", 4, Arrays.asList("brak umowy"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-finRd-report", 4, Arrays.asList("brak umowy"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-finRd-report", 4, Arrays.asList("brak umowy"), Arrays.asList(10)),
+            new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-tmpRd-report", 4, Arrays.asList("brak umowy"), Arrays.asList(10)),
+            new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-tmpRd-report", 4, Arrays.asList("brak umowy"), Arrays.asList(10))
     );
+    private static String workbookFilePath;
 
 
     public static void main(String[] args) throws IOException {
-        doStuff(false);
+        doStuff(true);
     }
 
     private static void doStuff(boolean importInputData) throws IOException {
+        workbookFilePath = System.getProperty("user.home") + File.separatorChar + "report-out-new-DW-v3.xls";
+
         ReportContext context = new ReportContext();
 
         context.putFeature(getFeatures(Resources.getResource("ew/ew.shp").getPath()), "plot-source");
@@ -1067,7 +1072,6 @@ public class ContextMaker {
         context.putTransfer(plotCountAllWTN, "plotCount-all-transfer-WTN");
         context.putTransfer(plotCountAllBRU, "plotCount-all-transfer-BRU");
 
-
         MyCallback cb = new MyCallback();
 
         if (!importInputData) {
@@ -1080,7 +1084,20 @@ public class ContextMaker {
             context.merge("zero-final", "zero-cable-report", "zero-sweep-report", "zero-turbine-report",
                     "zero-tmpRd-report", "zero-finRd-report");
         } else {
-            //import
+            Report zeroReport = importReport(workbookFilePath, "DANE WSADOWE", 1);
+            assert (zeroReport != null);
+
+            context.putReport(zeroReport, "zero-final");
+            Report cable = zeroReport.filter(Arrays.asList("Kabel SN"), Arrays.asList(8));
+            context.putReport(cable, "zero-cable-report");
+            Report sweep = zeroReport.filter(Arrays.asList("Służebność łopatowa"), Arrays.asList(8));
+            context.putReport(sweep, "zero-sweep-report");
+            Report turbine = zeroReport.filter(Arrays.asList("Turbina"), Arrays.asList(8));
+            context.putReport(turbine, "zero-turbine-report");
+            Report tmpRd = zeroReport.filter(Arrays.asList("Drogi Tymczasowe"), Arrays.asList(8));
+            context.putReport(tmpRd, "zero-tmpRd-report");
+            Report finRd = zeroReport.filter(Arrays.asList("Drogi Docelowe"), Arrays.asList(8));
+            context.putReport(finRd, "zero-finRd-report");
         }
 
         context.make("summary-cable-report", "cable-source", "plot-source", "summary-cable-transfer", "", cb);
@@ -1145,9 +1162,9 @@ public class ContextMaker {
 
         ContextExporter exporter = new ContextExporter(context);
 
-        String outPath = System.getProperty("user.home") + File.separatorChar + "report-out-new-DW-v3.xls";
-        File file = new File(outPath);
-        exporter.export(Arrays.asList("zero-final"), "DANE WSADOWE", file);
+        File file = new File(workbookFilePath);
+        if (!importInputData)
+            exporter.export(Arrays.asList("zero-final"), "DANE WSADOWE", file);
         exporter.export(Arrays.asList("summary-cable-report", "count-cable-report", "plotList-cable-report"), "KABLE SN", file);
         exporter.export(Arrays.asList("summary-sweep-report", "count-sweep-report", "plotList-sweep-report"), "OMIATANIE", file);
         exporter.export(Arrays.asList("summary-tmpRd-report", "count-tmpRd-report", "plotList-tmpRd-report"), "DROGI TYMCZASOWE", file);
@@ -1176,10 +1193,18 @@ public class ContextMaker {
         return featureList;
     }
 
-    public Report importReport(HSSFSheet sheet, int beginRow) {
+    public static Report importReport(String fileName, String sheetName, int beginRow) throws IOException {
+        FileInputStream fis = new FileInputStream(fileName);
+        HSSFWorkbook workbook = new HSSFWorkbook(fis);
+        Report report = importReport(workbook.getSheet(sheetName), beginRow);
+        fis.close();
+        return report;
+    }
+
+    public static Report importReport(HSSFSheet sheet, int beginRow) {
         int count = 0;
         for (Cell ignored : sheet.getRow(beginRow)) count++;
-        java.util.List<Value.Type> types = new ArrayList<Value.Type>();
+        List<Value.Type> types = new ArrayList<Value.Type>();
         for (Cell cell : sheet.getRow(beginRow)) {
             switch (cell.getCellType()) {
                 case Cell.CELL_TYPE_NUMERIC:
@@ -1196,18 +1221,23 @@ public class ContextMaker {
             java.util.List<String> values = new ArrayList<String>();
             for (int j = 0; j < count; j++) {
                 HSSFCell cell = row.getCell(j);
-                switch (report.getType(j)) {
-                    case NUMBER:
-                        values.add(String.valueOf(cell == null ? "" : cell.getNumericCellValue()));
-                        break;
-                    default:
-                        values.add(cell == null ? "" : cell.getStringCellValue());
-                        break;
+                if (cell!= null) {
+                    switch (cell.getCellType()) {
+                        case Cell.CELL_TYPE_NUMERIC:
+                            values.add(String.valueOf(cell == null ? "" : cell.getNumericCellValue()));
+                            break;
+                        default:
+                            values.add(cell == null ? "" : cell.getStringCellValue());
+                            break;
+                    }
+                } else {
+                    values.add("");
                 }
             }
             report.addRecord(values);
         }
         return report;
     }
+
 
 }

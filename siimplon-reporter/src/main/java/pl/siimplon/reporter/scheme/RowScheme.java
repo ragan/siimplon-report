@@ -198,7 +198,13 @@ public class RowScheme {
         List<Record> content = report.getValuesByContent(values, cols);
         double contentSum = getSum(column, content);
         double v = contentSum / sum * 100.0;
-        return new BigDecimal(v).setScale(2, RoundingMode.HALF_UP).toString(); //TODO: set round as param
+        String s = "0.00";
+        try {
+            s = new BigDecimal(v).setScale(2, RoundingMode.HALF_UP).toString();
+        } catch (Exception ignored) {
+            s = "0.00";
+        }
+        return s; //TODO: set round as param
     }
 
     private String onGetSum(Report report, Integer column, List<String> values, List<Integer> columns) {

@@ -108,8 +108,10 @@ public class ContextExporter {
     }
 
     private HSSFSheet makeSheet(HSSFWorkbook workbook, String sheetName) {
-        if (workbook.getSheet(sheetName) != null) {
-            workbook.removeSheetAt(workbook.getSheetIndex(sheetName));
+        HSSFSheet sheet = workbook.getSheet(sheetName);
+        if (sheet != null) {
+            int sheetIndex = workbook.getSheetIndex(sheetName);
+            workbook.removeSheetAt(sheetIndex);
         }
         return workbook.createSheet(sheetName);
     }
