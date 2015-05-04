@@ -7,10 +7,7 @@ import pl.siimplon.reporter.report.Report;
 import pl.siimplon.reporter.scheme.RowScheme;
 import pl.siimplon.reporter.scheme.transfer.TransferPair;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
 
 public class ReportContext {
 
@@ -20,10 +17,13 @@ public class ReportContext {
 
     private final Map<String, List<TransferPair>> transferMap;
 
+    private final Map<String, Set<String>> dictionaryMap;
+
     public ReportContext() {
         reportMap = new HashMap<String, Report>();
         featuresMap = new HashMap<String, List<AnalyzeItem>>();
         transferMap = new HashMap<String, List<TransferPair>>();
+        dictionaryMap = new HashMap<String, Set<String>>();
     }
 
     public void make(String reportName, String mainFeatureName, String otherFeatureName, String mainTransferName,
@@ -111,5 +111,17 @@ public class ReportContext {
 
     public List<AnalyzeItem> getFeature(String name) {
         return featuresMap.get(name);
+    }
+
+    public void putDictionary(String name, Set<String> values) {
+        dictionaryMap.put(name, values);
+    }
+
+    public void createDictionary(String name, String... values) {
+        putDictionary(name, new HashSet<String>(Arrays.asList(values)));
+    }
+
+    public Set<String> getDictionary(String s) {
+        return dictionaryMap.get(s);
     }
 }

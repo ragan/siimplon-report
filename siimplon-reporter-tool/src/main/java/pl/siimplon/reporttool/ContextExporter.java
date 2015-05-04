@@ -2,7 +2,9 @@ package pl.siimplon.reporttool;
 
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataValidation;
 import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.util.CellRangeAddressList;
 import pl.siimplon.reporter.ReportContext;
 import pl.siimplon.reporter.report.Report;
 import pl.siimplon.reporter.report.record.Record;
@@ -76,10 +78,22 @@ public class ContextExporter {
                         break;
                     case DICTIONARY:
                         cell.setCellValue(value.toString());
+                        CellRangeAddressList addressList = new CellRangeAddressList(
+                                row.getRowNum(), row.getRowNum(), cell.getColumnIndex(), cell.getColumnIndex());
+                        valueDependant(j, sheet, report, addressList);
                         break;
                 }
             }
         }
+    }
+
+    private void valueDependant(int columnNumber, HSSFSheet sheet, Report report, CellRangeAddressList addressList) {
+        DVConstraint dvConstraint = DVConstraint.createExplicitListConstraint(
+                report.getDict(columnNumber).toArray(new String[report.getDict(columnNumber).size()]));
+        DataValidation dataValidation = new HSSFDataValidation
+                (addressList, dvConstraint);
+        dataValidation.setSuppressDropDownArrow(false);
+        sheet.addValidationData(dataValidation);
     }
 
     private CellStyle createColorStringStyle(Style.Color color, HSSFWorkbook workbook) {

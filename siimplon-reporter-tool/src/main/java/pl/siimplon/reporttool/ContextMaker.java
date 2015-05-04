@@ -13,6 +13,7 @@ import pl.siimplon.reporter.analyzer.AnalyzeItem;
 import pl.siimplon.reporter.report.Report;
 import pl.siimplon.reporter.report.value.Value;
 import pl.siimplon.reporter.scheme.RowScheme;
+import pl.siimplon.reporter.scheme.transfer.Transfer;
 import pl.siimplon.reporter.scheme.transfer.TransferPair;
 
 import java.awt.*;
@@ -25,8 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
-import static pl.siimplon.reporter.report.value.Value.Type.LITERAL;
-import static pl.siimplon.reporter.report.value.Value.Type.NUMBER;
+import static pl.siimplon.reporter.report.value.Value.Type.*;
 import static pl.siimplon.reporter.scheme.transfer.Transfer.*;
 
 public class ContextMaker {
@@ -696,7 +696,52 @@ public class ContextMaker {
             new TransferPair(VALUE, "[%]")
     );
 
-    private static List<Value.Type> summaryAllHeaderColumns = Arrays.asList(
+    private static List<TransferPair> zeroReportHeader = Arrays.asList(
+            new TransferPair(Transfer.VALUE, "Gmina"),
+            new TransferPair(Transfer.VALUE, "Nazwa obrębu"),
+            new TransferPair(Transfer.VALUE, "Numer obrębu"),
+            new TransferPair(Transfer.VALUE, "Nr działki"),
+            new TransferPair(Transfer.VALUE, "Nr KW"),
+            new TransferPair(Transfer.VALUE, "Właściciel"),
+            new TransferPair(Transfer.VALUE, "Miejsce zamieszkania"),
+            new TransferPair(Transfer.VALUE, "Powierzchnia / Długość"),
+            new TransferPair(Transfer.VALUE, "Typ infrastruktury"),
+            new TransferPair(Transfer.VALUE, "Identyfikator\ninfrastruktury"),
+            new TransferPair(Transfer.VALUE, "Tytuł prawny do gruntu"),
+            new TransferPair(Transfer.VALUE, "Status płatności na rzecz właściciela gtuntu"),
+            new TransferPair(Transfer.VALUE, "Sposób płatności: Uregulowany/Roczny/Raty/Całość"),
+            new TransferPair(Transfer.VALUE, "Zapłacono\nFaza dewelopmentu\n"),
+            new TransferPair(Transfer.VALUE, "Do zapłaty\nFaza dewelopmentu\n"),
+            new TransferPair(Transfer.VALUE, "Do zapłaty\nFaza budowy (jednorazowo)\n"),
+            new TransferPair(Transfer.VALUE, "Kwota  umów\n PLN/jednorazowo\n"),
+            new TransferPair(Transfer.VALUE, "Kwota \n umów\n PLN/rok - faza construction\n"),
+            new TransferPair(Transfer.VALUE, "Kwota \n umów regularnych\n PLN - do zapłaty do końca developmentu (przyszłe)\n"),
+            new TransferPair(Transfer.VALUE, "Opłata adiacencka")
+    );
+
+    private static List<TransferPair> summaryReportHeader = Arrays.asList(
+            new TransferPair(Transfer.VALUE, "Identyfikator\ninfrastruktury"),
+            new TransferPair(Transfer.VALUE, "Opis"),
+            new TransferPair(Transfer.VALUE, "Tytuł prawny do gruntu"),
+            new TransferPair(Transfer.VALUE, "Długość / powierzchnia"),
+            new TransferPair(Transfer.VALUE, "Nr działki"),
+            new TransferPair(Transfer.VALUE, "Numer obrębu"),
+            new TransferPair(Transfer.VALUE, "Właściciel"),
+            new TransferPair(Transfer.VALUE, "Miejsce zamieszkania"),
+            new TransferPair(Transfer.VALUE, "Nr KW"),
+            new TransferPair(Transfer.VALUE, "Sposób\npłatności:"),
+            new TransferPair(Transfer.VALUE, "Zapłacono\n" + "Faza\n" + "dewelopmentu\n"),
+            new TransferPair(Transfer.VALUE, "Do zapłaty\n" + "Faza\n" + "dewelopmentu\n"),
+            new TransferPair(Transfer.VALUE, "Do zapłaty\n" + "Faza budowy\n" + "(jednorazowo)\n"),
+            new TransferPair(Transfer.VALUE, "Kwota\n" + "podpisanych\n" + "umów PLN\n" + "jednorazowo\n"),
+            new TransferPair(Transfer.VALUE, "Kwota\n" + "podpisanych\n" + "umów\n" + "PLN/rok\n")
+    );
+
+    private static List<Value.Type> summaryHeaderColumns = Arrays.asList(
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
             LITERAL,
             LITERAL,
             LITERAL,
@@ -748,8 +793,8 @@ public class ContextMaker {
             NUMBER,
             LITERAL,
             LITERAL,
-            LITERAL,    //was DICTIONARY
-            LITERAL,    //was DICTIONARY
+            DICTIONARY,    //was DICTIONARY
+            DICTIONARY,    //was DICTIONARY
             NUMBER,
             NUMBER,
             NUMBER,
@@ -757,6 +802,58 @@ public class ContextMaker {
             NUMBER,
             NUMBER,
             NUMBER
+    );
+
+    private static List<Value.Type> zeroHeadColumnScheme = Arrays.asList(
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL
+    );
+
+    private static List<TransferPair> summaryAllHeaderTop = Arrays.asList(
+            new TransferPair(VALUE, ""),
+            new TransferPair(VALUE, "Turbiny"),
+            new TransferPair(VALUE, ""),
+            new TransferPair(VALUE, "Omiatanie"),
+            new TransferPair(VALUE, ""),
+            new TransferPair(VALUE, "Kabel SN"),
+            new TransferPair(VALUE, ""),
+            new TransferPair(VALUE, "Drogi docelowe"),
+            new TransferPair(VALUE, ""),
+            new TransferPair(VALUE, "Drogi tymczasowe"),
+            new TransferPair(VALUE, "")
+    );
+
+    private static List<Value.Type> summaryAllHeaderColumns = Arrays.asList(
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL
     );
 
     //TODO: plot count summary report
@@ -961,12 +1058,49 @@ public class ContextMaker {
         context.putFeature(getFeatures(Resources.getResource("sakowko-drogi-tymczasowe/sakowko-drogi-tymczasowe-polygon-singlepart.shp").getPath()), "tmpRd-source");
         context.putFeature(getFeatures(Resources.getResource("sakowko-drogi-docelowe/sakowko-drogi-docelowe-polygon.shp").getPath()), "finRd-source");
 
-        context.putReport(new Report(zeroColumnScheme), "zero-cable-report");
-        context.putReport(new Report(zeroColumnScheme), "zero-sweep-report");
-        context.putReport(new Report(zeroColumnScheme), "zero-turbine-report");
-        context.putReport(new Report(zeroColumnScheme), "zero-tmpRd-report");
-        context.putReport(new Report(zeroColumnScheme), "zero-finRd-report");
-        context.putReport(new Report(zeroColumnScheme), "zero-final");
+        context.createDictionary("dict-agreements",
+                "", "służebność przesyłu", "umowa dzierżawy", "umowa najmu", "umowa przedwstępna", "służebność gruntowa",
+                "Decyzja adm.", "porozumienie", "uzgodnienie", "Wstępna zgoda", "w trakcie końcowych negocjacji",
+                "w trakcie negocjacji/procedury", "w trakcie negocjacji", "brak umowy");
+
+        context.createDictionary("dict-payments",
+                "", "Raty", "Całość", "Roczny");
+
+        context.putReport(new Report(zeroHeadColumnScheme), "zero-head");
+
+        context.putReport(new Report(summaryHeaderColumns), "summary-head-report");
+        context.putTransfer(summaryReportHeader, "summary-head-transfer");
+
+
+        Report zeroCable = new Report(zeroColumnScheme);
+        zeroCable.setDict(context.getDictionary("dict-agreements"), 10);
+        zeroCable.setDict(context.getDictionary("dict-payments"), 11);
+        context.putReport(zeroCable, "zero-cable-report");
+
+        Report zeroSweep = new Report(zeroColumnScheme);
+        zeroSweep.setDict(context.getDictionary("dict-agreements"), 10);
+        zeroSweep.setDict(context.getDictionary("dict-payments"), 11);
+        context.putReport(zeroSweep, "zero-sweep-report");
+
+        Report zeroTurbine = new Report(zeroColumnScheme);
+        zeroTurbine.setDict(context.getDictionary("dict-agreements"), 10);
+        zeroTurbine.setDict(context.getDictionary("dict-payments"), 11);
+        context.putReport(zeroTurbine, "zero-turbine-report");
+
+        Report zeroTmpRd = new Report(zeroColumnScheme);
+        zeroTmpRd.setDict(context.getDictionary("dict-agreements"), 10);
+        zeroTmpRd.setDict(context.getDictionary("dict-payments"), 11);
+        context.putReport(zeroTmpRd, "zero-tmpRd-report");
+
+        Report zeroFinRd = new Report(zeroColumnScheme);
+        zeroFinRd.setDict(context.getDictionary("dict-agreements"), 10);
+        zeroFinRd.setDict(context.getDictionary("dict-payments"), 11);
+        context.putReport(zeroFinRd, "zero-finRd-report");
+
+        Report zeroFinal = new Report(zeroColumnScheme);
+        zeroFinal.setDict(context.getDictionary("dict-agreements"), 10);
+        zeroFinal.setDict(context.getDictionary("dict-payments"), 11);
+        context.putReport(zeroFinal, "zero-final");
 
         context.putReport(new Report(summaryColumnScheme), "summary-cable-report");
         context.putReport(new Report(summaryColumnScheme), "summary-sweep-report");
@@ -986,6 +1120,7 @@ public class ContextMaker {
         context.putReport(new Report(plotListColumns), "plotList-finRd-report");
         context.putReport(new Report(plotListColumns), "plotList-turbine-report");
 
+        context.putReport(new Report(summaryAllHeaderColumns), "summary-all-report-HEAD-TOP");
         context.putReport(new Report(summaryAllHeaderColumns), "summary-all-report-HEAD");
         context.putReport(new Report(summaryAllColumns), "summary-all-report-SLU");
         context.putReport(new Report(summaryAllColumns), "summary-all-report-UDZ");
@@ -1018,6 +1153,8 @@ public class ContextMaker {
         context.putReport(new Report(summaryAllColumns), "plotCount-all-report-WTN");
         context.putReport(new Report(summaryAllColumns), "plotCount-all-report-BRU");
 
+        context.putTransfer(zeroReportHeader, "zero-head-transfer");
+
         context.putTransfer(zeroCableTransfer, "zero-cable-transfer");
         context.putTransfer(zeroSweepTransfer, "zero-sweep-transfer");
         context.putTransfer(zeroTurbineTransfer, "zero-turbine-transfer");
@@ -1042,6 +1179,7 @@ public class ContextMaker {
         context.putTransfer(plotListFinRd, "plotList-finRd-transfer");
         context.putTransfer(plotListTurbine, "plotList-turbine-transfer");
 
+        context.putTransfer(summaryAllHeaderTop, "summary-all-transfer-HEAD-TOP");
         context.putTransfer(summaryAllHeader, "summary-all-transfer-HEAD");
         context.putTransfer(summaryAllSLU, "summary-all-transfer-SLU");
         context.putTransfer(summaryAllUDZ, "summary-all-transfer-UDZ");
@@ -1075,6 +1213,8 @@ public class ContextMaker {
         MyCallback cb = new MyCallback();
 
         if (!importInputData) {
+            context.make("zero-head", "", "", "zero-head-transfer", "", cb);
+
             context.make("zero-cable-report", "plot-source", "cable-source", "zero-cable-transfer", "", cb);
             context.make("zero-sweep-report", "plot-source", "sweep-source", "zero-sweep-transfer", "", cb);
             context.make("zero-turbine-report", "plot-source", "turbine-source", "zero-turbine-transfer", "", cb);
@@ -1100,6 +1240,8 @@ public class ContextMaker {
             context.putReport(finRd, "zero-finRd-report");
         }
 
+        context.make("summary-head-report", "", "", "summary-head-transfer", "", cb);
+
         context.make("summary-cable-report", "cable-source", "plot-source", "summary-cable-transfer", "", cb);
         context.make("summary-sweep-report", "sweep-source", "plot-source", "summary-sweep-transfer", "", cb);
         context.make("summary-tmpRd-report", "tmpRd-source", "plot-source", "summary-tmpRd-transfer", "", cb);
@@ -1117,6 +1259,8 @@ public class ContextMaker {
         context.make("plotList-tmpRd-report", "plot-source", "", "plotList-tmpRd-transfer", "", cb);
         context.make("plotList-finRd-report", "plot-source", "", "plotList-finRd-transfer", "", cb);
         context.make("plotList-turbine-report", "plot-source", "", "plotList-turbine-transfer", "", cb);
+
+        context.make("summary-all-report-HEAD-TOP", "", "", "summary-all-transfer-HEAD-TOP", "", cb);
 
         context.make("summary-all-report-HEAD", "", "", "summary-all-transfer-HEAD", "", cb);
         context.make("summary-all-report-SLU", "", "", "summary-all-transfer-SLU", "", cb);
@@ -1164,16 +1308,18 @@ public class ContextMaker {
 
         File file = new File(workbookFilePath);
         if (!importInputData)
-            exporter.export(Arrays.asList("zero-final"), "DANE WSADOWE", file);
-        exporter.export(Arrays.asList("summary-cable-report", "count-cable-report", "plotList-cable-report"), "KABLE SN", file);
-        exporter.export(Arrays.asList("summary-sweep-report", "count-sweep-report", "plotList-sweep-report"), "OMIATANIE", file);
-        exporter.export(Arrays.asList("summary-tmpRd-report", "count-tmpRd-report", "plotList-tmpRd-report"), "DROGI TYMCZASOWE", file);
-        exporter.export(Arrays.asList("summary-finRd-report", "count-finRd-report", "plotList-finRd-report"), "DROGI DOCELOWE", file);
-        exporter.export(Arrays.asList("summary-turbine-report", "count-turbine-report", "plotList-turbine-report"), "TURBINY", file);
+            exporter.export(Arrays.asList("zero-head", "zero-final"), "DANE WSADOWE", file);
+        exporter.export(Arrays.asList("summary-head-report", "summary-cable-report", "count-cable-report", "plotList-cable-report"), "KABLE SN", file);
+        exporter.export(Arrays.asList("summary-head-report", "summary-sweep-report", "count-sweep-report", "plotList-sweep-report"), "OMIATANIE", file);
+        exporter.export(Arrays.asList("summary-head-report", "summary-tmpRd-report", "count-tmpRd-report", "plotList-tmpRd-report"), "DROGI TYMCZASOWE", file);
+        exporter.export(Arrays.asList("summary-head-report", "summary-finRd-report", "count-finRd-report", "plotList-finRd-report"), "DROGI DOCELOWE", file);
+        exporter.export(Arrays.asList("summary-head-report", "summary-turbine-report", "count-turbine-report", "plotList-turbine-report"), "TURBINY", file);
 
         exporter.export(Arrays.asList(
+                "summary-all-report-HEAD-TOP",
                 "summary-all-report-HEAD",
                 "summary-all-merge",
+                "summary-all-report-HEAD-TOP",
                 "summary-all-report-HEAD",
                 "plotCount-all-merge"
         ), "ZESTAWIENIE", file);
@@ -1221,7 +1367,7 @@ public class ContextMaker {
             java.util.List<String> values = new ArrayList<String>();
             for (int j = 0; j < count; j++) {
                 HSSFCell cell = row.getCell(j);
-                if (cell!= null) {
+                if (cell != null) {
                     switch (cell.getCellType()) {
                         case Cell.CELL_TYPE_NUMERIC:
                             values.add(String.valueOf(cell == null ? "" : cell.getNumericCellValue()));
