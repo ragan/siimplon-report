@@ -1,4 +1,9 @@
 #{extends 'main.html' /}
-#{set title:'Home' /}
 
-#{welcome /}
+#{set title:'Projects' /}
+
+<ul>
+#{list items:projects, as:'project'}
+    <li>${project}</li>
+#{/list}
+</ul>
