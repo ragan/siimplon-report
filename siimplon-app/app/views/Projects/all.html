@@ -1,0 +1,10 @@
+#{extends 'main.html' /}
+
+#{set title:'Projects' /}
+
+<ul>
+#{list items:projects, as:'project'}
+    <li><a href="@{Projects.show(project.id)}"> ${project.name} </a>${project.description}  <a href="@{Projects.delete(project.id)}">Delete</a>  </li>
+#{/list}
+    <a href="@{Projects.add()}">Create</a>
+</ul>

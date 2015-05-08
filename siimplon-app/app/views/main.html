@@ -7,10 +7,23 @@
     <link rel="stylesheet" href="@{'/public/stylesheets/bootstrap.min.css'}"/>
     <link rel="stylesheet" href="@{'/public/stylesheets/navbar.css'}"/>
     <link rel="stylesheet" href="@{'/public/stylesheets/custom.css'}"/>
-    <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
+*{<link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">}*
+    <script src="http://openlayers.org/api/OpenLayers.js"></script>
+    <script type="text/javascript">
+        var map;
+        var osm;
+        function init() {
+            // Create the map using the specified DOM element
+            map = new OpenLayers.Map("ch1_simple_map");
+            // Create an OpenStreeMap raster layer and add to the map
+            osm = new OpenLayers.Layer.OSM();
+            map.addLayer(osm);
+            // Set view to zoom maximum map extent
+            map.zoomToMaxExtent();
+        }
+    </script>
 </head>
 <body>
-
 <!-- Fixed navbar -->
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
@@ -26,9 +39,9 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                *{<li class="active"><a href="#">Home</a></li>}*
-                *{<li><a href="#about">About</a></li>}*
-                *{<li><a href="#contact">Contact</a></li>}*
+            *{<li class="active"><a href="#">Home</a></li>}*
+            *{<li><a href="#about">About</a></li>}*
+            *{<li><a href="#contact">Contact</a></li>}*
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown
                         <span class="caret"></span></a>
@@ -47,7 +60,6 @@
         <!--/.nav-collapse -->
     </div>
 </nav>
-
 <div class="container">
     <div class="page-header">
         <h1>#{get 'title'/}</h1>

@@ -8,3 +8,11 @@
 
 Project(sakowko):
     name: Sakówko
+    description: Sakówko 24km
+
+Project(tuskowko):
+    name: Tuskówko
+    description: 45km, 3 turbines
+
+Project(biskupiec):
+    name: Biskupiec

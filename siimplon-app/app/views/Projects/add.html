@@ -1,0 +1,17 @@
+#{extends 'main.html' /}
+
+#{set title:'New Project' /}
+
+<form action="@{Projects.create()}" method="post" accept-charset="${_response_encoding}">
+    <p>
+        <label for="name">Name:</label>
+        <input type="text" name="name" value="" id="name" />
+    </p>
+    <p>
+        <label for="description">Description:</label>
+        <input type="text" name="description" value="" id="description" />
+    </p>
+    <input type="submit" value="&{'view.msg.create'}" />
+</form>
+
+
