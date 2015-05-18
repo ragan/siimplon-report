@@ -1,6 +1,7 @@
 package pl.siimplon.reporttool;
 
 import com.google.common.io.Resources;
+import org.apache.commons.cli.*;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -31,6 +32,8 @@ import static pl.siimplon.reporter.scheme.transfer.Transfer.*;
 
 public class ContextMaker {
 
+    private static final String OPT_MAKE_ONLY_ZERO_REPORT = "z";
+    private static final String OPT_PLOT_FILE_LOCATION = "plotfilelocation";
     private static List<TransferPair> zeroCableTransfer =
             Arrays.asList(
                     new TransferPair(MAIN_ATTRIBUTE, "GMINA"),
@@ -1039,11 +1042,23 @@ public class ContextMaker {
             new TransferPair(COUNT_DISTINCT_VALUES_CONDITIONAL, "zero-tmpRd-report", 4, Arrays.asList("brak umowy"), Arrays.asList(10)),
             new TransferPair(PERCENT_FROM_DISTINCT_VALUES, "zero-tmpRd-report", 4, Arrays.asList("brak umowy"), Arrays.asList(10))
     );
+
     private static String workbookFilePath;
 
 
-    public static void main(String[] args) throws IOException {
-        doStuff(true);
+
+    public static void main(String[] args) throws IOException, ParseException {
+
+        new ZeroMaker().make(args);
+
+        String outputFilePath = null;
+
+        String plotSourcePath = null;
+        String cableSnSource = null;
+
+
+
+
     }
 
     private static void doStuff(boolean importInputData) throws IOException {
@@ -1058,13 +1073,17 @@ public class ContextMaker {
         context.putFeature(getFeatures(Resources.getResource("sakowko-drogi-tymczasowe/sakowko-drogi-tymczasowe-polygon-singlepart.shp").getPath()), "tmpRd-source");
         context.putFeature(getFeatures(Resources.getResource("sakowko-drogi-docelowe/sakowko-drogi-docelowe-polygon.shp").getPath()), "finRd-source");
 
+        // ~~~ DICT AGREEMENTS
         context.createDictionary("dict-agreements",
                 "", "służebność przesyłu", "umowa dzierżawy", "umowa najmu", "umowa przedwstępna", "służebność gruntowa",
                 "Decyzja adm.", "porozumienie", "uzgodnienie", "Wstępna zgoda", "w trakcie końcowych negocjacji",
                 "w trakcie negocjacji/procedury", "w trakcie negocjacji", "brak umowy");
+        // ~~~
 
+        // ~~~ DICT PAYMENTS
         context.createDictionary("dict-payments",
                 "", "Raty", "Całość", "Roczny");
+        // ~~~
 
         context.putReport(new Report(zeroHeadColumnScheme), "zero-head");
 
@@ -1333,7 +1352,7 @@ public class ContextMaker {
         SimpleFeatureIterator features = store.getFeatureSource().getFeatures().features();
         List<AnalyzeItem> featureList = new Vector<AnalyzeItem>();
         while (features.hasNext()) {
-            featureList.add(new SFAnalyzeItem(features.next()));
+            featureList.add(new SimpleFeatureAnalyzeItem(features.next()));
         }
         features.close();
         return featureList;

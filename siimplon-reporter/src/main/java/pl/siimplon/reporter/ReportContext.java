@@ -90,15 +90,23 @@ public class ReportContext {
     }
 
     public Report getReport(String name) {
-        return reportMap.get(name);
+        Report report = reportMap.get(name);
+        if (report == null) {
+            throw new IllegalArgumentException(String.format("Report '%s' not found.", name));
+        }
+        return report;
     }
 
     public void putReport(Report report, String name) {
         reportMap.put(name, report);
     }
 
-    public List<TransferPair> getTransfer(String name) {
-        return transferMap.get(name);
+    public List<TransferPair> getTransfer(String name) throws IllegalArgumentException {
+        List<TransferPair> transfer = transferMap.get(name);
+        if (transfer == null) {
+            throw new IllegalArgumentException(String.format("Transfer %s was not found.", name));
+        }
+        return transfer;
     }
 
     public void putTransfer(List<TransferPair> transfer, String name) {
@@ -110,7 +118,11 @@ public class ReportContext {
     }
 
     public List<AnalyzeItem> getFeature(String name) {
-        return featuresMap.get(name);
+        List<AnalyzeItem> items = featuresMap.get(name);
+        if (items == null) {
+            throw new IllegalArgumentException(String.format("Featues %s not found.", name));
+        }
+        return items;
     }
 
     public void putDictionary(String name, Set<String> values) {
