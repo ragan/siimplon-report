@@ -7,4 +7,12 @@
 #   fullname: Bob
 
 Project(sakowko):
-    name: Sakówko
+    name: Sakowko
+    description: Sakówko 24km
+
+Project(tuskowko):
+    name: Tuskówko
+    description: 45km, 3 turbines
+
+Project(biskupiec):
+    name: Biskupiec

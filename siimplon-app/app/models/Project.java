@@ -1,7 +1,7 @@
 package models;
 
-import play.data.validation.MinSize;
 import play.data.validation.Required;
+import play.db.jpa.Blob;
 import play.db.jpa.Model;
 
 import javax.persistence.Entity;
@@ -10,11 +10,15 @@ import javax.persistence.Entity;
 public class Project extends Model {
 
     @Required
-    @MinSize(4)
     public String name;
 
-    public Project(String name) {
+    public String description;
+
+    public Blob file;
+
+    public Project(String name, String description) {
         this.name = name;
+        this.description = description;
     }
 
     @Override
