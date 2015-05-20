@@ -153,8 +153,6 @@ public class ZeroMaker {
                     "temp-road-report", cb);
             context.merge("zero-report-final", "temp-road-report");
         }
-
-
         System.out.println("done");
 
         System.out.println("exporting...");
