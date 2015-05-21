@@ -3,8 +3,10 @@ package pl.siimplon.desktop;
 import pl.siimplon.reporter.ContextListenerAdapter;
 import pl.siimplon.reporter.ReportContext;
 import pl.siimplon.reporter.analyzer.AnalyzeItem;
+import pl.siimplon.reporter.report.Report;
 import pl.siimplon.reporter.report.value.Value;
 import pl.siimplon.reporter.scheme.transfer.TransferPair;
+import pl.siimplon.reporttool.MyCallback;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -93,6 +95,29 @@ public class MainForm extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         pack();
         setVisible(true);
+        buttonMake.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                final String reportAlias = textFieldReportAlias.getText();
+                final String firstSourceName = (String) comboBoxFirstSource.getSelectedItem();
+                final String secondSourceName = ((String) comboBoxSecondSource.getSelectedItem());
+                final String firstSchemeName = (String) comboBoxFirstScheme.getSelectedItem();
+                final String secondSchemeName = ((String) comboBoxSecondScheme.getSelectedItem());
+
+                Report report;
+                try {
+                    report = getReportContext().getReport(reportAlias);
+                } catch (IllegalArgumentException e ) {
+                    report = new Report(getReportContext().getColumnScheme(((String) comboBoxColumnScheme.getSelectedItem())));
+                    getReportContext().putReport(report, reportAlias);
+                }
+
+                new Thread(new Runnable() {
+                    public void run() {
+                        getReportContext().make(reportAlias, firstSourceName, secondSourceName, firstSchemeName, secondSchemeName, new MyCallback());
+                    }
+                }).run();
+            }
+        });
     }
 
     public ReportContext getReportContext() {

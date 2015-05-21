@@ -25,8 +25,8 @@ public class TransferRepository {
             NUMBER,
             LITERAL,
             LITERAL,
-            DICTIONARY,    //was DICTIONARY
-            DICTIONARY,    //was DICTIONARY
+            LITERAL,    //was DICTIONARY
+            LITERAL,    //was DICTIONARY
             NUMBER,
             NUMBER,
             NUMBER,

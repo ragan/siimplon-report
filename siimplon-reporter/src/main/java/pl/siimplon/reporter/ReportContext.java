@@ -224,4 +224,11 @@ public class ReportContext {
     public Map<String, List<Value.Type>> getColumnSchemesMap() {
         return columnSchemeMap;
     }
+
+    public List<Value.Type> getColumnScheme(String name) {
+        List<Value.Type> columnScheme = columnSchemeMap.get(name);
+        if (columnScheme == null)
+            throw new IllegalArgumentException(String.format("Column scheme %s not found.", name));
+        return columnScheme;
+    }
 }

@@ -180,4 +180,5 @@ public class MainFormTest {
     protected String get(String key) {
         return names.getString(key);
     }
+
 }
