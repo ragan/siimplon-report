@@ -1,2 +1,7 @@
 # siimplon-report
-Simple Report
+
+Plot file specifications:
+
+- Format: SHP
+- Columns: ID, NR, GMINA, OBREB, NROBREB, WLASCICIEL, ADRES
+- *ID* must be unique

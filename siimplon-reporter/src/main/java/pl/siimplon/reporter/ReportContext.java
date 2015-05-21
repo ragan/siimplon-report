@@ -4,6 +4,7 @@ import pl.siimplon.reporter.analyzer.AnalyzeCallback;
 import pl.siimplon.reporter.analyzer.AnalyzeItem;
 import pl.siimplon.reporter.analyzer.Analyzer;
 import pl.siimplon.reporter.report.Report;
+import pl.siimplon.reporter.report.value.Value;
 import pl.siimplon.reporter.scheme.RowScheme;
 import pl.siimplon.reporter.scheme.transfer.TransferPair;
 
@@ -19,11 +20,19 @@ public class ReportContext {
 
     private final Map<String, Set<String>> dictionaryMap;
 
+    private final Map<String, List<Value.Type>> columnSchemeMap;
+
+    private final List<ReportContextListener> contextListeners;
+
+
     public ReportContext() {
         reportMap = new HashMap<String, Report>();
         featuresMap = new HashMap<String, List<AnalyzeItem>>();
         transferMap = new HashMap<String, List<TransferPair>>();
         dictionaryMap = new HashMap<String, Set<String>>();
+        columnSchemeMap = new HashMap<String, List<Value.Type>>();
+
+        contextListeners = new ArrayList<ReportContextListener>();
     }
 
     public void make(String reportName, String mainFeatureName, String otherFeatureName, String mainTransferName,
@@ -90,31 +99,55 @@ public class ReportContext {
     }
 
     public Report getReport(String name) {
-        return reportMap.get(name);
+        Report report = reportMap.get(name);
+        if (report == null) {
+            throw new IllegalArgumentException(String.format("Report '%s' not found.", name));
+        }
+        return report;
     }
 
     public void putReport(Report report, String name) {
         reportMap.put(name, report);
+        for (ReportContextListener listener : contextListeners) {
+            listener.reportAdded(report, name);
+        }
     }
 
-    public List<TransferPair> getTransfer(String name) {
-        return transferMap.get(name);
+    public List<TransferPair> getTransfer(String name) throws IllegalArgumentException {
+        List<TransferPair> transfer = transferMap.get(name);
+        if (transfer == null) {
+            throw new IllegalArgumentException(String.format("Transfer %s was not found.", name));
+        }
+        return transfer;
     }
 
     public void putTransfer(List<TransferPair> transfer, String name) {
         transferMap.put(name, transfer);
+        for (ReportContextListener listener : contextListeners) {
+            listener.transferAdded(transfer, name);
+        }
     }
 
     public void putFeature(List<AnalyzeItem> features, String name) {
         featuresMap.put(name, features);
+        for (ReportContextListener listener : contextListeners) {
+            listener.featureAdded(features, name);
+        }
     }
 
     public List<AnalyzeItem> getFeature(String name) {
-        return featuresMap.get(name);
+        List<AnalyzeItem> items = featuresMap.get(name);
+        if (items == null) {
+            throw new IllegalArgumentException(String.format("Featues %s not found.", name));
+        }
+        return items;
     }
 
     public void putDictionary(String name, Set<String> values) {
         dictionaryMap.put(name, values);
+        for (ReportContextListener listener : contextListeners) {
+            listener.dictionaryAdded(values, name);
+        }
     }
 
     public void createDictionary(String name, String... values) {
@@ -123,5 +156,72 @@ public class ReportContext {
 
     public Set<String> getDictionary(String s) {
         return dictionaryMap.get(s);
+    }
+
+    public Map<String, Report> getReportMap() {
+        return Collections.unmodifiableMap(reportMap);
+    }
+
+    public Map<String, List<AnalyzeItem>> getFeaturesMap() {
+        return Collections.unmodifiableMap(featuresMap);
+    }
+
+    public Map<String, List<TransferPair>> getTransferMap() {
+        return Collections.unmodifiableMap(transferMap);
+    }
+
+    public Map<String, Set<String>> getDictionaryMap() {
+        return Collections.unmodifiableMap(dictionaryMap);
+    }
+
+    public void addContextListener(ReportContextListener contextListener) {
+        this.contextListeners.add(contextListener);
+    }
+
+    public void delReport(String name) {
+        Report item = reportMap.remove(name);
+        for (ReportContextListener listener : contextListeners) {
+            listener.reportRemoved(item, name);
+        }
+    }
+
+    public void delFeature(String name) {
+        List<AnalyzeItem> item = featuresMap.remove(name);
+
+        for (ReportContextListener listener : contextListeners) {
+            listener.featureRemoved(item, name);
+        }
+    }
+
+    public void delDictionary(String name) {
+        Set<String> item = dictionaryMap.remove(name);
+        for (ReportContextListener listener : contextListeners) {
+            listener.dictionaryRemoved(item, name);
+        }
+    }
+
+    public void delTransfer(String name) {
+        List<TransferPair> item = transferMap.remove(name);
+        for (ReportContextListener listener : contextListeners) {
+            listener.transferRemoved(item, name);
+        }
+    }
+
+    public void putColumnScheme(List<Value.Type> scheme, String name) {
+        columnSchemeMap.put(name, scheme);
+        for (ReportContextListener listener : contextListeners) {
+            listener.columnSchemeAdded(scheme, name);
+        }
+    }
+
+    public void delColumnScheme(String name) {
+        List<Value.Type> item = columnSchemeMap.remove(name);
+        for (ReportContextListener listener : contextListeners) {
+            listener.columnSchemeRemoved(item, name);
+        }
+    }
+
+    public Map<String, List<Value.Type>> getColumnSchemesMap() {
+        return columnSchemeMap;
     }
 }

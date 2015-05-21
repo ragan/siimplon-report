@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="pl.siimplon.desktop.MainForm">
+  <grid id="27dc6" binding="panelMain" default-binding="true" layout-manager="GridLayoutManager" row-count="2" column-count="7" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="500" height="400"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <component id="83d37" class="javax.swing.JTextField" binding="textFieldReportAlias">
+        <constraints>
+          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <name resource-bundle="names" key="form.main.textBox.reportAlias"/>
+        </properties>
+      </component>
+      <vspacer id="a62ca">
+        <constraints>
+          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </vspacer>
+      <component id="9acf" class="javax.swing.JComboBox" binding="comboBoxFirstSource">
+        <constraints>
+          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <name resource-bundle="names" key="form.main.comboBox.firstSource"/>
+        </properties>
+      </component>
+      <component id="e9759" class="javax.swing.JComboBox" binding="comboBoxSecondSource">
+        <constraints>
+          <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <name resource-bundle="names" key="form.main.comboBox.secondSource"/>
+        </properties>
+      </component>
+      <component id="2977c" class="javax.swing.JComboBox" binding="comboBoxFirstScheme">
+        <constraints>
+          <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <name resource-bundle="names" key="form.main.comboBox.firstScheme"/>
+        </properties>
+      </component>
+      <component id="e0249" class="javax.swing.JButton" binding="buttonMake">
+        <constraints>
+          <grid row="0" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <name resource-bundle="names" key="form.main.button.makeReport"/>
+          <text value="Button"/>
+        </properties>
+      </component>
+      <component id="1aaf7" class="javax.swing.JComboBox" binding="comboBoxSecondScheme">
+        <constraints>
+          <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <name resource-bundle="names" key="form.main.comboBox.secondScheme"/>
+        </properties>
+      </component>
+      <component id="a24e3" class="javax.swing.JComboBox" binding="comboBoxColumnScheme">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <name resource-bundle="names" key="form.main.comboBox.columnScheme"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>

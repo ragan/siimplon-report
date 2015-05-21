@@ -6,7 +6,6 @@ import pl.siimplon.reporter.analyzer.AnalyzeItem;
 
 public class MyCallback implements AnalyzeCallback {
 
-    @Override
     public boolean isRelation(AnalyzeItem main, AnalyzeItem other) {
         boolean result = false;
         try {
