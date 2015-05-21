@@ -1,7 +1,5 @@
 package pl.siimplon.desktop;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Table;
 import com.google.common.io.Resources;
 import org.fest.swing.data.TableCell;
 import org.fest.swing.edt.GuiActionRunner;
@@ -25,6 +23,7 @@ public class MainFormTest {
     private static final String FEATURES_ENTRY_1 = "Features entry 1";
     private static final String TRANSFER_0 = "Transfer 0";
     private static final String TRANSFER_1 = "Transfer 1";
+    private static final String COLUMN_SCHEME = "column-scheme";
 
     private static ResourceBundle names;
 
@@ -59,7 +58,7 @@ public class MainFormTest {
         reportContext.putFeature(analyzeItems, FEATURES_ENTRY_0);
         reportContext.putFeature(analyzeItems, FEATURES_ENTRY_1);
 
-        reportContext.putColumnScheme(Collections.<Value.Type>emptyList(), "column-scheme");
+        reportContext.putColumnScheme(Collections.<Value.Type>emptyList(), COLUMN_SCHEME);
 
         reportContext.putTransfer(Collections.<TransferPair>emptyList(), TRANSFER_0);
         reportContext.putTransfer(Collections.<TransferPair>emptyList(), TRANSFER_1);
@@ -140,12 +139,54 @@ public class MainFormTest {
         table.requireRowCount(1);
 
         // ~~~ Add new analyze item list from file on disk
-        addButton.click();
-        window.fileChooser().requireVisible();
-        window.fileChooser().selectFile(new File(Resources.getResource("ew/ew.shp").getFile()));
-        window.fileChooser().approve();
+        addFeaturesWhenInMapSourcesDialog(Resources.getResource("ew/ew.shp").getFile());
         table.requireRowCount(reportContext.getFeaturesMap().size());
         // ~~~
+    }
+
+    @Test
+    public void testCreateSimpleReport() throws Exception {
+        openMapSourcesDialog();
+        addFeaturesWhenInMapSourcesDialog(Resources.getResource("ew/ew.shp").getFile());
+        closeMapSourcesDialog();
+        enterReportAlias("test-report-alias");
+        selectFirstSource("ew.shp");
+        selectSecondSource("ew.shp");
+        selectFirstTransfer(TRANSFER_0);
+
+        clickMakeReportButton();
+    }
+
+    private void clickMakeReportButton() {
+        window.button(get("form.main.button.makeReport")).click();
+    }
+
+    private void selectFirstTransfer(String name) {
+        window.comboBox(get("form.main.comboBox.firstScheme")).selectItem(name);
+    }
+
+    private void selectSecondSource(String name) {
+        window.comboBox(get("form.main.comboBox.secondSource")).selectItem(name);
+    }
+
+    private void selectFirstSource(String name) {
+        window.comboBox(get("form.main.comboBox.firstSource")).selectItem(name);
+    }
+
+    private void enterReportAlias(String alias) {
+        window.textBox(get("form.main.textBox.reportAlias")).enterText(alias);
+    }
+
+    private void closeMapSourcesDialog() {
+        window.dialog(get("form.main.dialog.sourceDialog")).close();
+    }
+
+    private void addFeaturesWhenInMapSourcesDialog(String fileName) {
+        DialogFixture dialog = window.dialog(get("form.main.dialog.sourceDialog"));
+        dialog.button(get("form.main.dialog.button.add")).click();
+        window.fileChooser().requireVisible();
+        window.fileChooser().selectFile(new File(fileName));
+        window.fileChooser().approve();
     }
 
     private void openMapSourcesDialog() {
