@@ -2,7 +2,7 @@ package pl.siimplon.reporter;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
+import pl.siimplon.reporter.analyzer.AnalyzeCallback;
 import pl.siimplon.reporter.analyzer.AnalyzeItem;
 import pl.siimplon.reporter.report.Report;
 import pl.siimplon.reporter.report.value.Value;
@@ -12,7 +12,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class ReportContextTest {
@@ -122,4 +121,14 @@ public class ReportContextTest {
     }
 
     // ~~~
+    @Test
+    public void testMakeReportListener() throws Exception {
+        Report report = new Report(1);
+        reportContext.putReport(report, "report");
+        reportContext.putTransfer(Collections.<TransferPair>emptyList(), "transfer");
+        reportContext.putFeature(Collections.<AnalyzeItem>emptyList(), "feature");
+        reportContext.addContextListener(contextListener);
+        reportContext.make("report", "feature", "feature", "transfer", "", mock(AnalyzeCallback.class));
+        verify(contextListener, times(1)).makeFinished(report);
+    }
 }

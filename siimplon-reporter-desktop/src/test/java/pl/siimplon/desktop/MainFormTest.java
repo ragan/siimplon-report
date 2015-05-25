@@ -1,5 +1,6 @@
 package pl.siimplon.desktop;
 
+import com.google.common.collect.Table;
 import com.google.common.io.Resources;
 import org.fest.swing.data.TableCell;
 import org.fest.swing.edt.GuiActionRunner;
@@ -8,7 +9,9 @@ import org.fest.swing.fixture.*;
 import org.junit.*;
 import org.mockito.Mockito;
 import pl.siimplon.reporter.ReportContext;
+import pl.siimplon.reporter.ReportContextListener;
 import pl.siimplon.reporter.analyzer.AnalyzeItem;
+import pl.siimplon.reporter.report.Report;
 import pl.siimplon.reporter.report.value.Value;
 import pl.siimplon.reporter.scheme.transfer.TransferPair;
 
@@ -24,12 +27,15 @@ public class MainFormTest {
     private static final String TRANSFER_0 = "Transfer 0";
     private static final String TRANSFER_1 = "Transfer 1";
     private static final String COLUMN_SCHEME = "column-scheme";
+    private static final String TEST_REPORT_0 = "test-report-0";
+    private static final String TEST_REPORT_1 = "test-report-1";
 
     private static ResourceBundle names;
 
     private FrameFixture window;
 
     private ReportContext reportContext;
+    private Object reportsDialogHandle;
 
     @BeforeClass
     public static void setUpBefore() {
@@ -145,6 +151,30 @@ public class MainFormTest {
     }
 
     @Test
+    public void testReportDialog() throws Exception {
+        Report report = new Report(Arrays.asList(Value.Type.LITERAL, Value.Type.LITERAL, Value.Type.LITERAL));
+        reportContext.putReport(report, TEST_REPORT_0);
+
+        openReportsDialog();
+
+        DialogFixture dialog = window.dialog(get("form.main.dialog.sourceDialog"));
+        JTableFixture table = dialog.table(get("form.main.dialog.table.mainTable"));
+        table.requireRowCount(1);
+
+        dialog.close();
+        reportContext.putReport(report, TEST_REPORT_1);
+
+        openReportsDialog();
+
+        dialog = window.dialog(get("form.main.dialog.sourceDialog"));
+        table = dialog.table(get("form.main.dialog.table.mainTable"));
+        table.requireRowCount(2);
+
+        table.cell(TableCell.row(0).column(0)).doubleClick();
+        expectDialogVisible("form.main.dialog.Reports");
+    }
+
+    @Test
     public void testCreateSimpleReport() throws Exception {
         openMapSourcesDialog();
         addFeaturesWhenInMapSourcesDialog(Resources.getResource("ew/ew.shp").getFile());
@@ -155,6 +185,33 @@ public class MainFormTest {
         selectFirstTransfer(TRANSFER_0);
 
         clickMakeReportButton();
+
+        expectDialogVisible("form.main.dialog.Reports");
+    }
+
+    @Test
+    public void testDisplayDialog() throws Exception {
+        Report report = new Report(Arrays.asList(Value.Type.LITERAL, Value.Type.LITERAL, Value.Type.LITERAL));
+        report.addRecord(Arrays.asList("a", "b", "c"));
+
+        reportContext.putReport(report, TEST_REPORT_0);
+        openReportsDialog();
+        DialogFixture dialog = window.dialog(get("form.main.dialog.sourceDialog"));
+        JTableFixture table = dialog.table(get("form.main.dialog.table.mainTable"));
+        table.cell(TableCell.row(0).column(0)).doubleClick();
+
+        dialog = window.dialog(get("form.main.dialog.Reports"));
+        dialog.requireVisible();
+        table = dialog.table(get("form.main.dialog.reports.table"));
+
+        table.requireColumnCount(3);
+        table.cell(TableCell.row(0).column(0)).requireValue("a");
+        table.cell(TableCell.row(0).column(1)).requireValue("b");
+        table.cell(TableCell.row(0).column(2)).requireValue("c");
+    }
+
+    private void expectDialogVisible(String name) {
+        window.dialog(get(name)).requireVisible();
     }
 
     private void clickMakeReportButton() {
@@ -194,6 +251,11 @@ public class MainFormTest {
         clickMenuItem("form.main.menuItem.sources");
     }
 
+    private void openReportsDialog() {
+        clickMenuItem("form.main.menuItem.context");
+        clickMenuItem("form.main.menuItem.reports");
+    }
+
     private void clickMenuItem(String name) {
         window.menuItem(get(name)).click();
     }
@@ -221,5 +283,4 @@ public class MainFormTest {
     protected String get(String key) {
         return names.getString(key);
     }
-
 }

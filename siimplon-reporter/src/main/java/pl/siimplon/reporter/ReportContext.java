@@ -68,6 +68,9 @@ public class ReportContext {
             else
                 a.analyze(mainFeatures, otherFeatures, mainSchemeList, otherSchemeList, callback);
         }
+        for (ReportContextListener listener : contextListeners) {
+            listener.makeFinished(getReport(reportName));
+        }
     }
 
     private List<TransferPair> transform(List<TransferPair> transfer) {

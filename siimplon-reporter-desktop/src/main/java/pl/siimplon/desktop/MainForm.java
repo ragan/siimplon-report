@@ -19,7 +19,7 @@ public class MainForm extends JFrame {
 
     private final ResourceBundle names;
 
-    private final ReportContext reportContext;
+    private final ReportContext context;
 
     private JPanel panelMain;
 
@@ -33,10 +33,10 @@ public class MainForm extends JFrame {
 
     private JButton buttonMake;
 
-    public MainForm(ReportContext reportContext) {
+    public MainForm(ReportContext context) {
         super();
 
-        this.reportContext = reportContext;
+        this.context = context;
 
         setContentPane(panelMain);
 
@@ -49,14 +49,23 @@ public class MainForm extends JFrame {
         menuItemSources.setName(names.getString("form.main.menuItem.sources"));
         menuItemSources.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                new SourceMapEditor(MainForm.this, getReportContext().getFeaturesMap(), getReportContext());
+                new MapSourcesEditor(MainForm.this, getContext().getFeaturesMap(), getContext());
             }
         });
         menuContext.add(menuItemSources);
+        JMenuItem menuItemReports = new JMenuItem("Reports");
+        menuItemReports.setName(names.getString("form.main.menuItem.reports"));
+        menuItemReports.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                new ReportsMapDialog(MainForm.this, getContext().getReportMap(), getContext());
+            }
+        });
+        menuContext.add(menuItemReports);
+
         jMenuBar.add(menuContext);
         setJMenuBar(jMenuBar);
 
-        getReportContext().addContextListener(new ContextListenerAdapter() {
+        getContext().addContextListener(new ContextListenerAdapter() {
             @Override
             public void featureAdded(List<AnalyzeItem> features, String name) {
                 refreshSources();
@@ -70,6 +79,11 @@ public class MainForm extends JFrame {
             @Override
             public void columnSchemeRemoved(List<Value.Type> scheme, String name) {
                 refreshColumnSchemes();
+            }
+
+            @Override
+            public void makeFinished(Report report) {
+                new ShowReportDialog(report).setVisible(true);
             }
 
             @Override
@@ -105,23 +119,39 @@ public class MainForm extends JFrame {
 
                 Report report;
                 try {
-                    report = getReportContext().getReport(reportAlias);
-                } catch (IllegalArgumentException e ) {
-                    report = new Report(getReportContext().getColumnScheme(((String) comboBoxColumnScheme.getSelectedItem())));
-                    getReportContext().putReport(report, reportAlias);
+                    report = getContext().getReport(reportAlias);
+                } catch (IllegalArgumentException e) {
+                    report = new Report(getContext().getColumnScheme(((String) comboBoxColumnScheme.getSelectedItem())));
+                    getContext().putReport(report, reportAlias);
                 }
 
                 new Thread(new Runnable() {
                     public void run() {
-                        getReportContext().make(reportAlias, firstSourceName, secondSourceName, firstSchemeName, secondSchemeName, new MyCallback());
+                        getContext().make(reportAlias, firstSourceName, secondSourceName, firstSchemeName, secondSchemeName, new MyCallback());
                     }
                 }).run();
+
+//                SwingWorker<Report, Void> worker = new SwingWorker<Report, Void>() {
+//                    @Override
+//                    protected Report doInBackground() throws Exception {
+//                        Report report;
+//                        try {
+//                            report = getContext().getReport(reportAlias);
+//                        } catch (IllegalArgumentException e) {
+//                            report = new Report(getContext().getColumnScheme(((String) comboBoxColumnScheme.getSelectedItem())));
+//                            getContext().putReport(report, reportAlias);
+//                        }
+//                        getContext().make(reportAlias, firstSourceName, secondSourceName, firstSchemeName, secondSchemeName, new MyCallback());
+//                        return report;
+//                    }
+//                };
+//                worker.execute();
             }
         });
     }
 
-    public ReportContext getReportContext() {
-        return reportContext;
+    public ReportContext getContext() {
+        return context;
     }
 
     private void refreshSources() {
@@ -129,7 +159,7 @@ public class MainForm extends JFrame {
         comboBoxFirstSource.addItem("");
         comboBoxSecondSource.removeAllItems();
         comboBoxSecondSource.addItem("");
-        for (Map.Entry<String, List<AnalyzeItem>> e : getReportContext().getFeaturesMap().entrySet()) {
+        for (Map.Entry<String, List<AnalyzeItem>> e : getContext().getFeaturesMap().entrySet()) {
             comboBoxFirstSource.addItem(e.getKey());
             comboBoxSecondSource.addItem(e.getKey());
         }
@@ -137,7 +167,7 @@ public class MainForm extends JFrame {
 
     private void refreshColumnSchemes() {
         comboBoxColumnScheme.removeAllItems();
-        for (Map.Entry<String, List<Value.Type>> e : getReportContext().getColumnSchemesMap().entrySet()) {
+        for (Map.Entry<String, List<Value.Type>> e : getContext().getColumnSchemesMap().entrySet()) {
             comboBoxColumnScheme.addItem(e.getKey());
         }
     }
@@ -147,7 +177,7 @@ public class MainForm extends JFrame {
         comboBoxFirstScheme.addItem("");
         comboBoxSecondScheme.removeAllItems();
         comboBoxSecondScheme.addItem("");
-        for (Map.Entry<String, List<TransferPair>> e : getReportContext().getTransferMap().entrySet()) {
+        for (Map.Entry<String, List<TransferPair>> e : getContext().getTransferMap().entrySet()) {
             comboBoxFirstScheme.addItem(e.getKey());
             comboBoxSecondScheme.addItem(e.getKey());
         }

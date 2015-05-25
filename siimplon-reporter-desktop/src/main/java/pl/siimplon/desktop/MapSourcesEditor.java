@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-public class SourceMapEditor extends MapEditorDialog<List<AnalyzeItem>> {
+public class MapSourcesEditor extends MapEditorDialog<List<AnalyzeItem>> {
 
-    public SourceMapEditor(JFrame frame, Map<String, List<AnalyzeItem>> map, ReportContext reportContext) {
+    public MapSourcesEditor(JFrame frame, Map<String, List<AnalyzeItem>> map, ReportContext reportContext) {
         super(frame, map, reportContext);
     }
 

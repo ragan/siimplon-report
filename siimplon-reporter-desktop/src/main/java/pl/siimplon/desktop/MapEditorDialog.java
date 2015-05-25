@@ -30,7 +30,7 @@ public abstract class MapEditorDialog<T> extends JDialog {
     private JButton delButton;
     private JButton buttonOK;
 
-    private final Map<String, T> map;
+    protected final Map<String, T> map;
 
     private ReportContext reportContext;
 

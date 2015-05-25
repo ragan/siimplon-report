@@ -29,4 +29,6 @@ public interface ReportContextListener {
     void columnSchemeAdded(List<Value.Type> scheme, String name);
 
     void columnSchemeRemoved(List<Value.Type> scheme, String name);
+
+    void makeFinished(Report report);
 }

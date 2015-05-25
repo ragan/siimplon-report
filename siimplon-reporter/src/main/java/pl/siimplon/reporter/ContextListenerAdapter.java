@@ -16,7 +16,9 @@ public abstract class ContextListenerAdapter implements ReportContextListener {
     }
 
     public void columnSchemeRemoved(List<Value.Type> scheme, String name) {
+    }
 
+    public void makeFinished(Report report) {
     }
 
     public void reportRemoved(Report report, String name) {
