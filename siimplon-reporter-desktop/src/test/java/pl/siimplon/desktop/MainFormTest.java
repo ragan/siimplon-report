@@ -210,6 +210,36 @@ public class MainFormTest {
         table.cell(TableCell.row(0).column(2)).requireValue("c");
     }
 
+    @Test
+    public void testMergeTool() throws Exception {
+        openMergeTool();
+        DialogFixture dialog = window.dialog(get("form.main.dialog.mergetool"));
+        dialog.requireVisible();
+        dialog.requireModal();
+
+        JComboBoxFixture cbLeft = dialog.comboBox(get("form.main.dialog.mergetool.leftComboBox"));
+        JComboBoxFixture cbRight = dialog.comboBox(get("form.main.dialog.mergetool.rightComboBox"));
+        cbLeft.requireVisible();
+        cbLeft.requireItemCount(reportContext.getReportMap().size());
+        cbLeft.requireNoSelection();
+        cbRight.requireVisible();
+        cbRight.requireItemCount(reportContext.getReportMap().size());
+        cbRight.requireNoSelection();
+
+        JButtonFixture button = dialog.button(get("form.main.dialog.mergetool.mergeButton"));
+        button.requireVisible();
+        button.requireDisabled();
+
+        JTextComponentFixture textBox = dialog.textBox(get("form.main.dialog.mergetool.textBox"));
+        textBox.requireEmpty();
+        textBox.requireEditable();
+    }
+
+    private void openMergeTool() {
+        window.menuItem(get("form.main.menuItem.tools")).click();
+        window.menuItem(get("form.main.menuItem.mergetool")).click();
+    }
+
     private void expectDialogVisible(String name) {
         window.dialog(get(name)).requireVisible();
     }

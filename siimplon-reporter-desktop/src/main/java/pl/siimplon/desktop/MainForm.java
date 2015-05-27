@@ -62,7 +62,19 @@ public class MainForm extends JFrame {
         });
         menuContext.add(menuItemReports);
 
+        JMenu menuTools = new JMenu("Tools");
+        menuTools.setName(names.getString("form.main.menuItem.tools"));
+        JMenuItem menuItemMerge = new JMenuItem("Merge");
+        menuItemMerge.setName(names.getString("form.main.menuItem.mergetool"));
+        menuItemMerge.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                new MergeToolDialog(getContext().getReportMap()).setVisible(true);
+            }
+        });
+        menuTools.add(menuItemMerge);
+
         jMenuBar.add(menuContext);
+        jMenuBar.add(menuTools);
         setJMenuBar(jMenuBar);
 
         getContext().addContextListener(new ContextListenerAdapter() {
