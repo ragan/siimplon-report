@@ -43,7 +43,6 @@ public class MapSourcesEditor extends MapEditorDialog<List<AnalyzeItem>> {
                 e.printStackTrace();
             }
         }
-
     }
 
     private List<AnalyzeItem> getFeatures(File file) throws IOException {
