@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/siimplon-reporter-desktop/report-desktop.iml" filepath="$PROJECT_DIR$/siimplon-reporter-desktop/report-desktop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/siimplon-reporter-tool/report-tool.iml" filepath="$PROJECT_DIR$/siimplon-reporter-tool/report-tool.iml" />
+      <module fileurl="file://$PROJECT_DIR$/siimplon-reporter/reporter.iml" filepath="$PROJECT_DIR$/siimplon-reporter/reporter.iml" />
+    </modules>
+  </component>
+</project>

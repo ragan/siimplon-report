@@ -20,55 +20,7 @@ import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
-public class MainFormTest {
-
-    private static final String FEATURES_ENTRY_0 = "Features entry 0";
-    private static final String FEATURES_ENTRY_1 = "Features entry 1";
-    private static final String TRANSFER_0 = "Transfer 0";
-    private static final String TRANSFER_1 = "Transfer 1";
-    private static final String COLUMN_SCHEME = "column-scheme";
-    private static final String TEST_REPORT_0 = "test-report-0";
-    private static final String TEST_REPORT_1 = "test-report-1";
-
-    private static ResourceBundle names;
-
-    private FrameFixture window;
-
-    private ReportContext reportContext;
-    private Object reportsDialogHandle;
-
-    @BeforeClass
-    public static void setUpBefore() {
-        names = ResourceBundle.getBundle("names");
-    }
-
-    @Before
-    public void setUp() throws Exception {
-        reportContext = new ReportContext();
-        MainForm mainForm = GuiActionRunner.execute(new GuiQuery<MainForm>() {
-            @Override
-            protected MainForm executeInEDT() throws Throwable {
-                return new MainForm(reportContext);
-            }
-        });
-
-        window = new FrameFixture(mainForm);
-        window.show();
-
-        AnalyzeItem analyzeItem = Mockito.mock(AnalyzeItem.class);
-
-        ArrayList<AnalyzeItem> analyzeItems = new ArrayList<AnalyzeItem>();
-        analyzeItems.add(analyzeItem);
-        analyzeItems.add(analyzeItem);
-
-        reportContext.putFeature(analyzeItems, FEATURES_ENTRY_0);
-        reportContext.putFeature(analyzeItems, FEATURES_ENTRY_1);
-
-        reportContext.putColumnScheme(Collections.<Value.Type>emptyList(), COLUMN_SCHEME);
-
-        reportContext.putTransfer(Collections.<TransferPair>emptyList(), TRANSFER_0);
-        reportContext.putTransfer(Collections.<TransferPair>emptyList(), TRANSFER_1);
-    }
+public class MainFormTest extends MainTest {
 
     @Test
     public void testBasicMainFormComponents() throws Exception {
@@ -104,11 +56,6 @@ public class MainFormTest {
         firstCombo.requireItemCount(reportContext.getTransferMap().size() + 1);
         JComboBoxFixture secondCombo = window.comboBox(get("form.main.comboBox.secondScheme"));
         secondCombo.requireItemCount(reportContext.getTransferMap().size() + 1);
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        window.cleanUp();
     }
 
     @Test
@@ -208,109 +155,5 @@ public class MainFormTest {
         table.cell(TableCell.row(0).column(0)).requireValue("a");
         table.cell(TableCell.row(0).column(1)).requireValue("b");
         table.cell(TableCell.row(0).column(2)).requireValue("c");
-    }
-
-    @Test
-    public void testMergeTool() throws Exception {
-        openMergeTool();
-        DialogFixture dialog = window.dialog(get("form.main.dialog.mergetool"));
-        dialog.requireVisible();
-        dialog.requireModal();
-
-        JComboBoxFixture cbLeft = dialog.comboBox(get("form.main.dialog.mergetool.leftComboBox"));
-        JComboBoxFixture cbRight = dialog.comboBox(get("form.main.dialog.mergetool.rightComboBox"));
-        cbLeft.requireVisible();
-        cbLeft.requireItemCount(reportContext.getReportMap().size());
-        cbLeft.requireNoSelection();
-        cbRight.requireVisible();
-        cbRight.requireItemCount(reportContext.getReportMap().size());
-        cbRight.requireNoSelection();
-
-        JButtonFixture button = dialog.button(get("form.main.dialog.mergetool.mergeButton"));
-        button.requireVisible();
-        button.requireDisabled();
-
-        JTextComponentFixture textBox = dialog.textBox(get("form.main.dialog.mergetool.textBox"));
-        textBox.requireEmpty();
-        textBox.requireEditable();
-    }
-
-    private void openMergeTool() {
-        window.menuItem(get("form.main.menuItem.tools")).click();
-        window.menuItem(get("form.main.menuItem.mergetool")).click();
-    }
-
-    private void expectDialogVisible(String name) {
-        window.dialog(get(name)).requireVisible();
-    }
-
-    private void clickMakeReportButton() {
-        window.button(get("form.main.button.makeReport")).click();
-    }
-
-    private void selectFirstTransfer(String name) {
-        window.comboBox(get("form.main.comboBox.firstScheme")).selectItem(name);
-    }
-
-    private void selectSecondSource(String name) {
-        window.comboBox(get("form.main.comboBox.secondSource")).selectItem(name);
-    }
-
-    private void selectFirstSource(String name) {
-        window.comboBox(get("form.main.comboBox.firstSource")).selectItem(name);
-    }
-
-    private void enterReportAlias(String alias) {
-        window.textBox(get("form.main.textBox.reportAlias")).enterText(alias);
-    }
-
-    private void closeMapSourcesDialog() {
-        window.dialog(get("form.main.dialog.sourceDialog")).close();
-    }
-
-    private void addFeaturesWhenInMapSourcesDialog(String fileName) {
-        DialogFixture dialog = window.dialog(get("form.main.dialog.sourceDialog"));
-        dialog.button(get("form.main.dialog.button.add")).click();
-        window.fileChooser().requireVisible();
-        window.fileChooser().selectFile(new File(fileName));
-        window.fileChooser().approve();
-    }
-
-    private void openMapSourcesDialog() {
-        clickMenuItem("form.main.menuItem.context");
-        clickMenuItem("form.main.menuItem.sources");
-    }
-
-    private void openReportsDialog() {
-        clickMenuItem("form.main.menuItem.context");
-        clickMenuItem("form.main.menuItem.reports");
-    }
-
-    private void clickMenuItem(String name) {
-        window.menuItem(get(name)).click();
-    }
-
-    private void requireDialog(String name) {
-        window.dialog(get(name)).requireVisible();
-    }
-
-    private void requireMenuItem(String name) {
-        window.menuItem(get(name)).requireVisible();
-    }
-
-    private void requireComboBox(String name) {
-        window.comboBox(get(name)).requireVisible();
-    }
-
-    private void requireTextBox(String name) {
-        window.textBox(get(name)).requireVisible();
-    }
-
-    private void requireButton(String name) {
-        window.button(get(name)).requireVisible();
-    }
-
-    protected String get(String key) {
-        return names.getString(key);
     }
 }
