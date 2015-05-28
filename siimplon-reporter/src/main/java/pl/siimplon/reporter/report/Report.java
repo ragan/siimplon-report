@@ -167,6 +167,10 @@ public class Report {
         }
     }
 
+    public List<Value.Type> getTypes() {
+        return Collections.unmodifiableList(types);
+    }
+
     public Report filter(List<String> values, List<Integer> columns) {
         List<Record> content = getValuesByContent(values, columns);
         Report report = new Report(this.types, this.styles);

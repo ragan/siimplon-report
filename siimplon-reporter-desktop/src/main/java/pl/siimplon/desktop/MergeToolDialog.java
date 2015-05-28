@@ -1,5 +1,6 @@
 package pl.siimplon.desktop;
 
+import pl.siimplon.reporter.ReportContext;
 import pl.siimplon.reporter.report.Report;
 
 import javax.swing.*;
@@ -17,8 +18,15 @@ public class MergeToolDialog extends JDialog implements ItemListener {
 
     private Map<String, Report> reportMap;
 
-    public MergeToolDialog(Map<String, Report> reportMap) {
+    private ReportContext reportContext;
+
+    public MergeToolDialog(ReportContext reportContext) {
+        this(reportContext.getReportMap(), reportContext);
+    }
+
+    public MergeToolDialog(final Map<String, Report> reportMap, final ReportContext reportContext) {
         this.reportMap = reportMap;
+        this.reportContext = reportContext;
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonMerge);
@@ -61,6 +69,19 @@ public class MergeToolDialog extends JDialog implements ItemListener {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
         setButtonEnableState();
+
+        buttonMerge.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                Report first = reportMap.get(((String) comboBoxFirst.getSelectedItem()));
+                Report second = reportMap.get(((String) comboBoxSecond.getSelectedItem()));
+
+                Report finalReport = new Report(first.getTypes());
+                finalReport.add(first);
+                finalReport.add(second);
+                reportContext.putReport(finalReport, textFieldAlias.getText());
+                dispose();
+            }
+        });
 
         pack();
     }

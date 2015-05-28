@@ -68,7 +68,7 @@ public class MainForm extends JFrame {
         menuItemMerge.setName(names.getString("form.main.menuItem.mergetool"));
         menuItemMerge.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                new MergeToolDialog(getContext().getReportMap()).setVisible(true);
+                new MergeToolDialog(getContext()).setVisible(true);
             }
         });
         menuTools.add(menuItemMerge);

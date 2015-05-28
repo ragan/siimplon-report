@@ -1,7 +1,10 @@
 package pl.siimplon.desktop;
 
-import junit.framework.TestCase;
-import org.fest.swing.fixture.*;
+import org.fest.swing.fixture.DialogFixture;
+import org.fest.swing.fixture.JButtonFixture;
+import org.fest.swing.fixture.JComboBoxFixture;
+import org.fest.swing.fixture.JTextComponentFixture;
+import org.junit.Assert;
 import org.junit.Test;
 import pl.siimplon.reporter.report.Report;
 import pl.siimplon.reporter.report.value.Value;
@@ -74,6 +77,19 @@ public class MergeToolDialogTest extends MainTest {
     }
 
     @Test
+    public void testMerging() throws Exception {
+        addReports();
+        addReportTestValues();
+        openMergeTool();
+        getLeft().selectItem(REPORT_A);
+        getRight().selectItem(REPORT_B);
+        getTextField().enterText("a");
+        getMergeButton().click();
+
+        Assert.assertNotNull(reportContext.getReport("a"));
+    }
+
+    @Test
     public void testReportsArePresent() throws Exception {
         openMergeTool();
 
@@ -119,10 +135,20 @@ public class MergeToolDialogTest extends MainTest {
     private void addReports() {
         Report reportA = new Report(Arrays.asList(Value.Type.LITERAL, Value.Type.LITERAL, Value.Type.LITERAL));
         Report reportB = new Report(Arrays.asList(Value.Type.LITERAL, Value.Type.LITERAL, Value.Type.LITERAL));
-        Report reportC = new Report(Arrays.asList(Value.Type.NUMBER, Value.Type.LITERAL, Value.Type.DICTIONARY));
+        Report reportC = new Report(Arrays.asList(Value.Type.NUMBER, Value.Type.LITERAL, Value.Type.NUMBER));
 
         reportContext.putReport(reportA, REPORT_A);
         reportContext.putReport(reportB, REPORT_B);
         reportContext.putReport(reportC, REPORT_C);
+    }
+
+    private void addReportTestValues() {
+        Report report;
+        report = reportContext.getReport(REPORT_A);
+        report.addRecord("a", "b", "c");
+        report = reportContext.getReport(REPORT_B);
+        report.addRecord("d", "e", "f");
+        report = reportContext.getReport(REPORT_C);
+        report.addRecord("1.0", "g", "2.0");
     }
 }
