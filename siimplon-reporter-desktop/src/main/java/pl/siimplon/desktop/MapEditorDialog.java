@@ -21,7 +21,7 @@ import java.util.ResourceBundle;
 import java.util.Vector;
 
 public abstract class MapEditorDialog<T> extends JDialog {
-    private final ResourceBundle names;
+    protected final ResourceBundle names;
     private final DefaultTableModel tableModel;
     private JPanel contentPane;
     private JTable table1;

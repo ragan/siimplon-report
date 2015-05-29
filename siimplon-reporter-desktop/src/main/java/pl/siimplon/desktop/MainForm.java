@@ -61,6 +61,14 @@ public class MainForm extends JFrame {
             }
         });
         menuContext.add(menuItemReports);
+        JMenuItem menuItemTransfers = new JMenuItem("Transfers");
+        menuItemTransfers.setName(names.getString("form.main.menuItem.context.transfers"));
+        menuItemTransfers.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                new TransfersDialog(MainForm.this, getContext().getTransferMap(), getContext());
+            }
+        });
+        menuContext.add(menuItemTransfers);
 
         JMenu menuTools = new JMenu("Tools");
         menuTools.setName(names.getString("form.main.menuItem.tools"));
