@@ -1,0 +1,48 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="report-desktop:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/report_desktop_jar</output-path>
+    <root id="archive" name="report-desktop.jar">
+      <element id="module-output" name="report-desktop" />
+      <element id="module-output" name="reporter" />
+      <element id="module-output" name="report-tool" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/net/java/dev/jsr-275/jsr-275/1.0-beta-2/jsr-275-1.0-beta-2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/geotools/gt-main/12-RC1/gt-main-12-RC1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/commons-codec/commons-codec/1.9/commons-codec-1.9.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/vividsolutions/jts/1.13/jts-1.13.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/easytesting/fest-assert/1.2/fest-assert-1.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/jgridshift/jgridshift/1.0/jgridshift-1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/geotools/gt-render/12-RC1/gt-render-12-RC1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/geotools/gt-api/12-RC1/gt-api-12-RC1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/geotools/gt-data/12-RC1/gt-data-12-RC1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/commons-cli/commons-cli/1.3/commons-cli-1.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/javax/media/jai_imageio/1.1/jai_imageio-1.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jaitools/jt-zonalstats/1.3.1/jt-zonalstats-1.3.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/geotools/gt-cql/12-RC1/gt-cql-12-RC1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jdom/jdom/1.1.3/jdom-1.1.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/net/jcip/jcip-annotations/1.0/jcip-annotations-1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/geotools/gt-referencing/12-RC1/gt-referencing-12-RC1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/commons-pool/commons-pool/1.5.4/commons-pool-1.5.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/apache/commons/commons-csv/1.1/commons-csv-1.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/geotools/gt-process/12-RC1/gt-process-12-RC1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/geotools/gt-metadata/12-RC1/gt-metadata-12-RC1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/easytesting/fest-swing/1.2.1/fest-swing-1.2.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jaitools/jt-utils/1.3.1/jt-utils-1.3.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/geotools/gt-swing/12-RC1/gt-swing-12-RC1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/javax/media/jai_core/1.1.3/jai_core-1.1.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/apache/poi/poi/3.12-beta1/poi-3.12-beta1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/it/geosolutions/imageio-ext/imageio-ext-tiff/1.1.10/imageio-ext-tiff-1.1.10.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/java3d/vecmath/1.3.2/vecmath-1.3.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/it/geosolutions/imageio-ext/imageio-ext-utilities/1.1.10/imageio-ext-utilities-1.1.10.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/google/guava/guava/18.0/guava-18.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/easytesting/fest-util/1.1.3/fest-util-1.1.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/easytesting/fest-reflect/1.2/fest-reflect-1.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/geotools/gt-process-feature/12-RC1/gt-process-feature-12-RC1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/geotools/gt-grid/12-RC1/gt-grid-12-RC1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/geotools/gt-opengis/12-RC1/gt-opengis-12-RC1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/geotools/gt-shapefile/12-RC1/gt-shapefile-12-RC1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/javax/media/jai_codec/1.1.3/jai_codec-1.1.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/geotools/gt-coverage/12-RC1/gt-coverage-12-RC1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/miglayout/miglayout/3.7/miglayout-3.7-swing.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

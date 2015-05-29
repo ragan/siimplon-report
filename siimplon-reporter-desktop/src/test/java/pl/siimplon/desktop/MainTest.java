@@ -123,6 +123,10 @@ public class MainTest {
         clickMenuItem("form.main.menuItem.reports");
     }
 
+    protected DialogFixture getMapEditorDialog() {
+        return window.dialog(get("form.main.dialog.sourceDialog"));
+    }
+
     protected void clickMenuItem(String name) {
         window.menuItem(get(name)).click();
     }
