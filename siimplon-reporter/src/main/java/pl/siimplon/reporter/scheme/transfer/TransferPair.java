@@ -18,4 +18,15 @@ public class TransferPair {
     public Object[] getAttributes() {
         return attributes;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(source.name()).append(" : ");
+        for (int i = 0; i < source.getAttrSize(); i++) {
+            sb.append(source.getDescriptors()[i].toString());
+        }
+
+        return super.toString();
+    }
 }

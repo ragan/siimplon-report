@@ -127,4 +127,12 @@ public enum Transfer {
         this.attrSize = attrSize;
         this.descriptors = descriptors;
     }
+
+    public int getAttrSize() {
+        return attrSize;
+    }
+
+    public Class[] getDescriptors() {
+        return descriptors;
+    }
 }
