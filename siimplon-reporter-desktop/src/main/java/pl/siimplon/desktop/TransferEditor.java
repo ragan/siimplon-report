@@ -18,9 +18,9 @@ public class TransferEditor extends JDialog {
     private JButton buttonOK;
     private JButton buttonCancel;
 
-    private JList listTransfers;
+    private JList<String> listTransfers;
 
-    private JComboBox comboBoxSelect;
+    private JComboBox<String> comboBoxSelect;
 
     private JButton buttonAdd;
     private JButton buttonDelete;
