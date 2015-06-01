@@ -22,11 +22,12 @@ public class TransferPair {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(source.name()).append(" : ");
+        sb.append(source.name());
+        if (source.getAttrSize() > 0) sb.append(":");
         for (int i = 0; i < source.getAttrSize(); i++) {
-            sb.append(source.getDescriptors()[i].toString());
+            sb.append(String.valueOf(attributes[i]));
+            if (i != source.getAttrSize() - 1) sb.append(", ");
         }
-
-        return super.toString();
+        return sb.toString();
     }
 }

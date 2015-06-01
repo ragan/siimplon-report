@@ -91,7 +91,7 @@ public class TransferEditor extends JDialog {
     private void updateTransfersList() {
         listModel.removeAllElements();
         for (TransferPair pair : transfer) {
-            listModel.addElement(pair.getSource().name());
+            listModel.addElement(pair.toString());
         }
     }
 

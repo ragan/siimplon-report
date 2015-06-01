@@ -120,6 +120,7 @@ public enum Transfer {
         for (int i = 0; i < desc.length; i++) {
             desc[i] = String.class;
         }
+        this.attrSize = attrSize;
         this.descriptors = desc;
     }
 
