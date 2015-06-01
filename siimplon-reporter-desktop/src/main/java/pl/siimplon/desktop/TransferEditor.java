@@ -1,13 +1,15 @@
 package pl.siimplon.desktop;
 
+import pl.siimplon.reporter.scheme.transfer.Transfer;
 import pl.siimplon.reporter.scheme.transfer.TransferPair;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class TransferEditor extends JDialog {
 
@@ -15,16 +17,27 @@ public class TransferEditor extends JDialog {
 
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JList list1;
-    private JComboBox comboBox1;
-    private JButton addButton;
-    private JButton deleteButton;
 
-    private List<TransferPair> transfer;
+    private JList listTransfers;
+
+    private JComboBox comboBoxSelect;
+
+    private JButton buttonAdd;
+    private JButton buttonDelete;
+
+    private final List<TransferPair> transfer;
 
     private int result;
+    private DefaultListModel<String> listModel;
 
     public TransferEditor() {
+        this(new ArrayList<TransferPair>());
+    }
+
+    public TransferEditor(List<TransferPair> transfer) {
+        this.transfer = new ArrayList<TransferPair>();
+        this.transfer.addAll(transfer);
+
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -48,8 +61,38 @@ public class TransferEditor extends JDialog {
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
+        for (Transfer t : EnumSet.allOf(Transfer.class)) {
+            comboBoxSelect.addItem(t.name());
+        }
+        listModel = new DefaultListModel<String>();
+        listTransfers.addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent listSelectionEvent) {
+                buttonDelete.setEnabled(listSelectionEvent.getFirstIndex() != -1 &&
+                        listSelectionEvent.getLastIndex() != -1);
+            }
+        });
+        listTransfers.setModel(listModel);
+
+        updateTransfersList();
+
+        listTransfers.setSelectedIndex(-1);
+        buttonDelete.setEnabled(false);
+        buttonDelete.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                getTransfer().remove(listTransfers.getSelectedIndex());
+                updateTransfersList();
+            }
+        });
+
         this.result = JOptionPane.CANCEL_OPTION;
         pack();
+    }
+
+    private void updateTransfersList() {
+        listModel.removeAllElements();
+        for (TransferPair pair : transfer) {
+            listModel.addElement(pair.getSource().name());
+        }
     }
 
     private void onCancel() {
