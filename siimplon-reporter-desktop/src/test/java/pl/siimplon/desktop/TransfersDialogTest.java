@@ -40,12 +40,5 @@ public class TransfersDialogTest extends MainTest {
         dialog.requireVisible();
     }
 
-    protected void openTransfersDialog() {
-        window.menuItem(get("form.main.menuItem.context")).click();
-        window.menuItem(get("form.main.menuItem.context.transfers")).click();
-    }
 
-    protected DialogFixture getTransfersDialog() {
-        return window.dialog(get("form.main.dialog.sourceDialog"));
-    }
 }

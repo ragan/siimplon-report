@@ -1,13 +1,11 @@
 package pl.siimplon.desktop;
 
-import com.google.common.io.Resources;
 import pl.siimplon.reporter.ReportContext;
 import pl.siimplon.reporter.scheme.transfer.TransferPair;
 
 import javax.swing.*;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 public class TransfersDialog extends MapEditorDialog<List<TransferPair>> {
 
@@ -23,11 +21,11 @@ public class TransfersDialog extends MapEditorDialog<List<TransferPair>> {
 
     @Override
     protected void onDoubleClick(int rowNum, String at) {
-        new TransferEditor(getReportContext().getTransfer(at)).setVisible(true);
+        new TransferListEditor(getReportContext().getTransfer(at)).setVisible(true);
     }
 
     @Override
     public void onAddButton(JFrame frame, Map<String, List<TransferPair>> map) {
-        new TransferEditor().setVisible(true);
+        new TransferListEditor().setVisible(true);
     }
 }

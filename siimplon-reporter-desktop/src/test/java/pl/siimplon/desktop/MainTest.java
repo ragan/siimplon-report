@@ -1,9 +1,12 @@
 package pl.siimplon.desktop;
 
+import org.fest.swing.data.TableCell;
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.fixture.DialogFixture;
 import org.fest.swing.fixture.FrameFixture;
+import org.fest.swing.fixture.JComboBoxFixture;
+import org.fest.swing.fixture.JTableFixture;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -16,6 +19,7 @@ import pl.siimplon.reporter.scheme.transfer.TransferPair;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainTest {
@@ -158,5 +162,35 @@ public class MainTest {
     @After
     public void tearDown() throws Exception {
         window.cleanUp();
+    }
+
+    protected JTableFixture getMapTable() {
+        return getTransfersDialog().table(get("form.main.dialog.table.mainTable"));
+    }
+
+    protected DialogFixture getTransferEditor() {
+        return window.dialog(get("form.main.dialog.transferEditor"));
+    }
+
+    protected void openTransferListDialog(List<TransferPair> transfer) {
+        reportContext.putTransfer(transfer, "transfer");
+        openTransfersDialog();
+        JTableFixture mapTable = getMapTable();
+        int row = mapTable.cell("transfer").row;
+        int column = mapTable.cell("transfer").column;
+        mapTable.cell(TableCell.row(row).column(column)).doubleClick();
+    }
+
+    protected JComboBoxFixture getSelectionComboBox() {
+        return getTransferEditor().comboBox(get("form.main.dialog.transferEditor.comboBox.select"));
+    }
+
+    protected void openTransfersDialog() {
+        window.menuItem(get("form.main.menuItem.context")).click();
+        window.menuItem(get("form.main.menuItem.context.transfers")).click();
+    }
+
+    protected DialogFixture getTransfersDialog() {
+        return window.dialog(get("form.main.dialog.sourceDialog"));
     }
 }
