@@ -1,6 +1,5 @@
 package pl.siimplon.desktop;
 
-import junit.framework.TestCase;
 import org.fest.swing.data.TableCell;
 import org.fest.swing.fixture.DialogFixture;
 import org.fest.swing.fixture.JTableFixture;
@@ -28,7 +27,7 @@ public class TransfersDialogTest extends MainTest {
     public void testAddButton() throws Exception {
         openTransfersDialog();
         getTransfersDialog().button(get("form.main.dialog.button.add")).click();
-        window.dialog(get("form.main.dialog.transferEditor")).requireVisible();
+        window.dialog(get("form.main.dialog.transferListEditor")).requireVisible();
     }
 
     @Test
@@ -36,7 +35,7 @@ public class TransfersDialogTest extends MainTest {
         openTransfersDialog();
         JTableFixture table = getTransfersDialog().table(get("form.main.dialog.table.mainTable"));
         table.cell(TableCell.row(0).column(0)).doubleClick();
-        DialogFixture dialog = window.dialog(get("form.main.dialog.transferEditor"));
+        DialogFixture dialog = window.dialog(get("form.main.dialog.transferListEditor"));
         dialog.requireVisible();
     }
 

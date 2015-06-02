@@ -169,7 +169,7 @@ public class MainTest {
     }
 
     protected DialogFixture getTransferEditor() {
-        return window.dialog(get("form.main.dialog.transferEditor"));
+        return window.dialog(get("form.main.dialog.transferListEditor"));
     }
 
     protected void openTransferListDialog(List<TransferPair> transfer) {
@@ -193,4 +193,7 @@ public class MainTest {
     protected DialogFixture getTransfersDialog() {
         return window.dialog(get("form.main.dialog.sourceDialog"));
     }
+
+
+
 }

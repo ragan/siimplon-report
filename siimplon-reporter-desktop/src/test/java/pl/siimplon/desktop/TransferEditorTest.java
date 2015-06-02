@@ -8,11 +8,11 @@ import org.junit.Before;
 import org.junit.Test;
 import pl.siimplon.reporter.ReportContext;
 
-public class TransferEditorTest extends MainTest {
+public class TransferEditorTest extends EditorTest {
 
     @Test
-    public void testCreateNewTransferList() throws Exception {
+    public void testEmpty() throws Exception {
+        openNewTransferListEditor();
 
     }
-
 }

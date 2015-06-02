@@ -41,7 +41,7 @@ public class TransferListEditor extends JDialog {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
-        setName(ResourceBundle.getBundle("names").getString("form.main.dialog.transferEditor"));
+        setName(ResourceBundle.getBundle("names").getString("form.main.dialog.transferListEditor"));
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
