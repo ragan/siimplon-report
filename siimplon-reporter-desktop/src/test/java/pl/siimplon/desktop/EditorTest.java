@@ -14,6 +14,7 @@ import pl.siimplon.reporter.analyzer.AnalyzeItem;
 import pl.siimplon.reporter.report.value.Value;
 import pl.siimplon.reporter.scheme.transfer.TransferPair;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ResourceBundle;
@@ -35,6 +36,18 @@ public class EditorTest {
         MainForm mainForm = GuiActionRunner.execute(new GuiQuery<MainForm>() {
             @Override
             protected MainForm executeInEDT() throws Throwable {
+                try {
+                    UIManager.setLookAndFeel(
+                            UIManager.getSystemLookAndFeelClassName());
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (UnsupportedLookAndFeelException e) {
+                    e.printStackTrace();
+                }
                 return new MainForm(reportContext);
             }
         });

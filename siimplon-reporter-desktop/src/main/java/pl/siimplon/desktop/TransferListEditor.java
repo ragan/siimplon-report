@@ -6,9 +6,7 @@ import pl.siimplon.reporter.scheme.transfer.TransferPair;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.util.*;
 
 public class TransferListEditor extends JDialog {
@@ -71,6 +69,16 @@ public class TransferListEditor extends JDialog {
                         listSelectionEvent.getLastIndex() != -1);
             }
         });
+        listTransfers.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    TransferPair pair = getSelectedTransferPair();
+                    if (pair.getSource().getAttrSize() > 0)
+                        openTransferEditor(pair.getSource(), pair.getAttributes());
+                }
+            }
+        });
         listTransfers.setModel(listModel);
 
         updateTransfersList();
@@ -79,22 +87,44 @@ public class TransferListEditor extends JDialog {
         buttonDelete.setEnabled(false);
         buttonDelete.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                getTransfer().remove(listTransfers.getSelectedIndex());
+                getTransferPair().remove(listTransfers.getSelectedIndex());
                 updateTransfersList();
             }
         });
         buttonAdd.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                Transfer t = Transfer.valueOf(((String) comboBoxSelect.getSelectedItem()));
+                Transfer t = getSelectedTransfer();
                 if (t.getAttrSize() == 0) {
-                    getTransfer().add(new TransferPair(t, ""));
+                    getTransferPair().add(new TransferPair(t, ""));
                     updateTransfersList();
+                } else {
+                    openTransferEditor(t, new Object[t.getAttrSize()]);
                 }
             }
         });
 
         this.result = JOptionPane.CANCEL_OPTION;
         pack();
+    }
+
+    private Transfer getSelectedTransfer() {
+        return Transfer.valueOf(((String) comboBoxSelect.getSelectedItem()));
+    }
+
+    private TransferPair getSelectedTransferPair() {
+        return getTransferPair().get(listTransfers.getSelectedIndex());
+    }
+
+    //TODO: if modification then delete, if new than add
+    private void openTransferEditor(Transfer t, Object[] attributes) {
+        TransferEditor transferEditor = new TransferEditor(new TransferPair(t, attributes));
+        transferEditor.setVisible(true);
+        int status = transferEditor.getStatus();
+        if (status == JOptionPane.OK_OPTION) {
+            TransferPair resultTransfer = transferEditor.getResultTransfer();
+            if (resultTransfer != null) {
+            }
+        }
     }
 
     private void updateTransfersList() {
@@ -114,7 +144,7 @@ public class TransferListEditor extends JDialog {
         dispose();
     }
 
-    public List<TransferPair> getTransfer() {
+    public List<TransferPair> getTransferPair() {
         return transfer;
     }
 }

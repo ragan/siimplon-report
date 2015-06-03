@@ -7,6 +7,7 @@ import pl.siimplon.reporter.report.Report;
 import pl.siimplon.reporter.report.value.Value;
 import pl.siimplon.reporter.scheme.transfer.TransferPair;
 import pl.siimplon.reporttool.MyCallback;
+import pl.siimplon.reporttool.TransferRepository;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
