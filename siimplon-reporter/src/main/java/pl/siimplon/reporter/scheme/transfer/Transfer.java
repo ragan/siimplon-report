@@ -116,11 +116,11 @@ public enum Transfer {
     }
 
     Transfer(int attrSize) {
+        this(attrSize, new Class[]{});
         Class[] desc = new Class[attrSize];
         for (int i = 0; i < desc.length; i++) {
             desc[i] = String.class;
         }
-        this.attrSize = attrSize;
         this.descriptors = desc;
     }
 

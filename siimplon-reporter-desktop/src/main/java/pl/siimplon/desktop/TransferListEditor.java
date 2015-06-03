@@ -34,7 +34,7 @@ public class TransferListEditor extends JDialog {
         this(new ArrayList<TransferPair>());
     }
 
-    public TransferListEditor(List<TransferPair> transfer) {
+    public TransferListEditor(final List<TransferPair> transfer) {
         this.transfer = new ArrayList<TransferPair>();
         this.transfer.addAll(transfer);
 
@@ -81,6 +81,15 @@ public class TransferListEditor extends JDialog {
             public void actionPerformed(ActionEvent actionEvent) {
                 getTransfer().remove(listTransfers.getSelectedIndex());
                 updateTransfersList();
+            }
+        });
+        buttonAdd.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                Transfer t = Transfer.valueOf(((String) comboBoxSelect.getSelectedItem()));
+                if (t.getAttrSize() == 0) {
+                    getTransfer().add(new TransferPair(t, ""));
+                    updateTransfersList();
+                }
             }
         });
 

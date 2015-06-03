@@ -182,7 +182,7 @@ public class MainTest {
     }
 
     protected JComboBoxFixture getSelectionComboBox() {
-        return getTransferEditor().comboBox(get("form.main.dialog.transferEditor.comboBox.select"));
+        return getTransferEditor().comboBox(get("form.main.dialog.transferListEditor.comboBox"));
     }
 
     protected void openTransfersDialog() {

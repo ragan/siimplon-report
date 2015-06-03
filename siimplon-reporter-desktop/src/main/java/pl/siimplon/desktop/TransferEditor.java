@@ -4,6 +4,7 @@ import pl.siimplon.reporter.scheme.transfer.TransferPair;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.ResourceBundle;
 
 public class TransferEditor extends JDialog {
 
@@ -15,6 +16,7 @@ public class TransferEditor extends JDialog {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
+        setName(ResourceBundle.getBundle("name").getString("form.main.dialog.transferEditor"));
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

@@ -20,9 +20,9 @@ import java.util.ResourceBundle;
 
 public class EditorTest {
 
-    private static ResourceBundle names;
-    private static ReportContext reportContext;
-    private static FrameFixture window;
+    protected static ResourceBundle names;
+    protected static ReportContext reportContext;
+    protected static FrameFixture window;
 
     @BeforeClass
     public static void setUpBefore() {
@@ -52,13 +52,13 @@ public class EditorTest {
         return names.getString(key);
     }
 
-    public static void openNewTransferListEditor() {
-        window.menuItem(get("form.main.menuItem.context")).click();
-        window.menuItem(get("form.main.menuItem.context.transfers")).click();
-        DialogFixture transfersDialog = getTransfersDialog();
-        transfersDialog.button(get("form.main.dialog.button.add")).click();
-        getTransferListEditor().button(get("form.main.dialog.transferListEditor.button.add"));
-    }
+//    public static void openNewTransferListEditor() {
+//        window.menuItem(get("form.main.menuItem.context")).click();
+//        window.menuItem(get("form.main.menuItem.context.transfers")).click();
+//        DialogFixture transfersDialog = getTransfersDialog();
+//        transfersDialog.button(get("form.main.dialog.button.add")).click();
+//        getTransferListEditor().button(get("form.main.dialog.transferListEditor.button.add"));
+//    }
 
     public static DialogFixture getTransferListEditor() {
         return window.dialog(get("form.main.dialog.transferListEditor"));
