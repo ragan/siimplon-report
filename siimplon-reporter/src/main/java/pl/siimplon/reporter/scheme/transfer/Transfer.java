@@ -41,7 +41,7 @@ public enum Transfer {
      * Inserts value of main feature length. <br />
      * [0] = decimal number round
      */
-    MAIN_PART_LENGTH(1, new Class[]{Integer.class}),
+    MAIN_PART_LENGTH(1, new Descriptor[]{Descriptor.INTEGER}),
     /**
      * Get value from a part column where row values are equal to indicated values. <br />
      * [0] = part name <br />
@@ -49,20 +49,22 @@ public enum Transfer {
      * [2] = expected values in row as list of strings<br />
      * [3] = columns where expected values are supposed to be as list of Integers.<br />
      */
-    GET_PART_VAL(4, new Class[]{String.class, Integer.class, Vector.class, Vector.class}),
+    GET_PART_VAL(4,
+            new Descriptor[]{Descriptor.STRING, Descriptor.INTEGER, Descriptor.STRING_VECTOR, Descriptor.INTEGER_VECTOR}),
     /**
      * Inserts value of other feature length.
      */
-    OTHER_PART_LENGTH(1, new Class[]{Integer.class}),
+    OTHER_PART_LENGTH(1, new Descriptor[]{Descriptor.INTEGER}),
     /**
      * Calculate length of union of both main and other feature.
      * TODO: formatting like PART_LENGTH (decimal round)
      */
     UNION_LENGTH,
 
-    GET_PART_NUM_AND_SUM(4, new Class[]{String.class, Integer.class, Vector.class, Vector.class}),
+    GET_PART_NUM_AND_SUM(4, new Descriptor[]{Descriptor.STRING, Descriptor.INTEGER, Descriptor.STRING_VECTOR, Descriptor.INTEGER_VECTOR}),
 
-    PERCENT_CONDITION(4, new Class[]{String.class, Integer.class, Vector.class, Vector.class}),
+    PERCENT_CONDITION(4,
+            new Descriptor[]{Descriptor.STRING, Descriptor.INTEGER, Descriptor.STRING_VECTOR, Descriptor.INTEGER_VECTOR}),
     /**
      * Calculate area of union of both main and other feature. If Feature is not a
      * polygon result will be 0.0.
@@ -80,7 +82,8 @@ public enum Transfer {
      * <li>[2] - list of column indices</li>
      * </ul>
      */
-    PERCENT_FROM_RECORD_COUNT(3, new Class[]{String.class, Vector.class, Vector.class}),
+    PERCENT_FROM_RECORD_COUNT(3,
+            new Descriptor[]{Descriptor.STRING, Descriptor.STRING_VECTOR, Descriptor.INTEGER_VECTOR}),
 
     /**
      * Finds records with given values at given column indices.
@@ -93,9 +96,10 @@ public enum Transfer {
      * <li>[3] - list of column indices</li>
      * </ul>
      */
-    PERCENT_FROM_DISTINCT_VALUES(4, new Class[]{String.class, Integer.class, Vector.class, Vector.class}),
+    PERCENT_FROM_DISTINCT_VALUES(4,
+            new Descriptor[]{Descriptor.STRING, Descriptor.INTEGER, Descriptor.STRING_VECTOR, Descriptor.INTEGER_VECTOR}),
 
-    COUNT_DISTINCT_VALUES(2, new Class[]{String.class, Integer.class}),
+    COUNT_DISTINCT_VALUES(2, new Descriptor[]{Descriptor.STRING, Descriptor.INTEGER}),
 
     /**
      * Counts distinct column values from found records.
@@ -106,25 +110,26 @@ public enum Transfer {
      * <li>[3] - list of column indices (conditions)</li>
      * </ul>
      */
-    COUNT_DISTINCT_VALUES_CONDITIONAL(4, new Class[]{String.class, Integer.class, Vector.class, Vector.class});
+    COUNT_DISTINCT_VALUES_CONDITIONAL(4,
+            new Descriptor[]{Descriptor.STRING, Descriptor.INTEGER, Descriptor.STRING_VECTOR, Descriptor.INTEGER_VECTOR});
 
     private int attrSize;
-    private Class[] descriptors;
+    private Descriptor[] descriptors;
 
     Transfer() {
-        this(0, new Class[]{});
+        this(0, new Descriptor[]{});
     }
 
     Transfer(int attrSize) {
-        this(attrSize, new Class[]{});
-        Class[] desc = new Class[attrSize];
-        for (int i = 0; i < desc.length; i++) {
-            desc[i] = String.class;
+        this(attrSize, new Descriptor[]{});
+        Descriptor[] descriptors = new Descriptor[attrSize];
+        for (int i = 0; i < attrSize; i++) {
+            descriptors[i] = Descriptor.STRING;
         }
-        this.descriptors = desc;
+        this.descriptors = descriptors;
     }
 
-    Transfer(int attrSize, Class[] descriptors) {
+    Transfer(int attrSize, Descriptor[] descriptors) {
         this.attrSize = attrSize;
         this.descriptors = descriptors;
     }
@@ -133,7 +138,14 @@ public enum Transfer {
         return attrSize;
     }
 
-    public Class[] getDescriptors() {
+    public Descriptor[] getDescriptors() {
         return descriptors;
+    }
+
+    public enum Descriptor {
+        STRING,
+        INTEGER,
+        STRING_VECTOR,
+        INTEGER_VECTOR
     }
 }
