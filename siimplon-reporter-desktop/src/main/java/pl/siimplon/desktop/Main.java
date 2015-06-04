@@ -30,6 +30,7 @@ public class Main {
                 reportContext.putTransfer(TransferRepository.zeroCableWnTransfer, "zero-cable-wn-transfer");
                 reportContext.putTransfer(TransferRepository.zeroFinalRdTransfer, "zero-final-rd-transfer");
                 reportContext.putTransfer(TransferRepository.zeroTempRdTransfer, "zero-temp-rd-transfer");
+                reportContext.putTransfer(TransferRepository.summaryTransferSweep, "summary-transfer-sweep");
                 
                 reportContext.putColumnScheme(TransferRepository.zeroColumnScheme, "zero-column-scheme");
             }

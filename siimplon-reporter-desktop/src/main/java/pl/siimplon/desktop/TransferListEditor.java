@@ -46,7 +46,7 @@ public class TransferListEditor extends JDialog {
 
         setContentPane(contentPane);
         setModal(true);
-        getRootPane().setDefaultButton(buttonOK);
+//        getRootPane().setDefaultButton(buttonOK);
         setName(ResourceBundle.getBundle("names").getString("form.main.dialog.transferListEditor"));
 
         buttonOK.addActionListener(new ActionListener() {
@@ -61,11 +61,11 @@ public class TransferListEditor extends JDialog {
             }
         });
 
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+//        contentPane.registerKeyboardAction(new ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//                onCancel();
+//            }
+//        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
         for (Transfer t : EnumSet.allOf(Transfer.class)) {
             comboBoxSelect.addItem(t.name());

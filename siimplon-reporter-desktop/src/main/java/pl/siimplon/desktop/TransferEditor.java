@@ -27,7 +27,7 @@ public class TransferEditor extends JDialog {
     public TransferEditor(TransferPair transferPair) {
         setContentPane(contentPane);
         setModal(true);
-        getRootPane().setDefaultButton(buttonOK);
+//        getRootPane().setDefaultButton(buttonOK);
         setName(ResourceBundle.getBundle("names").getString("form.main.dialog.transferEditor"));
 
         currentTransfer = transferPair.getSource();
@@ -42,7 +42,11 @@ public class TransferEditor extends JDialog {
             textFields[i] = textField;
             textField.setName("textField_" + String.valueOf(i));
             panelMain.add(textField);
-            textField.setText(String.valueOf(transferPair.getAttributes()[i]));
+            String t = String.valueOf(transferPair.getAttributes()[i]);
+            if (transfer.getDescriptors()[i] == Transfer.Descriptor.INTEGER_VECTOR || transfer.getDescriptors()[i] == Transfer.Descriptor.STRING_VECTOR) {
+                t = t.substring(1, t.length() - 1);
+            }
+            textField.setText(t);
         }
 
         buttonOK.addActionListener(new ActionListener() {
@@ -66,11 +70,11 @@ public class TransferEditor extends JDialog {
         });
 
 // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+//        contentPane.registerKeyboardAction(new ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//                onCancel();
+//            }
+//        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
         pack();
     }
@@ -109,6 +113,7 @@ public class TransferEditor extends JDialog {
                 ArrayList<Integer> ints = new ArrayList<Integer>();
                 String[] integerSplit = textFields[ix].getText().split(",");
                 for (int i = 0; i < integerSplit.length; i++) {
+                    integerSplit[i] = integerSplit[i].trim();
                     ints.add(Integer.valueOf(integerSplit[i]));
                 }
                 return ints;
@@ -116,6 +121,7 @@ public class TransferEditor extends JDialog {
                 ArrayList<String> strings = new ArrayList<String>();
                 String[] stringSplit = textFields[ix].getText().split(",");
                 for (int i = 0; i < stringSplit.length; i++) {
+                    stringSplit[i] = stringSplit[i].trim();
                     strings.add(String.valueOf(stringSplit[i]));
                 }
                 return strings;
