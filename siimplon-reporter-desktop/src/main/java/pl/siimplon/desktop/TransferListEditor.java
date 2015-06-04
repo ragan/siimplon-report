@@ -34,6 +34,8 @@ public class TransferListEditor extends JDialog {
     private JTextField textFieldName;
     private JButton buttonsaveToXml;
     private JButton buttonLoadFromXml;
+    private JButton buttonUp;
+    private JButton buttonDown;
 
     private final List<TransferPair> transfer;
 
@@ -89,6 +91,7 @@ public class TransferListEditor extends JDialog {
             public void valueChanged(ListSelectionEvent listSelectionEvent) {
                 buttonDelete.setEnabled(listSelectionEvent.getFirstIndex() != -1 &&
                         listSelectionEvent.getLastIndex() != -1);
+
             }
         });
         listTransfers.addMouseListener(new MouseAdapter() {
@@ -135,6 +138,18 @@ public class TransferListEditor extends JDialog {
                         updateTransfersList();
                     }
                 }
+            }
+        });
+
+        buttonUp.addActionListener(new AbstractAction() {
+            public void actionPerformed(ActionEvent actionEvent) {
+
+            }
+        });
+
+        buttonDown.addActionListener(new AbstractAction() {
+            public void actionPerformed(ActionEvent actionEvent) {
+
             }
         });
 
