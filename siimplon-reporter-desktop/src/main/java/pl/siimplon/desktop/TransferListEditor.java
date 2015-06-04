@@ -26,7 +26,8 @@ public class TransferListEditor extends JDialog {
 
     private final List<TransferPair> transfer;
 
-    private int result;
+    private int status;
+
     private DefaultListModel<String> listModel;
 
     public TransferListEditor() {
@@ -37,11 +38,11 @@ public class TransferListEditor extends JDialog {
         this(transfer, "new transfer");
     }
 
-    public TransferListEditor(final List<TransferPair> transfer, String name) {
+    public TransferListEditor(final List<TransferPair> transfer, String transferName) {
         this.transfer = new ArrayList<TransferPair>();
         this.transfer.addAll(transfer);
 
-        textFieldName.setText(name);
+        textFieldName.setText(transferName);
 
         setContentPane(contentPane);
         setModal(true);
@@ -82,7 +83,7 @@ public class TransferListEditor extends JDialog {
                 if (e.getClickCount() == 2) {
                     TransferPair pair = getSelectedTransferPair();
                     if (pair.getSource().getAttrSize() > 0) {
-                        TransferEditor editor = openTransferEditor(pair.getSource(), pair.getAttributes());
+                        TransferEditor editor = getTransferEditor(pair.getSource(), pair.getAttributes());
                         editor.setVisible(true);
                         int status = editor.getStatus();
                         if (status == JOptionPane.OK_OPTION) {
@@ -112,7 +113,7 @@ public class TransferListEditor extends JDialog {
                     getTransferPairList().add(new TransferPair(t, ""));
                     updateTransfersList();
                 } else {
-                    TransferEditor transferEditor = openTransferEditor(t, new Object[t.getAttrSize()]);
+                    TransferEditor transferEditor = getTransferEditor(t, new Object[t.getAttrSize()]);
                     transferEditor.setVisible(true);
                     int status = transferEditor.getStatus();
                     if (status == JOptionPane.OK_OPTION) {
@@ -123,7 +124,7 @@ public class TransferListEditor extends JDialog {
             }
         });
 
-        this.result = JOptionPane.CANCEL_OPTION;
+        this.status = JOptionPane.CANCEL_OPTION;
         pack();
     }
 
@@ -136,7 +137,7 @@ public class TransferListEditor extends JDialog {
     }
 
     //TODO: if modification then delete, if new than add
-    private TransferEditor openTransferEditor(Transfer t, Object[] attributes) {
+    private TransferEditor getTransferEditor(Transfer t, Object[] attributes) {
         return new TransferEditor(new TransferPair(t, attributes));
 //        transferEditor.setVisible(true);
 //        int status = transferEditor.getStatus();
@@ -155,16 +156,24 @@ public class TransferListEditor extends JDialog {
     }
 
     private void onCancel() {
-        this.result = JOptionPane.CANCEL_OPTION;
+        this.status = JOptionPane.CANCEL_OPTION;
         dispose();
     }
 
     private void onOK() {
-        this.result = JOptionPane.OK_OPTION;
+        this.status = JOptionPane.OK_OPTION;
         dispose();
     }
 
     public List<TransferPair> getTransferPairList() {
         return transfer;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public String getTransferName() {
+        return textFieldName.getText();
     }
 }
