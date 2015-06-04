@@ -12,8 +12,6 @@ public class TransfersDialog extends MapEditorDialog<List<TransferPair>> {
 
     public TransfersDialog(JFrame frame, Map<String, List<TransferPair>> map, ReportContext reportContext) {
         super(frame, map, reportContext);
-
-//        setName(names.getString("form.main.dialog.transfers"));
     }
 
     @Override
@@ -22,13 +20,6 @@ public class TransfersDialog extends MapEditorDialog<List<TransferPair>> {
 
     @Override
     protected void onDoubleClick(int rowNum, String at) {
-//        TransferListEditor transferListEditor = new TransferListEditor(getReportContext().getTransfer(at), at);
-//        transferListEditor.setVisible(true);
-//        int status = transferListEditor.getStatus();
-//
-//        if (status == JOptionPane.OK_OPTION) {
-//            getReportContext().putTransfer(transferListEditor.getTransferPairList(), transferListEditor.getTransferName());
-//        }
         openTransferListEditor(getReportContext().getTransfer(at), at);
     }
 
@@ -40,9 +31,9 @@ public class TransfersDialog extends MapEditorDialog<List<TransferPair>> {
     private void openTransferListEditor(List<TransferPair> pairList, String transferPairName) {
         TransferListEditor transferListEditor;
         if (transferPairName.isEmpty()) {
-            transferListEditor = new TransferListEditor(pairList);
+            transferListEditor = new TransferListEditor(getReportContext(), pairList);
         } else {
-            transferListEditor = new TransferListEditor(pairList, transferPairName);
+            transferListEditor = new TransferListEditor(getReportContext(), pairList, transferPairName);
         }
         transferListEditor.setVisible(true);
         int status = transferListEditor.getStatus();

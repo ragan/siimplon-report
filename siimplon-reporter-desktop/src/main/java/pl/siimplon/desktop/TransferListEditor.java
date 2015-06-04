@@ -1,12 +1,21 @@
 package pl.siimplon.desktop;
 
+import org.w3c.dom.Document;
+import pl.siimplon.reporter.ReportContext;
 import pl.siimplon.reporter.scheme.transfer.Transfer;
 import pl.siimplon.reporter.scheme.transfer.TransferPair;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.awt.event.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.*;
 
 public class TransferListEditor extends JDialog {
@@ -23,6 +32,8 @@ public class TransferListEditor extends JDialog {
     private JButton buttonAdd;
     private JButton buttonDelete;
     private JTextField textFieldName;
+    private JButton buttonsaveToXml;
+    private JButton buttonLoadFromXml;
 
     private final List<TransferPair> transfer;
 
@@ -30,15 +41,18 @@ public class TransferListEditor extends JDialog {
 
     private DefaultListModel<String> listModel;
 
-    public TransferListEditor() {
-        this(new ArrayList<TransferPair>(), "new transfer");
+    private ReportContext reportContext;
+
+    public TransferListEditor(ReportContext reportContext) {
+        this(reportContext, new ArrayList<TransferPair>(), "new transfer");
     }
 
-    public TransferListEditor(List<TransferPair> transfer) {
-        this(transfer, "new transfer");
+    public TransferListEditor(ReportContext reportContext, List<TransferPair> transfer) {
+        this(reportContext, transfer, "new transfer");
     }
 
-    public TransferListEditor(final List<TransferPair> transfer, String transferName) {
+    public TransferListEditor(final ReportContext reportContext, final List<TransferPair> transfer, String transferName) {
+        this.reportContext = reportContext;
         this.transfer = new ArrayList<TransferPair>();
         this.transfer.addAll(transfer);
 
@@ -124,6 +138,54 @@ public class TransferListEditor extends JDialog {
             }
         });
 
+        buttonsaveToXml.addActionListener(new AbstractAction() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                JFileChooser jFileChooser = new JFileChooser(System.getProperty("user.home"));
+                int result = jFileChooser.showSaveDialog(TransferListEditor.this);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    try {
+                        Document transferXML = reportContext.getTransferXML(getTransferPairList(), textFieldName.getText());
+                        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                        Transformer transformer = transformerFactory.newTransformer();
+                        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+                        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+                        DOMSource source = new DOMSource(transferXML);
+                        StreamResult xmlResult = new StreamResult(jFileChooser.getSelectedFile());
+
+                        // Output to console for testing
+                        // StreamResult result = new StreamResult(System.out);
+
+                        transformer.transform(source, xmlResult);
+                    } catch (ParserConfigurationException e) {
+                        e.printStackTrace();
+                    } catch (TransformerConfigurationException e) {
+                        e.printStackTrace();
+                    } catch (TransformerException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        });
+
+        buttonLoadFromXml.addActionListener(new AbstractAction() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                JFileChooser jFileChooser = new JFileChooser(System.getProperty("user.home"));
+                int result = jFileChooser.showOpenDialog(TransferListEditor.this);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    try {
+                         setTransferPairList(reportContext.parseXMLList(new FileInputStream(jFileChooser.getSelectedFile())));
+                        textFieldName.setText(jFileChooser.getSelectedFile().getName());
+                        updateTransfersList();
+                    } catch (XMLStreamException e) {
+                        e.printStackTrace();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
         this.status = JOptionPane.CANCEL_OPTION;
         pack();
     }
@@ -167,6 +229,13 @@ public class TransferListEditor extends JDialog {
 
     public List<TransferPair> getTransferPairList() {
         return transfer;
+    }
+
+    private void setTransferPairList(List<TransferPair> transferPairs) {
+        this.transfer.clear();
+        for (TransferPair transferPair : transferPairs) {
+            this.transfer.add(transferPair);
+        }
     }
 
     public int getStatus() {

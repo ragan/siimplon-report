@@ -253,8 +253,7 @@ public class ReportContext {
         return columnScheme;
     }
 
-    public Document getTransferXML(String transferName) throws ParserConfigurationException {
-
+    public Document getTransferXML(List<TransferPair> list, String transferName) throws ParserConfigurationException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
 
@@ -264,7 +263,7 @@ public class ReportContext {
         document.appendChild(root);
         root.setAttribute(TRANSFER_PAIR_LIST_ATTR_NAME, transferName);
 
-        List<TransferPair> transfer = getTransfer(transferName);
+        List<TransferPair> transfer = list;
         for (TransferPair pair : transfer) {
             Element pairElement = document.createElement(TRANSFER_PAIR_LIST_TRANSFERPAIR); //PAIR
             root.appendChild(pairElement);
@@ -284,7 +283,11 @@ public class ReportContext {
         return document;
     }
 
-    public void parseXMLTransferList(InputStream stream) throws XMLStreamException {
+    public Document getTransferXML(String transferName) throws ParserConfigurationException {
+        return getTransferXML(getTransfer(transferName), transferName);
+    }
+
+    public List<TransferPair> parseXMLList(InputStream stream) throws XMLStreamException {
         XMLInputFactory inputFactory = XMLInputFactory.newInstance();
         XMLStreamReader reader = inputFactory.createXMLStreamReader(stream);
         String listName = "";
@@ -322,6 +325,11 @@ public class ReportContext {
             }
             reader.next();
         }
-        putTransfer(list, listName);
+        return list;
+    }
+
+    public void parseXMLTransferList(InputStream stream, String listName) throws XMLStreamException {
+        List<TransferPair> transferPairs = parseXMLList(stream);
+        putTransfer(transferPairs, listName);
     }
 }

@@ -74,7 +74,7 @@ public class ReportContextXMLTest {
                 "  </pair>\n" +
                 "</list>";
         ReportContext context = new ReportContext();
-        context.parseXMLTransferList(new ByteArrayInputStream(xml.getBytes()));
+        context.parseXMLTransferList(new ByteArrayInputStream(xml.getBytes()), "test-transfer");
 
         List<TransferPair> transfer = context.getTransfer("test-transfer");
     }
