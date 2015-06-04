@@ -1,16 +1,34 @@
 package pl.siimplon.reporter;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import pl.siimplon.reporter.analyzer.AnalyzeCallback;
 import pl.siimplon.reporter.analyzer.AnalyzeItem;
 import pl.siimplon.reporter.analyzer.Analyzer;
 import pl.siimplon.reporter.report.Report;
 import pl.siimplon.reporter.report.value.Value;
 import pl.siimplon.reporter.scheme.RowScheme;
+import pl.siimplon.reporter.scheme.transfer.Transfer;
 import pl.siimplon.reporter.scheme.transfer.TransferPair;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import java.io.InputStream;
 import java.util.*;
 
 public class ReportContext {
+
+    public static final String TRANSFER_PAIR_LIST = "list";
+    public static final String TRANSFER_PAIR_LIST_ATTR_NAME = "name";
+    public static final String TRANSFER_PAIR_LIST_TRANSFERPAIR = "pair";
+    public static final String TRANSFER_PAIR_LIST_TRANSFERPAIR_ATTR_TYPE = "type";
+    public static final String TRANSFER_PAIR_LIST_TRANSFERPAIR_ATTR_VAL = "value";
+    public static final String TRANSFER_PAIR_LIST_TRANSFERPAIR_ENTRY = "entry";
+    public static final String TRANSFER_PAIR_LIST_TRANSFERPAIR_ENTRY_ATTR_TYPE = "type";
 
     private final Map<String, Report> reportMap;
 
@@ -233,5 +251,77 @@ public class ReportContext {
         if (columnScheme == null)
             throw new IllegalArgumentException(String.format("Column scheme %s not found.", name));
         return columnScheme;
+    }
+
+    public Document getTransferXML(String transferName) throws ParserConfigurationException {
+
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+
+        Document document = builder.newDocument();
+
+        Element root = document.createElement(TRANSFER_PAIR_LIST);
+        document.appendChild(root);
+        root.setAttribute(TRANSFER_PAIR_LIST_ATTR_NAME, transferName);
+
+        List<TransferPair> transfer = getTransfer(transferName);
+        for (TransferPair pair : transfer) {
+            Element pairElement = document.createElement(TRANSFER_PAIR_LIST_TRANSFERPAIR); //PAIR
+            root.appendChild(pairElement);
+
+            Transfer source = pair.getSource();
+            pairElement.setAttribute(TRANSFER_PAIR_LIST_TRANSFERPAIR_ATTR_TYPE, source.name()); // source attribute
+
+            for (int i = 0; i < source.getAttrSize(); i++) {
+                Transfer.Descriptor descriptor = source.getDescriptors()[i];
+                Element element = document.createElement(TRANSFER_PAIR_LIST_TRANSFERPAIR_ENTRY);
+                pairElement.appendChild(element);
+                element.setAttribute(TRANSFER_PAIR_LIST_TRANSFERPAIR_ATTR_VAL, pair.getAttributeString(i));
+                element.setAttribute(TRANSFER_PAIR_LIST_TRANSFERPAIR_ENTRY_ATTR_TYPE, descriptor.name());
+            }
+        }
+
+        return document;
+    }
+
+    public void parseXMLTransferList(InputStream stream) throws XMLStreamException {
+        XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+        XMLStreamReader reader = inputFactory.createXMLStreamReader(stream);
+        String listName = "";
+        List<TransferPair> list = new ArrayList<>();
+
+        TransferPair currentTransferPair = null;
+        int attrIx = 0;
+
+        while (reader.hasNext()) {
+
+            if (reader.isStartElement()) {
+                switch (reader.getLocalName()) {
+                    case TRANSFER_PAIR_LIST:
+                        listName = reader.getAttributeValue(0);
+                        break;
+                    case TRANSFER_PAIR_LIST_TRANSFERPAIR:
+                        String attributeValue1 = reader.getAttributeValue(0);
+                        Transfer t = Transfer.valueOf(attributeValue1);
+                        currentTransferPair = new TransferPair(t, new Object[t.getAttrSize()]);
+                        break;
+                    case TRANSFER_PAIR_LIST_TRANSFERPAIR_ENTRY:
+                        String attributeValue = reader.getAttributeValue(1);
+                        currentTransferPair.setAttribute(attributeValue, attrIx);
+                        attrIx++;
+                        break;
+                }
+            } else if (reader.isEndElement()) {
+                switch (reader.getLocalName()) {
+                    case TRANSFER_PAIR_LIST_TRANSFERPAIR:
+                        if (currentTransferPair != null) list.add(currentTransferPair);
+                        currentTransferPair = null;
+                        attrIx = 0;
+                        break;
+                }
+            }
+            reader.next();
+        }
+        putTransfer(list, listName);
     }
 }

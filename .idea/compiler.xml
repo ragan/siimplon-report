@@ -26,9 +26,9 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="report-desktop" target="1.5" />
-      <module name="report-tool" target="1.5" />
-      <module name="reporter" target="1.5" />
+      <module name="report-desktop" target="1.7" />
+      <module name="report-tool" target="1.7" />
+      <module name="reporter" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>
