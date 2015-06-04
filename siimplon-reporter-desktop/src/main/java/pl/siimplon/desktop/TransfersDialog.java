@@ -21,7 +21,7 @@ public class TransfersDialog extends MapEditorDialog<List<TransferPair>> {
 
     @Override
     protected void onDoubleClick(int rowNum, String at) {
-        new TransferListEditor(getReportContext().getTransfer(at)).setVisible(true);
+        new TransferListEditor(getReportContext().getTransfer(at), at).setVisible(true);
     }
 
     @Override

@@ -21,6 +21,15 @@ public class TransferListEditorTest extends TransfersDialogTest {
     }
 
     @Test
+    public void testNameField() throws Exception {
+        openTransferListDialog(getThreeEmptyTransfer());
+        DialogFixture transferEditor = getTransferEditor();
+
+        JTextComponentFixture textField = transferEditor.textBox(get("form.main.dialog.transferListEditor.textField"));
+        textField.requireText("transfer");
+    }
+
+    @Test
     public void testSelectionComboBox() throws Exception {
         openTransferListDialog(getThreeEmptyTransfer());
         JComboBoxFixture comboBoxSelection = getSelectionComboBox();

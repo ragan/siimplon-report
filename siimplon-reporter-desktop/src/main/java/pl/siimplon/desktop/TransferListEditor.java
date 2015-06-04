@@ -22,6 +22,7 @@ public class TransferListEditor extends JDialog {
 
     private JButton buttonAdd;
     private JButton buttonDelete;
+    private JTextField textFieldName;
 
     private final List<TransferPair> transfer;
 
@@ -29,12 +30,18 @@ public class TransferListEditor extends JDialog {
     private DefaultListModel<String> listModel;
 
     public TransferListEditor() {
-        this(new ArrayList<TransferPair>());
+        this(new ArrayList<TransferPair>(), "new transfer");
     }
 
-    public TransferListEditor(final List<TransferPair> transfer) {
+    public TransferListEditor(List<TransferPair> transfer) {
+        this(transfer, "new transfer");
+    }
+
+    public TransferListEditor(final List<TransferPair> transfer, String name) {
         this.transfer = new ArrayList<TransferPair>();
         this.transfer.addAll(transfer);
+
+        textFieldName.setText(name);
 
         setContentPane(contentPane);
         setModal(true);
