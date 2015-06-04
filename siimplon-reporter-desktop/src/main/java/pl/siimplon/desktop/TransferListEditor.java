@@ -74,8 +74,15 @@ public class TransferListEditor extends JDialog {
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
                     TransferPair pair = getSelectedTransferPair();
-                    if (pair.getSource().getAttrSize() > 0)
-                        openTransferEditor(pair.getSource(), pair.getAttributes());
+                    if (pair.getSource().getAttrSize() > 0) {
+                        TransferEditor editor = openTransferEditor(pair.getSource(), pair.getAttributes());
+                        editor.setVisible(true);
+                        int status = editor.getStatus();
+                        if (status == JOptionPane.OK_OPTION) {
+                            getTransferPairList().set(listTransfers.getSelectedIndex(), editor.getResultTransfer());
+                            updateTransfersList();
+                        }
+                    }
                 }
             }
         });
@@ -87,7 +94,7 @@ public class TransferListEditor extends JDialog {
         buttonDelete.setEnabled(false);
         buttonDelete.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                getTransferPair().remove(listTransfers.getSelectedIndex());
+                getTransferPairList().remove(listTransfers.getSelectedIndex());
                 updateTransfersList();
             }
         });
@@ -95,7 +102,7 @@ public class TransferListEditor extends JDialog {
             public void actionPerformed(ActionEvent actionEvent) {
                 Transfer t = getSelectedTransfer();
                 if (t.getAttrSize() == 0) {
-                    getTransferPair().add(new TransferPair(t, ""));
+                    getTransferPairList().add(new TransferPair(t, ""));
                     updateTransfersList();
                 } else {
                     openTransferEditor(t, new Object[t.getAttrSize()]);
@@ -112,19 +119,19 @@ public class TransferListEditor extends JDialog {
     }
 
     private TransferPair getSelectedTransferPair() {
-        return getTransferPair().get(listTransfers.getSelectedIndex());
+        return getTransferPairList().get(listTransfers.getSelectedIndex());
     }
 
     //TODO: if modification then delete, if new than add
-    private void openTransferEditor(Transfer t, Object[] attributes) {
-        TransferEditor transferEditor = new TransferEditor(new TransferPair(t, attributes));
-        transferEditor.setVisible(true);
-        int status = transferEditor.getStatus();
-        if (status == JOptionPane.OK_OPTION) {
-            TransferPair resultTransfer = transferEditor.getResultTransfer();
-            if (resultTransfer != null) {
-            }
-        }
+    private TransferEditor openTransferEditor(Transfer t, Object[] attributes) {
+        return new TransferEditor(new TransferPair(t, attributes));
+//        transferEditor.setVisible(true);
+//        int status = transferEditor.getStatus();
+//        if (status == JOptionPane.OK_OPTION) {
+//            TransferPair resultTransfer = transferEditor.getResultTransfer();
+//            if (resultTransfer != null) {
+//            }
+//        }
     }
 
     private void updateTransfersList() {
@@ -144,7 +151,7 @@ public class TransferListEditor extends JDialog {
         dispose();
     }
 
-    public List<TransferPair> getTransferPair() {
+    public List<TransferPair> getTransferPairList() {
         return transfer;
     }
 }

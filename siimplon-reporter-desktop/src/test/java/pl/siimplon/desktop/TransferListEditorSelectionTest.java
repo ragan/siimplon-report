@@ -2,15 +2,12 @@ package pl.siimplon.desktop;
 
 import org.fest.swing.data.TableCell;
 import org.fest.swing.fixture.*;
+import org.junit.Assert;
 import org.junit.Test;
 import pl.siimplon.reporter.scheme.transfer.Transfer;
 import pl.siimplon.reporter.scheme.transfer.TransferPair;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.EnumSet;
-
-import static org.junit.Assert.*;
 
 public class TransferListEditorSelectionTest extends EditorTest {
 
@@ -23,8 +20,33 @@ public class TransferListEditorSelectionTest extends EditorTest {
         JTableFixture table = dialog.table(get("form.main.dialog.table.mainTable"));
         table.cell(TableCell.row(0).column(0)).doubleClick();
 
-        TransferUtil.getList().item(0).doubleClick();
-        TransferUtil.getTransferEditor().requireVisible();
+        TransferListUtil.getList().item(0).doubleClick();
+        TransferListUtil.getTransferEditor().requireVisible();
+    }
+
+    @Test
+    public void testSingleValue() throws Exception {
+        reportContext.putTransfer(Arrays.asList(new TransferPair(Transfer.VALUE, "a")), "transfer");
+        TransfersListUtil.openTransfersEditor();
+        DialogFixture dialog = TransfersListUtil.getTransfersDialog();
+        JTableFixture table = dialog.table(get("form.main.dialog.table.mainTable"));
+        table.cell(TableCell.row(0).column(0)).doubleClick();
+
+        TransferListUtil.getList().item(0).doubleClick();
+        DialogFixture transferEditor = TransferListUtil.getTransferEditor();
+        JTextComponentFixture textField_0 = transferEditor.textBox("textField_0");
+        textField_0.requireVisible();
+        textField_0.requireText("a");
+        textField_0.deleteText();
+        textField_0.enterText("new value");
+
+        TransferUtil.getOkButton().click();
+
+        TransferListUtil.getList().requireItemCount(1);
+        String[] contents = TransferListUtil.getList().contents();
+        Assert.assertEquals("VALUE:new value", contents[0]);
+        TransferListUtil.getOkButton().click();
+
     }
 
     @Test
@@ -43,14 +65,14 @@ public class TransferListEditorSelectionTest extends EditorTest {
     }
 
     private void testTransfer(Transfer transfer) {
-        TransferUtil.openTransferListEditor();
-        TransferUtil.getComboBox().selectItem(transfer.name());
-        TransferUtil.getList().requireItemCount(0);
-        TransferUtil.getAddButton().click();
+        TransferListUtil.openTransferListEditor();
+        TransferListUtil.getComboBox().selectItem(transfer.name());
+        TransferListUtil.getList().requireItemCount(0);
+        TransferListUtil.getAddButton().click();
         if (transfer.getAttrSize() == 0) {
-            TransferUtil.getList().requireItemCount(1);
+            TransferListUtil.getList().requireItemCount(1);
         } else {
-            DialogFixture transferEditor = TransferUtil.getTransferEditor();
+            DialogFixture transferEditor = TransferListUtil.getTransferEditor();
             transferEditor.requireVisible();
 
             for (int i = 0; i < transfer.getAttrSize(); i++) {

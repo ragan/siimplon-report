@@ -6,6 +6,7 @@ import pl.siimplon.reporter.scheme.transfer.TransferPair;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class TransferEditor extends JDialog {
@@ -39,6 +40,7 @@ public class TransferEditor extends JDialog {
         for (int i = 0; i < transfer.getAttrSize(); i++) {
             JTextField textField = new JTextField();
             textFields[i] = textField;
+            textField.setName("textField_" + String.valueOf(i));
             panelMain.add(textField);
             textField.setText(String.valueOf(transferPair.getAttributes()[i]));
         }
@@ -88,6 +90,36 @@ public class TransferEditor extends JDialog {
     }
 
     public TransferPair getResultTransfer() {
+
+        Object[] attributes = new Object[currentTransfer.getAttrSize()];
+        for (int i = 0; i < currentTransfer.getAttrSize(); i++) {
+            attributes[i] = parseParam(currentTransfer, i);
+        }
+
+        return new TransferPair(currentTransfer, attributes);
+    }
+
+    private Object parseParam(Transfer transfer, int ix) {
+        switch (transfer.getDescriptors()[ix]) {
+            case STRING:
+                return String.valueOf(textFields[ix].getText());
+            case INTEGER:
+                return Integer.valueOf(textFields[ix].getText());
+            case INTEGER_VECTOR:
+                ArrayList<Integer> ints = new ArrayList<Integer>();
+                String[] integerSplit = textFields[ix].getText().split(",");
+                for (int i = 0; i < integerSplit.length; i++) {
+                    ints.add(Integer.valueOf(integerSplit[i]));
+                }
+                return ints;
+            case STRING_VECTOR:
+                ArrayList<String> strings = new ArrayList<String>();
+                String[] stringSplit = textFields[ix].getText().split(",");
+                for (int i = 0; i < stringSplit.length; i++) {
+                    strings.add(String.valueOf(stringSplit[i]));
+                }
+                return strings;
+        }
         return null;
     }
 }

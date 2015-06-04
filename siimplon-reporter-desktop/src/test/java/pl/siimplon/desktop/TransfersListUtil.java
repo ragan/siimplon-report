@@ -1,6 +1,7 @@
 package pl.siimplon.desktop;
 
 import org.fest.swing.fixture.DialogFixture;
+import org.fest.swing.fixture.JButtonFixture;
 
 public class TransfersListUtil extends EditorTest {
 
@@ -12,5 +13,4 @@ public class TransfersListUtil extends EditorTest {
     public static DialogFixture getTransfersEditor() {
         return window.dialog(get("form.main.dialog.sourceDialog"));
     }
-
 }
