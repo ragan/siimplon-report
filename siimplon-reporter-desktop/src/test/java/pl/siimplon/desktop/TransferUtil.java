@@ -2,6 +2,7 @@ package pl.siimplon.desktop;
 
 import org.fest.swing.fixture.DialogFixture;
 import org.fest.swing.fixture.JButtonFixture;
+import org.fest.swing.fixture.JComboBoxFixture;
 
 public class TransferUtil extends EditorTest {
 

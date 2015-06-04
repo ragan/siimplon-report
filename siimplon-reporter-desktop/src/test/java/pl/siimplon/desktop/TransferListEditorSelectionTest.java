@@ -9,6 +9,9 @@ import pl.siimplon.reporter.scheme.transfer.TransferPair;
 
 import java.util.Arrays;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 public class TransferListEditorSelectionTest extends EditorTest {
 
     @Test
@@ -46,7 +49,23 @@ public class TransferListEditorSelectionTest extends EditorTest {
         String[] contents = TransferListUtil.getList().contents();
         Assert.assertEquals("VALUE:new value", contents[0]);
         TransferListUtil.getOkButton().click();
+    }
 
+    @Test
+    public void testCreateNewTransferList() throws Exception {
+        TransferListUtil.openTransferListEditor();
+        TransferListUtil.getComboBox().selectItem(Transfer.VALUE.name());
+        TransferListUtil.getAddButton().click();
+
+        JTextComponentFixture textBox = TransferUtil.getTransferEditor().textBox();
+        textBox.requireText("null");
+        textBox.deleteText();
+        textBox.enterText("some value");
+        TransferUtil.getOkButton().click();
+
+        TransferListUtil.getList().requireItemCount(1);
+        String[] contents = TransferListUtil.getList().contents();
+        assertEquals("VALUE:some value", contents[0]);
     }
 
     @Test

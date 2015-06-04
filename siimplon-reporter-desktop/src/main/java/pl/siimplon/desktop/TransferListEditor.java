@@ -105,7 +105,13 @@ public class TransferListEditor extends JDialog {
                     getTransferPairList().add(new TransferPair(t, ""));
                     updateTransfersList();
                 } else {
-                    openTransferEditor(t, new Object[t.getAttrSize()]);
+                    TransferEditor transferEditor = openTransferEditor(t, new Object[t.getAttrSize()]);
+                    transferEditor.setVisible(true);
+                    int status = transferEditor.getStatus();
+                    if (status == JOptionPane.OK_OPTION) {
+                        getTransferPairList().add(transferEditor.getResultTransfer());
+                        updateTransfersList();
+                    }
                 }
             }
         });
