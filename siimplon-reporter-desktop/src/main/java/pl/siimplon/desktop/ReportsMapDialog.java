@@ -1,5 +1,6 @@
 package pl.siimplon.desktop;
 
+import com.google.common.io.Files;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -53,7 +54,7 @@ public class ReportsMapDialog extends MapEditorDialog<Report> {
                     values.clear();
                 }
 
-                getReportContext().putReport(report, jFileChooser.getSelectedFile().getName());
+                getReportContext().putReport(report, Files.getNameWithoutExtension(jFileChooser.getSelectedFile().getName()));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {

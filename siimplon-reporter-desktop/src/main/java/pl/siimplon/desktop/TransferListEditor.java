@@ -145,6 +145,8 @@ public class TransferListEditor extends JDialog {
                     list.set(index - 1, a);
                     list.set(index, b);
                     updateTransfersList();
+
+                    listTransfers.setSelectedIndex(index - 1);
                 }
             }
         });
@@ -161,6 +163,7 @@ public class TransferListEditor extends JDialog {
                     tpl.set(index, b);
 
                     updateTransfersList();
+                    listTransfers.setSelectedIndex(index + 1);
                 }
             }
         });
