@@ -64,6 +64,9 @@ public enum Transfer {
     GET_PART_NUM_AND_SUM(4,
             new Descriptor[]{Descriptor.STRING, Descriptor.INTEGER, Descriptor.STRING_VECTOR, Descriptor.INTEGER_VECTOR}),
 
+    GET_PART_NUM_AND_SUM_ZERO(4,
+            new Descriptor[]{Descriptor.STRING, Descriptor.INTEGER, Descriptor.STRING_VECTOR, Descriptor.INTEGER_VECTOR}),
+
     PERCENT_CONDITION(4,
             new Descriptor[]{Descriptor.STRING, Descriptor.INTEGER, Descriptor.STRING_VECTOR, Descriptor.INTEGER_VECTOR}),
     /**

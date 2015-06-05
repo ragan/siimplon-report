@@ -113,6 +113,7 @@ public class ReportContext {
             switch (pair.getSource()) {
                 case PERCENT_CONDITION:
                 case GET_PART_NUM_AND_SUM:
+                case GET_PART_NUM_AND_SUM_ZERO:
                 case GET_PART_VAL:
                 case COUNT_DISTINCT_VALUES:
                 case COUNT_DISTINCT_VALUES_CONDITIONAL:

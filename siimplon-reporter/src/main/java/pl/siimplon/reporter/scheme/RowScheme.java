@@ -135,7 +135,13 @@ public class RowScheme {
                     values[i] = onGetSum((Report) p.getAttributes()[0],
                             (Integer) p.getAttributes()[1],
                             changeValuesByMacro((List<String>) p.getAttributes()[2], main, other),
-                            (List<Integer>) p.getAttributes()[3]);
+                            (List<Integer>) p.getAttributes()[3], false);
+                    break;
+                case GET_PART_NUM_AND_SUM_ZERO:
+                    values[i] = onGetSum((Report) p.getAttributes()[0],
+                            (Integer) p.getAttributes()[1],
+                            changeValuesByMacro((List<String>) p.getAttributes()[2], main, other),
+                            (List<Integer>) p.getAttributes()[3], true);
                     break;
                 case PERCENT_CONDITION:
                     values[i] = onGetPercentage((Report) p.getAttributes()[0],
@@ -207,10 +213,10 @@ public class RowScheme {
         return s; //TODO: set round as param
     }
 
-    private String onGetSum(Report report, Integer column, List<String> values, List<Integer> columns) {
+    private String onGetSum(Report report, Integer column, List<String> values, List<Integer> columns, boolean zero) {
         List<Record> content = report.getValuesByContent(values, columns);
         double sum;
-        if (content.size() == 0) throw new IllegalArgumentException("No content.");
+        if (content.size() == 0 && !zero) throw new IllegalArgumentException("No content.");
         sum = getSum(column, content);
         return new BigDecimal(sum).setScale(2, RoundingMode.HALF_UP).toString(); //TODO: set round as param
     }
