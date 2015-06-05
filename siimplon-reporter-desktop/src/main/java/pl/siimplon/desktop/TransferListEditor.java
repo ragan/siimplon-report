@@ -77,12 +77,6 @@ public class TransferListEditor extends JDialog {
             }
         });
 
-//        contentPane.registerKeyboardAction(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                onCancel();
-//            }
-//        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-
         for (Transfer t : EnumSet.allOf(Transfer.class)) {
             comboBoxSelect.addItem(t.name());
         }
@@ -91,7 +85,6 @@ public class TransferListEditor extends JDialog {
             public void valueChanged(ListSelectionEvent listSelectionEvent) {
                 buttonDelete.setEnabled(listSelectionEvent.getFirstIndex() != -1 &&
                         listSelectionEvent.getLastIndex() != -1);
-
             }
         });
         listTransfers.addMouseListener(new MouseAdapter() {

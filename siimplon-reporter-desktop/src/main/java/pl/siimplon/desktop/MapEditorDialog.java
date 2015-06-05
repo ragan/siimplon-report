@@ -62,13 +62,13 @@ public abstract class MapEditorDialog<T> extends JDialog {
                 int selectedRow = table1.getSelectedRow();
                 String valueAt = ((String) tableModel.getValueAt(selectedRow, 0));
                 tableModel.removeRow(selectedRow);
-                onDelButton(valueAt);
+                delButton(valueAt);
             }
         });
 
         addButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                onAddButton(frame, map);
+                addButton(frame, map);
             }
         });
 
@@ -79,7 +79,7 @@ public abstract class MapEditorDialog<T> extends JDialog {
                 Point pt = e.getPoint();
                 int rowNum = table.rowAtPoint(pt);
                 if (e.getClickCount() == 2) {
-                    onDoubleClick(rowNum, ((String) tableModel.getValueAt(rowNum, 0)));
+                    doubleClick(rowNum, ((String) tableModel.getValueAt(rowNum, 0)));
                 }
             }
         });
@@ -89,13 +89,33 @@ public abstract class MapEditorDialog<T> extends JDialog {
         setVisible(true);
     }
 
+    private void delButton(String name) {
+        onDelButton(name);
+        populateTableData(tableModel);
+    }
+
     protected abstract void onDelButton(String name);
 
+    private void doubleClick(int rowNum, String at) {
+        onDoubleClick(rowNum, at);
+        populateTableData(tableModel);
+    }
+
     protected abstract void onDoubleClick(int rowNum, String at);
+
+    private void addButton(JFrame frame, Map<String, T> map) {
+        onAddButton(frame, map);
+        populateTableData(tableModel);
+    }
 
     public abstract void onAddButton(JFrame frame, Map<String, T> map);
 
     private void populateTableData(DefaultTableModel myTableModel) {
+        if (myTableModel.getRowCount() > 0) {
+            for (int i = myTableModel.getRowCount() - 1; i > - 1; i--) {
+                myTableModel.removeRow(i);
+            }
+        }
         for (Map.Entry<String, T> e : map.entrySet()) {
             myTableModel.addRow(new Object[]{e.getKey(), e.getValue().toString()});
         }

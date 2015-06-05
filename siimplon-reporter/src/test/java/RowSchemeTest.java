@@ -318,6 +318,18 @@ public class RowSchemeTest {
         assertEquals("25.00", values[0]);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetPartNumAndSumException() throws Exception {
+        Report report = new Report(LITERAL, NUMBER);
+        report.addRecord("A", "1.0");
+        report.addRecord("B", "1.0");
+
+        RowScheme rowScheme = new RowScheme(Arrays.asList(
+                new TransferPair(Transfer.GET_PART_NUM_AND_SUM, report, 1, Arrays.asList("C"), Arrays.asList(0))
+        ));
+        String[] rowValues = rowScheme.getRowValues(null, null);
+    }
+
     @Test
     public void testFindAndSumValues() throws Exception {
         Report report;

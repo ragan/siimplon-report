@@ -37,14 +37,20 @@ public class Analyzer {
             for (AnalyzeItem other : others) {
                 if (callback.isRelation(main, other)) {
                     for (RowScheme mainScheme : mainSchemes) {
-                        String[] rowValues = mainScheme.getRowValues(main, other, report);
-                        report.addRecord(Arrays.asList(rowValues));
+                        try {
+                            String[] rowValues = mainScheme.getRowValues(main, other, report);
+                            report.addRecord(Arrays.asList(rowValues));
+                        } catch (IllegalArgumentException ignored) {
+                        }
                     }
                 }
             }
             for (RowScheme otherScheme : otherSchemes) {
-                String[] rowValues = otherScheme.getRowValues(main, report);
-                report.addRecord(Arrays.asList(rowValues));
+                try {
+                    String[] rowValues = otherScheme.getRowValues(main, report);
+                    report.addRecord(Arrays.asList(rowValues));
+                } catch (Exception ignored) {
+                }
             }
         }
     }

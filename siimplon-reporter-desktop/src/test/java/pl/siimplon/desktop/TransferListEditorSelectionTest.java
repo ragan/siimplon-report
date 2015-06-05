@@ -102,5 +102,4 @@ public class TransferListEditorSelectionTest extends EditorTest {
     }
 
 
-
 }

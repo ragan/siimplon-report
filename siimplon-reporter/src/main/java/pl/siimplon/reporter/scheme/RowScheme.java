@@ -210,6 +210,7 @@ public class RowScheme {
     private String onGetSum(Report report, Integer column, List<String> values, List<Integer> columns) {
         List<Record> content = report.getValuesByContent(values, columns);
         double sum;
+        if (content.size() == 0) throw new IllegalArgumentException("No content.");
         sum = getSum(column, content);
         return new BigDecimal(sum).setScale(2, RoundingMode.HALF_UP).toString(); //TODO: set round as param
     }

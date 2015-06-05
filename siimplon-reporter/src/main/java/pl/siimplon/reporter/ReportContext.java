@@ -64,8 +64,18 @@ public class ReportContext {
         if (!otherTransferName.isEmpty()) {
             otherScheme = new RowScheme(transform(getTransfer(otherTransferName)));
         }
-        List<AnalyzeItem> mainFeatures = getFeature(mainFeatureName);
-        List<AnalyzeItem> otherFeatures = getFeature(otherFeatureName);
+        List<AnalyzeItem> mainFeatures;
+        try {
+            mainFeatures = getFeature(mainFeatureName);
+        } catch (Exception e) {
+            mainFeatures = new ArrayList<>();
+        }
+        List<AnalyzeItem> otherFeatures;
+        try {
+            otherFeatures = getFeature(otherFeatureName);
+        } catch (Exception e) {
+            otherFeatures = new ArrayList<>();
+        }
         List<RowScheme> mainSchemeList = new Vector<RowScheme>();
         if (mainScheme != null) {
             mainSchemeList.add(mainScheme);
@@ -94,6 +104,11 @@ public class ReportContext {
     private List<TransferPair> transform(List<TransferPair> transfer) {
         List<TransferPair> ret = new Vector<TransferPair>();
         for (TransferPair pair : transfer) {
+            Object[] attributes = new Object[pair.getAttributes().length];
+            for (int i = 0; i < attributes.length; i++) {
+                attributes[i] = pair.getAttributes()[i];
+            }
+            TransferPair newPair = new TransferPair(pair.getSource(), attributes);
             Object[] attrs = pair.getAttributes();
             switch (pair.getSource()) {
                 case PERCENT_CONDITION:
@@ -102,12 +117,12 @@ public class ReportContext {
                 case COUNT_DISTINCT_VALUES:
                 case COUNT_DISTINCT_VALUES_CONDITIONAL:
                 case PERCENT_FROM_DISTINCT_VALUES:
-                    pair.getAttributes()[0] = getReport(((String) attrs[0]));
+                    attributes[0] = getReport(((String) attrs[0]));
                     break;
                 default:
                     break;
             }
-            ret.add(pair);
+            ret.add(newPair);
         }
         return ret;
     }

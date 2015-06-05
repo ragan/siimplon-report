@@ -16,6 +16,7 @@ public class TransfersDialog extends MapEditorDialog<List<TransferPair>> {
 
     @Override
     protected void onDelButton(String name) {
+        getReportContext().delTransfer(name);
     }
 
     @Override
@@ -40,6 +41,7 @@ public class TransfersDialog extends MapEditorDialog<List<TransferPair>> {
 
         if (status == JOptionPane.OK_OPTION) {
             getReportContext().putTransfer(transferListEditor.getTransferPairList(), transferListEditor.getTransferName());
+
         }
     }
 }
