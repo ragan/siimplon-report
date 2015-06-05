@@ -37,6 +37,7 @@ public class TransferListEditor extends JDialog {
     private JButton buttonLoadFromXml;
     private JButton buttonUp;
     private JButton buttonDown;
+    private JButton buttonCopy;
 
     private final List<TransferPair> transfer;
 
@@ -66,6 +67,7 @@ public class TransferListEditor extends JDialog {
 //        getRootPane().setDefaultButton(buttonOK);
         setName(ResourceBundle.getBundle("names").getString("form.main.dialog.transferListEditor"));
 
+        buttonCopy.setEnabled(false);
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
                 onOK();
@@ -84,8 +86,10 @@ public class TransferListEditor extends JDialog {
         listModel = new DefaultListModel<String>();
         listTransfers.addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent listSelectionEvent) {
-                buttonDelete.setEnabled(listSelectionEvent.getFirstIndex() != -1 &&
-                        listSelectionEvent.getLastIndex() != -1);
+                boolean enabled = listSelectionEvent.getFirstIndex() != -1 &&
+                        listSelectionEvent.getLastIndex() != -1;
+                buttonDelete.setEnabled(enabled);
+                buttonCopy.setEnabled(enabled);
             }
         });
         listTransfers.addMouseListener(new MouseAdapter() {
@@ -212,6 +216,31 @@ public class TransferListEditor extends JDialog {
                         e.printStackTrace();
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        buttonCopy.addActionListener(new AbstractAction() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (listTransfers.getSelectedIndex() == -1) return;
+                //TODO: code repeated from buttonAdd
+                TransferPair pair = getTransferPairList().get(listTransfers.getSelectedIndex());
+                Object[] attrs = new Object[pair.getAttributes().length];
+                for (int i = 0; i < pair.getAttributes().length; i++) {
+                    attrs[i] = pair.getAttributeString(i);
+                }
+                Transfer t = pair.getSource();
+                if (t.getAttrSize() == 0) {
+                    getTransferPairList().add(new TransferPair(t, ""));
+                    updateTransfersList();
+                } else {
+                    TransferEditor transferEditor = getTransferEditor(t, attrs);
+                    transferEditor.setVisible(true);
+                    int status = transferEditor.getStatus();
+                    if (status == JOptionPane.OK_OPTION) {
+                        getTransferPairList().add(transferEditor.getResultTransfer());
+                        updateTransfersList();
                     }
                 }
             }
