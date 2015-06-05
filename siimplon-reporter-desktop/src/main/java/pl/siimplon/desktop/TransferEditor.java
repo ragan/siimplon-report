@@ -43,7 +43,8 @@ public class TransferEditor extends JDialog {
             textField.setName("textField_" + String.valueOf(i));
             panelMain.add(textField);
             String t = String.valueOf(transferPair.getAttributes()[i]);
-            if (transfer.getDescriptors()[i] == Transfer.Descriptor.INTEGER_VECTOR || transfer.getDescriptors()[i] == Transfer.Descriptor.STRING_VECTOR) {
+            if (transfer.getDescriptors()[i] == Transfer.Descriptor.INTEGER_VECTOR ||
+                    transfer.getDescriptors()[i] == Transfer.Descriptor.STRING_VECTOR) {
                 t = t.substring(1, t.length() - 1);
             }
             textField.setText(t);

@@ -1,5 +1,6 @@
 package pl.siimplon.desktop;
 
+import com.google.common.io.Files;
 import org.w3c.dom.Document;
 import pl.siimplon.reporter.ReportContext;
 import pl.siimplon.reporter.scheme.transfer.Transfer;
@@ -136,13 +137,31 @@ public class TransferListEditor extends JDialog {
 
         buttonUp.addActionListener(new AbstractAction() {
             public void actionPerformed(ActionEvent actionEvent) {
-
+                int index = listTransfers.getSelectedIndex();
+                if (index != 0 && index != -1) {
+                    List<TransferPair> list = getTransferPairList();
+                    TransferPair a = list.get(index);
+                    TransferPair b = list.get(index - 1);
+                    list.set(index - 1, a);
+                    list.set(index, b);
+                    updateTransfersList();
+                }
             }
         });
 
         buttonDown.addActionListener(new AbstractAction() {
             public void actionPerformed(ActionEvent actionEvent) {
+                int index = listTransfers.getSelectedIndex();
+                List<TransferPair> tpl = getTransferPairList();
+                if (index != tpl.size() - 1 && index != -1) {
+                    TransferPair a = tpl.get(index);
+                    TransferPair b = tpl.get(index + 1);
 
+                    tpl.set(index + 1, a);
+                    tpl.set(index, b);
+
+                    updateTransfersList();
+                }
             }
         });
 
@@ -182,8 +201,9 @@ public class TransferListEditor extends JDialog {
                 int result = jFileChooser.showOpenDialog(TransferListEditor.this);
                 if (result == JFileChooser.APPROVE_OPTION) {
                     try {
-                         setTransferPairList(reportContext.parseXMLList(new FileInputStream(jFileChooser.getSelectedFile())));
-                        textFieldName.setText(jFileChooser.getSelectedFile().getName());
+                        setTransferPairList(reportContext.parseXMLList(new FileInputStream(jFileChooser.getSelectedFile())));
+                        String nameWithoutExtension = Files.getNameWithoutExtension(jFileChooser.getSelectedFile().getName());
+                        textFieldName.setText(nameWithoutExtension);
                         updateTransfersList();
                     } catch (XMLStreamException e) {
                         e.printStackTrace();
