@@ -111,6 +111,7 @@ public class ReportContext {
             TransferPair newPair = new TransferPair(pair.getSource(), attributes);
             Object[] attrs = pair.getAttributes();
             switch (pair.getSource()) {
+                case PERCENT_DISTINCT_VALUES_FROM_RECORDS_FOUND:
                 case PERCENT_CONDITION:
                 case GET_PART_NUM_AND_SUM:
                 case GET_PART_NUM_AND_SUM_ZERO:

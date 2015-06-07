@@ -53,7 +53,6 @@ public class ReportsMapDialog extends MapEditorDialog<Report> {
                     if (report != null) report.addRecord(values);
                     values.clear();
                 }
-
                 getReportContext().putReport(report, Files.getNameWithoutExtension(jFileChooser.getSelectedFile().getName()));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();

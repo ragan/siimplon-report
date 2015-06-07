@@ -37,6 +37,66 @@ public class TransferRepository {
             LITERAL,
             LITERAL,
             LITERAL,
+            LITERAL,
+            LITERAL,    //was DICTIONARY
+            LITERAL,    //was DICTIONARY
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,    //was DICTIONARY
+            LITERAL,    //was DICTIONARY
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,    //was DICTIONARY
+            LITERAL,    //was DICTIONARY
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,    //was DICTIONARY
+            LITERAL,    //was DICTIONARY
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,    //was DICTIONARY
+            LITERAL,    //was DICTIONARY
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
             LITERAL
     );
 

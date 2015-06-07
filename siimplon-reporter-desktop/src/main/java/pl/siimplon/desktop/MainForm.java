@@ -1,9 +1,13 @@
 package pl.siimplon.desktop;
 
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import pl.siimplon.reporter.ContextListenerAdapter;
 import pl.siimplon.reporter.ReportContext;
 import pl.siimplon.reporter.analyzer.AnalyzeItem;
 import pl.siimplon.reporter.report.Report;
+import pl.siimplon.reporter.report.record.Record;
 import pl.siimplon.reporter.report.value.Value;
 import pl.siimplon.reporter.scheme.transfer.TransferPair;
 import pl.siimplon.reporttool.MyCallback;
@@ -12,6 +16,9 @@ import pl.siimplon.reporttool.TransferRepository;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -81,6 +88,35 @@ public class MainForm extends JFrame {
             }
         });
         menuTools.add(menuItemMerge);
+        JMenuItem exportXLS = new JMenuItem("Export XLS");
+        exportXLS.addActionListener(new AbstractAction() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                JFileChooser jFileChooser = new JFileChooser(System.getProperty("user.home"));
+                int result = jFileChooser.showSaveDialog(MainForm.this);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    try {
+                        HSSFWorkbook workbook = new HSSFWorkbook();
+                        for (Map.Entry<String, Report> e : getContext().getReportMap().entrySet()) {
+                            Report report = e.getValue();
+                            HSSFSheet sheet = workbook.createSheet(e.getKey());
+                            for (int i = 0; i < report.getRecords().size(); i++) {
+                                Record record = report.getRecords().get(i);
+                                HSSFRow row = sheet.createRow(i);
+                                for (int ii = 0; ii < record.getStringValues().size(); ii++) {
+                                    row.createCell(ii).setCellValue(record.getStringValues().get(ii));
+                                }
+                            }
+                        }
+                        FileOutputStream stream = new FileOutputStream(jFileChooser.getSelectedFile());
+                        workbook.write(stream);
+                        stream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        menuTools.add(exportXLS);
 
         jMenuBar.add(menuContext);
         jMenuBar.add(menuTools);

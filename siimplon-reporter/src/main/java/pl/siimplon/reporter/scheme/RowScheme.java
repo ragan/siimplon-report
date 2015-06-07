@@ -41,6 +41,17 @@ public class RowScheme {
         for (int i = 0; i < pairs.size(); ++i) {
             TransferPair p = pairs.get(i);
             switch (p.getSource()) {
+                case PERCENT_DISTINCT_VALUES_FROM_RECORDS_FOUND:
+
+                    values[i] = onPercentDisctinctFromFound(
+                            ((Report) p.getAttributes()[0]),
+                            ((Integer) p.getAttributes()[1]),
+                            ((List<String>) p.getAttributes()[2]),
+                            ((List<Integer>) p.getAttributes()[3]),
+                            ((List<String>) p.getAttributes()[4]),
+                            ((List<Integer>) p.getAttributes()[5])
+                    );
+                    break;
                 case PERCENT_FROM_RECORD_COUNT:
                     values[i] = onPercentRecordCount(
                             ((Report) p.getAttributes()[0]),
@@ -156,6 +167,27 @@ public class RowScheme {
         return values;
     }
 
+    private String onPercentDisctinctFromFound(Report report, Integer column,
+                                               List<String> firstStrings, List<Integer> firstIntegers,
+                                               List<String> secondStrings, List<Integer> secondIntegers) {
+        List<Record> content = report.getValuesByContent(firstStrings, firstIntegers);
+        if (content.isEmpty()) return Double.toString(0);
+        Report firstFilter = new Report(report.getTypes());
+        for (Record record : content) {
+            firstFilter.addRecord(record.getStringValues());
+        }
+        content = firstFilter.getValuesByContent(secondStrings, secondIntegers);
+        Report secondFilter = new Report(report.getTypes());
+        for (Record record : content) {
+            secondFilter.add(record);
+        }
+//        int distinctValues = countDistinctValues(secondFilter, column);
+        int distinctValues = secondFilter.getCount();
+        double val = ((double) distinctValues) / ((double) firstFilter.getCount());
+
+        return new BigDecimal(val * 100.0).setScale(2, RoundingMode.HALF_UP).toString();
+    }
+
     private String onCountDistinctValuesConditional(Report report, Integer distinctColumn, List<String> values,
                                                     List<Integer> columns) {
         List<Record> content = report.getValuesByContent(values, columns);
@@ -216,7 +248,7 @@ public class RowScheme {
     private String onGetSum(Report report, Integer column, List<String> values, List<Integer> columns, boolean zero) {
         List<Record> content = report.getValuesByContent(values, columns);
         double sum;
-        if (content.size() == 0 && !zero) throw new IllegalArgumentException("No content.");
+        if (content.size() == 0 && !zero) throw new IllegalArgumentException(String.format("No content %s, %s", values.toString(), column.toString()));
         sum = getSum(column, content);
         return new BigDecimal(sum).setScale(2, RoundingMode.HALF_UP).toString(); //TODO: set round as param
     }

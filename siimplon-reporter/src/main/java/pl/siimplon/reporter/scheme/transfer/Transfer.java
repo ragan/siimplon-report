@@ -78,6 +78,23 @@ public enum Transfer {
     UNION_LENGTH_REVERSED,
 
     /**
+     * Finds records by first set of attributes. Finds records by second set of attributes and
+     * counts percentage (secondRecordSet / firstRecordSet).
+     *
+     * <ul>
+     *     <li>[0] - report</li>
+     *     <li>[1] - column index</li>
+     *     <li>[2] - first set list of values selected</li>
+     *     <li>[3] - first set of column indices</li>
+     *     <li>[4] - second set list of values selected</li>
+     *     <li>[5] - second set of column indices</li>
+     * </ul>
+     */
+    PERCENT_DISTINCT_VALUES_FROM_RECORDS_FOUND(6,
+            new Descriptor[]{Descriptor.STRING, Descriptor.INTEGER, Descriptor.STRING_VECTOR, Descriptor.INTEGER_VECTOR,
+                    Descriptor.STRING_VECTOR, Descriptor.INTEGER_VECTOR}),
+
+    /**
      * Finds records with given values at given column indices
      * and returns percentage (recordsFound / allReportRecords) <br />
      * <ul>
@@ -87,7 +104,11 @@ public enum Transfer {
      * </ul>
      */
     PERCENT_FROM_RECORD_COUNT(3,
-            new Descriptor[]{Descriptor.STRING, Descriptor.STRING_VECTOR, Descriptor.INTEGER_VECTOR}),
+            new Descriptor[]{
+                    Descriptor.STRING, Descriptor.STRING_VECTOR, Descriptor.INTEGER_VECTOR
+            }
+
+    ),
 
     /**
      * Finds records with given values at given column indices.
@@ -101,9 +122,17 @@ public enum Transfer {
      * </ul>
      */
     PERCENT_FROM_DISTINCT_VALUES(4,
-            new Descriptor[]{Descriptor.STRING, Descriptor.INTEGER, Descriptor.STRING_VECTOR, Descriptor.INTEGER_VECTOR}),
+            new Descriptor[]{
+                    Descriptor.STRING, Descriptor.INTEGER, Descriptor.STRING_VECTOR, Descriptor.INTEGER_VECTOR
+            }
 
-    COUNT_DISTINCT_VALUES(2, new Descriptor[]{Descriptor.STRING, Descriptor.INTEGER}),
+    ),
+
+    COUNT_DISTINCT_VALUES(2, new Descriptor[]{
+            Descriptor.STRING, Descriptor.INTEGER
+    }
+
+    ),
 
     /**
      * Counts distinct column values from found records.
@@ -115,7 +144,11 @@ public enum Transfer {
      * </ul>
      */
     COUNT_DISTINCT_VALUES_CONDITIONAL(4,
-            new Descriptor[]{Descriptor.STRING, Descriptor.INTEGER, Descriptor.STRING_VECTOR, Descriptor.INTEGER_VECTOR});
+            new Descriptor[]{
+                    Descriptor.STRING, Descriptor.INTEGER, Descriptor.STRING_VECTOR, Descriptor.INTEGER_VECTOR
+            }
+
+    );
 
     private int attrSize;
     private Descriptor[] descriptors;

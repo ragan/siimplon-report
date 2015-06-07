@@ -40,7 +40,7 @@ public class Analyzer {
                         try {
                             String[] rowValues = mainScheme.getRowValues(main, other, report);
                             report.addRecord(Arrays.asList(rowValues));
-                        } catch (IllegalArgumentException ignored) {
+                        } catch (Exception ignored) {
                         }
                     }
                 }

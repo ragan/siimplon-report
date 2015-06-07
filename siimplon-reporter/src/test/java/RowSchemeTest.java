@@ -36,6 +36,218 @@ public class RowSchemeTest {
     }
 
     @Test
+    public void testPercentDistinctValuesFromRecordsFound() throws Exception {
+        Report report = new Report(4);
+
+        report.addRecord("233", "DROGA", "UMOWA A");
+        report.addRecord("223", "DROGA", "UMOWA B");
+        report.addRecord("213", "DROGA", "UMOWA B");
+        report.addRecord("203", "DROGA", "UMOWA D");
+        report.addRecord("233", "TURBINA", "UMOWA A");
+        report.addRecord("213", "TURBINA", "UMOWA B");
+
+        RowScheme rowScheme;
+        rowScheme = new RowScheme(Arrays.asList(
+                new TransferPair(
+                        PERCENT_DISTINCT_VALUES_FROM_RECORDS_FOUND,
+                        report,
+                        0,
+                        Arrays.asList("DROGA"),
+                        Arrays.asList(1),
+                        Arrays.asList("DROGA", "UMOWA B"),
+                        Arrays.asList(1, 2)
+                )));
+        String[] rowValues = rowScheme.getRowValues(null, null);
+        assertEquals("50.00", rowValues[0]);
+        rowScheme = new RowScheme(Arrays.asList(
+                new TransferPair(
+                        PERCENT_DISTINCT_VALUES_FROM_RECORDS_FOUND,
+                        report,
+                        0,
+                        Arrays.asList("DROGA"),
+                        Arrays.asList(1),
+                        Arrays.asList("DROGA", "UMOWA D"),
+                        Arrays.asList(1, 2)
+                )));
+        rowValues = rowScheme.getRowValues(null, null);
+        assertEquals("25.00", rowValues[0]);
+
+        report = new Report(3);
+
+        report.addRecord("233", "DROGA", "UMOWA A");
+        report.addRecord("223", "DROGA", "UMOWA B");
+        report.addRecord("223", "DROGA", "UMOWA B");
+        report.addRecord("203", "DROGA", "UMOWA D");
+
+        rowScheme = new RowScheme(Arrays.asList(
+                new TransferPair(
+                        PERCENT_DISTINCT_VALUES_FROM_RECORDS_FOUND,
+                        report,
+                        0,
+                        Arrays.asList("DROGA"),
+                        Arrays.asList(1),
+                        Arrays.asList("DROGA", "UMOWA B"),
+                        Arrays.asList(1, 2)
+                )));
+        rowValues = rowScheme.getRowValues(null, null);
+        assertEquals("50.00", rowValues[0]);
+
+        report.getRecords().clear();
+
+        report.addRecord("233", "DROGA", "UMOWA A");
+        report.addRecord("223", "DROGA", "UMOWA B");
+        report.addRecord("223", "DROGA", "UMOWA B");
+        report.addRecord("223", "DROGA", "UMOWA B");
+        report.addRecord("223", "DROGA", "UMOWA B");
+        report.addRecord("223", "DROGA", "UMOWA B");
+        report.addRecord("223", "DROGA", "UMOWA B");
+        report.addRecord("203", "DROGA", "UMOWA D");
+
+        rowValues = rowScheme.getRowValues(null, null);
+        assertEquals("75.00", rowValues[0]);
+
+        report = new Report(3);
+
+        report.addRecord("62/3", "BRAK UMOWY");
+        report.addRecord("167/2", "BRAK UMOWY");
+        report.addRecord("167/1", "BRAK UMOWY");
+        report.addRecord("309", "BRAK UMOWY");
+        report.addRecord("114", "BRAK UMOWY");
+        report.addRecord("73", "BRAK UMOWY");
+        report.addRecord("69", "BRAK UMOWY");
+        report.addRecord("68", "BRAK UMOWY");
+        report.addRecord("18", "BRAK UMOWY");
+        report.addRecord("169", "BRAK UMOWY");
+        report.addRecord("441/2", "BRAK UMOWY");
+        report.addRecord("291/2", "BRAK UMOWY");
+        report.addRecord("11/3", "BRAK UMOWY");
+
+        report.addRecord("60/2", "DECYZJA ADM.");
+        report.addRecord("113/2", "DECYZJA ADM.");
+        report.addRecord("104/1", "DECYZJA ADM.");
+        report.addRecord("165", "DECYZJA ADM.");
+        report.addRecord("64", "DECYZJA ADM.");
+        report.addRecord("58", "DECYZJA ADM.");
+        report.addRecord("366", "DECYZJA ADM.");
+
+        report.addRecord("58/5", "UMOWA PRZEDWSTĘPNA");
+        report.addRecord("21/2", "UMOWA PRZEDWSTĘPNA");
+        report.addRecord("489", "UMOWA PRZEDWSTĘPNA");
+        report.addRecord("434", "UMOWA PRZEDWSTĘPNA");
+        report.addRecord("212", "UMOWA PRZEDWSTĘPNA");
+        report.addRecord("209", "UMOWA PRZEDWSTĘPNA");
+        report.addRecord("79", "UMOWA PRZEDWSTĘPNA");
+        report.addRecord("77", "UMOWA PRZEDWSTĘPNA");
+        report.addRecord("6", "UMOWA PRZEDWSTĘPNA");
+        report.addRecord("432", "UMOWA PRZEDWSTĘPNA");
+
+        report.addRecord("53/9", "UMOWA DZIERŻAWY");
+        report.addRecord("52/3", "UMOWA DZIERŻAWY");
+        report.addRecord("46/5", "UMOWA DZIERŻAWY");
+        report.addRecord("51/2", "UMOWA DZIERŻAWY");
+        report.addRecord("431/5", "UMOWA DZIERŻAWY");
+        report.addRecord("33/1", "UMOWA DZIERŻAWY");
+        report.addRecord("22/6", "UMOWA DZIERŻAWY");
+        report.addRecord("21/4", "UMOWA DZIERŻAWY");
+        report.addRecord("177", "UMOWA DZIERŻAWY");
+        report.addRecord("60", "UMOWA DZIERŻAWY");
+        report.addRecord("22", "UMOWA DZIERŻAWY");
+        report.addRecord("8", "UMOWA DZIERŻAWY");
+        report.addRecord("5", "UMOWA DZIERŻAWY");
+        report.addRecord("134/5", "UMOWA DZIERŻAWY");
+        report.addRecord("510", "UMOWA DZIERŻAWY");
+        report.addRecord("134/2", "UMOWA DZIERŻAWY");
+        report.addRecord("132/1", "UMOWA DZIERŻAWY");
+        report.addRecord("436", "UMOWA DZIERŻAWY");
+        report.addRecord("11/8", "UMOWA DZIERŻAWY");
+
+        report.addRecord("441/1", "UZGODNIENIE");
+        report.addRecord("50/2", "UZGODNIENIE");
+        report.addRecord("141/1", "UZGODNIENIE");
+        report.addRecord("292", "UZGODNIENIE");
+        report.addRecord("399", "UZGODNIENIE");
+        report.addRecord("364", "UZGODNIENIE");
+        report.addRecord("355", "UZGODNIENIE");
+        report.addRecord("53", "UZGODNIENIE");
+        report.addRecord("52", "UZGODNIENIE");
+        report.addRecord("51", "UZGODNIENIE");
+        report.addRecord("49", "UZGODNIENIE");
+        report.addRecord("45", "UZGODNIENIE");
+        report.addRecord("38", "UZGODNIENIE");
+
+        report.addRecord("51/1", "W TRAKCIE NEGOCJACJI");
+        report.addRecord("368/1", "W TRAKCIE NEGOCJACJI");
+        report.addRecord("217/1", "W TRAKCIE NEGOCJACJI");
+        report.addRecord("226", "W TRAKCIE NEGOCJACJI");
+
+        report.addRecord("45/1", "POROZUMIENIE");
+        report.addRecord("354/1", "POROZUMIENIE");
+        report.addRecord("294/23", "POROZUMIENIE");
+        report.addRecord("290/1", "POROZUMIENIE");
+        report.addRecord("176/4", "POROZUMIENIE");
+        report.addRecord("157/1", "POROZUMIENIE");
+        report.addRecord("287", "POROZUMIENIE");
+        report.addRecord("362", "POROZUMIENIE");
+        report.addRecord("359", "POROZUMIENIE");
+        report.addRecord("225", "POROZUMIENIE");
+        report.addRecord("115", "POROZUMIENIE");
+        report.addRecord("72", "POROZUMIENIE");
+        report.addRecord("61", "POROZUMIENIE");
+        report.addRecord("58", "POROZUMIENIE");
+        report.addRecord("54", "POROZUMIENIE");
+        report.addRecord("52", "POROZUMIENIE");
+        report.addRecord("49", "POROZUMIENIE");
+        report.addRecord("47", "POROZUMIENIE");
+        report.addRecord("36", "POROZUMIENIE");
+        report.addRecord("5", "POROZUMIENIE");
+
+
+        List<Record> brakUmowy = report.getValuesByContent(Arrays.asList("BRAK UMOWY"), Arrays.asList(1));
+        System.out.println("brakUmowy " + brakUmowy.size());
+        List<Record> wTrakcieNegocjacji = report.getValuesByContent(Arrays.asList("W TRAKCIE NEGOCJACJI"), Arrays.asList(1));
+        System.out.println("wTrakcieNegocjacji " + wTrakcieNegocjacji.size());
+        List<Record> uzgodnienie = report.getValuesByContent(Arrays.asList("UZGODNIENIE"), Arrays.asList(1));
+        System.out.println("uzgodnienie " + uzgodnienie.size());
+        List<Record> porozumienie = report.getValuesByContent(Arrays.asList("POROZUMIENIE"), Arrays.asList(1));
+        System.out.println("porozumienie " + porozumienie.size());
+        List<Record> umowaPrzedwstepna = report.getValuesByContent(Arrays.asList("UMOWA PRZEDWSTĘPNA"), Arrays.asList(1));
+        System.out.println("umowaPrzedwstepna " + umowaPrzedwstepna.size());
+        List<Record> umowaDzierzawy = report.getValuesByContent(Arrays.asList("UMOWA DZIERŻAWY"), Arrays.asList(1));
+        System.out.println("umowaDzierzawy " + umowaDzierzawy.size());
+
+        System.out.println("------");
+        List<Record> sluzebnoscPrzesylu = report.getValuesByContent(Arrays.asList("SŁUŻEBNOŚĆ PRZESYŁU"), Arrays.asList(1));
+        System.out.println("sluzebnoscPrzesylu " + sluzebnoscPrzesylu.size());
+        List<Record> umowaNajmu = report.getValuesByContent(Arrays.asList("UMOWA NAJMU"), Arrays.asList(1));
+        System.out.println("umowaNajmu " + umowaNajmu.size());
+        List<Record> decyzjaAdm = report.getValuesByContent(Arrays.asList("DECYZJA ADM."), Arrays.asList(1));
+        System.out.println("decyzjaAdm " + decyzjaAdm.size());
+        List<Record> wstepnaZgoda = report.getValuesByContent(Arrays.asList("WSTĘPNA ZGODA"), Arrays.asList(1));
+        System.out.println("wstepnaZgoda " + wstepnaZgoda.size());
+        List<Record> wTrakcieKoncowychNeg = report.getValuesByContent(Arrays.asList("W TRAKCIE KOŃCOWYCH NEG."), Arrays.asList(1));
+        System.out.println("wTrakcieKoncowychNeg " + wTrakcieKoncowychNeg.size());
+        List<Record> wTrakcieKoncowychNegProc = report.getValuesByContent(Arrays.asList("W TRAKCIE NEGOCJACJI / PROCEDURY"), Arrays.asList(1));
+        System.out.println("wTrakcieKoncowychNegProc " + wTrakcieKoncowychNegProc.size());
+
+        System.out.println("report.getCount(): " + report.getCount());
+
+        assertEquals(brakUmowy.size() +
+                wTrakcieNegocjacji.size() +
+                uzgodnienie.size() +
+                porozumienie.size() +
+                umowaPrzedwstepna.size() +
+                umowaDzierzawy.size() +
+                sluzebnoscPrzesylu.size() +
+                umowaNajmu.size() +
+                decyzjaAdm.size() +
+                wstepnaZgoda.size() +
+                wTrakcieKoncowychNeg.size() +
+                wTrakcieKoncowychNegProc.size(), report.getRecords().size());
+
+
+    }
+
+    @Test
     public void testAreaCommand() throws Exception {
         AnalyzeItem f = Mockito.mock(AnalyzeItem.class);
         double area = 10.1234567890;
