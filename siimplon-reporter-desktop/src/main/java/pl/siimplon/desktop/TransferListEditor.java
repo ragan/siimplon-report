@@ -46,17 +46,19 @@ public class TransferListEditor extends JDialog {
     private DefaultListModel<String> listModel;
 
     private ReportContext reportContext;
+    private MainForm mainForm;
 
-    public TransferListEditor(ReportContext reportContext) {
-        this(reportContext, new ArrayList<TransferPair>(), "new transfer");
+    public TransferListEditor(ReportContext reportContext, MainForm mainForm) {
+        this(reportContext, new ArrayList<TransferPair>(), "new transfer", mainForm);
     }
 
-    public TransferListEditor(ReportContext reportContext, List<TransferPair> transfer) {
-        this(reportContext, transfer, "new transfer");
+    public TransferListEditor(ReportContext reportContext, List<TransferPair> transfer, MainForm mainForm) {
+        this(reportContext, transfer, "new transfer", mainForm);
     }
 
-    public TransferListEditor(final ReportContext reportContext, final List<TransferPair> transfer, String transferName) {
+    public TransferListEditor(final ReportContext reportContext, final List<TransferPair> transfer, String transferName, final MainForm mainForm) {
         this.reportContext = reportContext;
+        this.mainForm = mainForm;
         this.transfer = new ArrayList<TransferPair>();
         this.transfer.addAll(transfer);
 
@@ -204,12 +206,12 @@ public class TransferListEditor extends JDialog {
 
         buttonLoadFromXml.addActionListener(new AbstractAction() {
             public void actionPerformed(ActionEvent actionEvent) {
-                JFileChooser jFileChooser = new JFileChooser(System.getProperty("user.home"));
-                int result = jFileChooser.showOpenDialog(TransferListEditor.this);
+                JFileChooser fileChooser = mainForm.getTransferListFileChooser(false);
+                int result = fileChooser.showOpenDialog(TransferListEditor.this);
                 if (result == JFileChooser.APPROVE_OPTION) {
                     try {
-                        setTransferPairList(reportContext.parseXMLList(new FileInputStream(jFileChooser.getSelectedFile())));
-                        String nameWithoutExtension = Files.getNameWithoutExtension(jFileChooser.getSelectedFile().getName());
+                        setTransferPairList(reportContext.parseXMLList(new FileInputStream(fileChooser.getSelectedFile())));
+                        String nameWithoutExtension = Files.getNameWithoutExtension(fileChooser.getSelectedFile().getName());
                         textFieldName.setText(nameWithoutExtension);
                         updateTransfersList();
                     } catch (XMLStreamException e) {
@@ -261,13 +263,6 @@ public class TransferListEditor extends JDialog {
     //TODO: if modification then delete, if new than add
     private TransferEditor getTransferEditor(Transfer t, Object[] attributes) {
         return new TransferEditor(new TransferPair(t, attributes));
-//        transferEditor.setVisible(true);
-//        int status = transferEditor.getStatus();
-//        if (status == JOptionPane.OK_OPTION) {
-//            TransferPair resultTransfer = transferEditor.getResultTransfer();
-//            if (resultTransfer != null) {
-//            }
-//        }
     }
 
     private void updateTransfersList() {

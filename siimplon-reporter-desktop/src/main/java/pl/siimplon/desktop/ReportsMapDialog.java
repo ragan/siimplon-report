@@ -37,14 +37,12 @@ public class ReportsMapDialog extends MapEditorDialog<Report> {
     @Override
     public void onAddButton(JFrame frame, Map<String, Report> map) {
 
-        JFileChooser jFileChooser = MainForm.getFileDialog("CSV Files", "csv");
-        int result = jFileChooser.showOpenDialog(frame);
+        JFileChooser jFileChooser = mainForm.getReportFileChooser();
+        int result = jFileChooser.showOpenDialog(this);
 
         if (result == JFileChooser.APPROVE_OPTION) {
             try {
                 for (File file : jFileChooser.getSelectedFiles()) {
-//                    Report report = mainForm.parseCSV(file);
-//                    getReportContext().putReport(report, Files.getNameWithoutExtension(file.getName()));
                     mainForm.addReportFile(file);
                 }
                 MainForm.setLastDir(jFileChooser.getSelectedFiles()[0].getAbsolutePath());

@@ -31,7 +31,7 @@ public class MapSourcesEditor extends MapEditorDialog<List<AnalyzeItem>> {
 
     @Override
     public void onAddButton(JFrame frame, Map<String, List<AnalyzeItem>> map) {
-        JFileChooser jFileChooser = MainForm.getFileDialog("SHP Files", "shp");
+        JFileChooser jFileChooser = mainForm.getMapSourceFileChooser();
         int result = jFileChooser.showOpenDialog(frame);
         if (result == JFileChooser.APPROVE_OPTION) {
             try {

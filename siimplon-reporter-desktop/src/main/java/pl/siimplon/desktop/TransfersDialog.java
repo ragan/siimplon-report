@@ -34,10 +34,9 @@ public class TransfersDialog extends MapEditorDialog<List<TransferPair>> {
         JMenuItem miLoad = new JMenuItem("Load...");
         miLoad.addActionListener(new AbstractAction() {
             public void actionPerformed(ActionEvent actionEvent) {
-                JFileChooser jFileChooser = MainForm.getFileDialog("XML Files", "xml");
+                JFileChooser jFileChooser = mainForm.getTransferListFileChooser();
                 int result = jFileChooser.showOpenDialog(TransfersDialog.this);
                 if (result == JFileChooser.APPROVE_OPTION) {
-                    MainForm.setLastDir(jFileChooser.getSelectedFiles()[0].getAbsolutePath());
                     for (File file : jFileChooser.getSelectedFiles()) {
                         try {
                             mainForm.addTransferList(file);
@@ -62,16 +61,15 @@ public class TransfersDialog extends MapEditorDialog<List<TransferPair>> {
     private void openTransferListEditor(List<TransferPair> pairList, String transferPairName) {
         TransferListEditor transferListEditor;
         if (transferPairName.isEmpty()) {
-            transferListEditor = new TransferListEditor(getReportContext(), pairList);
+            transferListEditor = new TransferListEditor(getReportContext(), pairList, mainForm);
         } else {
-            transferListEditor = new TransferListEditor(getReportContext(), pairList, transferPairName);
+            transferListEditor = new TransferListEditor(getReportContext(), pairList, transferPairName, mainForm);
         }
         transferListEditor.setVisible(true);
         int status = transferListEditor.getStatus();
 
         if (status == JOptionPane.OK_OPTION) {
-            getReportContext().putTransfer(transferListEditor.getTransferPairList(), transferListEditor.getTransferName());
-
+            mainForm.addTransferList(transferListEditor.getTransferPairList(), transferListEditor.getTransferName());
         }
     }
 }

@@ -38,6 +38,7 @@ import java.util.*;
 import java.util.List;
 import java.util.prefs.Preferences;
 
+//TODO: save all that are not saved (if context have not saved files)
 public class MainForm extends JFrame {
 
     public static final String PREF_LAST_DIR = "last_open_directory";
@@ -65,15 +66,6 @@ public class MainForm extends JFrame {
 
     static {
         preferences = Preferences.systemNodeForPackage(MainForm.class);
-    }
-
-    public static JFileChooser getFileDialog(String description, String extension) {
-        JFileChooser jFileChooser = new JFileChooser(MainForm.getLastDir());
-        jFileChooser.setMultiSelectionEnabled(true);
-        FileNameExtensionFilter filter = new FileNameExtensionFilter(description, extension);
-        jFileChooser.addChoosableFileFilter(filter);
-        jFileChooser.setFileFilter(filter);
-        return jFileChooser;
     }
 
     public static String getLastDir() {
@@ -253,8 +245,10 @@ public class MainForm extends JFrame {
         miSave.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                //TODO: check if everything is saved
+
                 if (sourcesContextSource.isEmpty()) {
-//                    JOptionPane.showConfirmDialog(MainForm.this, "Please make or open a project context.");
                     JOptionPane.showMessageDialog(MainForm.this, "Please make or open a project context.");
                     return;
                 }
@@ -268,9 +262,7 @@ public class MainForm extends JFrame {
                     DOMSource source = new DOMSource(document);
                     StreamResult xmlResult = new StreamResult(new File(sourcesContextSource));
                     transformer.transform(source, xmlResult);
-                } catch (ParserConfigurationException e1) {
-                    e1.printStackTrace();
-                } catch (TransformerException e1) {
+                } catch (ParserConfigurationException | TransformerException e1) {
                     e1.printStackTrace();
                 }
             }
@@ -437,6 +429,10 @@ public class MainForm extends JFrame {
         setLastDir(file.getAbsolutePath());
     }
 
+    public void addTransferList(List<TransferPair> list, String name) {
+        getContext().putTransfer(list, name);
+    }
+
     private List<AnalyzeItem> getFeatures(File file) throws IOException {
         ShapefileDataStore store = new ShapefileDataStore(file.toURI().toURL());
         store.setCharset(Charset.forName("UTF-8"));
@@ -458,5 +454,49 @@ public class MainForm extends JFrame {
         String fileName = Files.getNameWithoutExtension(file.getAbsolutePath());
         getContext().putFeature(features, fileName);
         sourcesContext.addSourceURI(fileName, file.toURI());
+    }
+
+    private JFileChooser getFileChooser(boolean multiSelection, String desc, String ext) {
+        final JFileChooser fc = new JFileChooser(getLastDir());
+        fc.removeChoosableFileFilter(fc.getFileFilter());
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(desc, ext);
+        fc.addChoosableFileFilter(filter);
+        fc.setFileFilter(filter);
+
+        fc.setMultiSelectionEnabled(multiSelection);
+        fc.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getActionCommand().equals(JFileChooser.APPROVE_SELECTION)) {
+                    setLastDir(fc.getCurrentDirectory().getAbsolutePath());
+                }
+            }
+        });
+
+        return fc;
+    }
+
+    public JFileChooser getReportFileChooser() {
+        return getReportFileChooser(true);
+    }
+
+    public JFileChooser getReportFileChooser(boolean multiSelection) {
+        return getFileChooser(multiSelection, "CSV File", "csv");
+    }
+
+    public JFileChooser getTransferListFileChooser() {
+        return getTransferListFileChooser(true);
+    }
+
+    public JFileChooser getTransferListFileChooser(boolean multiSelection) {
+        return getFileChooser(multiSelection, "Transfer File", "xml");
+    }
+
+    public JFileChooser getMapSourceFileChooser() {
+        return getMapSourceFileChooser(true);
+    }
+
+    public JFileChooser getMapSourceFileChooser(boolean multiSelection) {
+        return getFileChooser(multiSelection, "SHP File", "shp");
     }
 }

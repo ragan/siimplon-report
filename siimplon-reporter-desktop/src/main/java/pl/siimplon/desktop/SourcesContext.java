@@ -23,9 +23,9 @@ import java.util.*;
 
 public class SourcesContext {
 
-    private Map<String, URI> reportMap = new HashMap<String, URI>();
-    private Map<String, URI> sourceMap = new HashMap<String, URI>();
-    private Map<String, URI> schemeMap = new HashMap<String, URI>();
+    private Map<String, URI> reportMap = new HashMap<>();
+    private Map<String, URI> sourceMap = new HashMap<>();
+    private Map<String, URI> schemeMap = new HashMap<>();
 
     public void addReportURI(String name, URI uri) {
         reportMap.put(name, uri);
@@ -75,17 +75,14 @@ public class SourcesContext {
             Element report = makeNameValueElement(document, "report", entry);
             root.appendChild(report);
         }
-
         for (Map.Entry<String, URI> entry : sourceMap.entrySet()) {
             Element source = makeNameValueElement(document, "source", entry);
             root.appendChild(source);
         }
-
         for (Map.Entry<String, URI> entry : schemeMap.entrySet()) {
             Element scheme = makeNameValueElement(document, "scheme", entry);
             root.appendChild(scheme);
         }
-
         return document;
     }
 
