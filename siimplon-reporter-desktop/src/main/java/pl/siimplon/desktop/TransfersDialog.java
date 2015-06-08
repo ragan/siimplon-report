@@ -1,15 +1,11 @@
 package pl.siimplon.desktop;
 
-import com.google.common.io.Files;
-import pl.siimplon.reporter.ReportContext;
 import pl.siimplon.reporter.scheme.transfer.TransferPair;
 
 import javax.swing.*;
 import javax.xml.stream.XMLStreamException;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,9 +50,7 @@ public class TransfersDialog extends MapEditorDialog<List<TransferPair>> {
             }
         });
         mFile.add(miLoad);
-
         bar.add(mFile);
-
         return bar;
     }
 
