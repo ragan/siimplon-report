@@ -43,7 +43,7 @@ public class TransfersDialog extends MapEditorDialog<List<TransferPair>> {
                 if (result == JFileChooser.APPROVE_OPTION) {
                     MainForm.setLastDir(jFileChooser.getSelectedFiles()[0].getAbsolutePath());
                     for (File file : jFileChooser.getSelectedFiles()) {
-                        FileInputStream stream = null;
+                        FileInputStream stream;
                         try {
                             stream = new FileInputStream(file);
                             List<TransferPair> transferPairs = getReportContext().parseXMLList(stream);
