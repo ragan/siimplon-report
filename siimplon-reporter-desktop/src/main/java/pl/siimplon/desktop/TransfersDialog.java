@@ -1,9 +1,16 @@
 package pl.siimplon.desktop;
 
+import com.google.common.io.Files;
 import pl.siimplon.reporter.ReportContext;
 import pl.siimplon.reporter.scheme.transfer.TransferPair;
 
 import javax.swing.*;
+import javax.xml.stream.XMLStreamException;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +29,43 @@ public class TransfersDialog extends MapEditorDialog<List<TransferPair>> {
     @Override
     protected void onDoubleClick(int rowNum, String at) {
         openTransferListEditor(getReportContext().getTransfer(at), at);
+    }
+
+    @Override
+    protected JMenuBar makeJMenuBar() {
+        JMenuBar bar = new JMenuBar();
+        JMenu mFile = new JMenu("File");
+        JMenuItem miLoad = new JMenuItem("Load...");
+        miLoad.addActionListener(new AbstractAction() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                JFileChooser jFileChooser = MainForm.getFileDialog("XML Files", "xml");
+                int result = jFileChooser.showOpenDialog(TransfersDialog.this);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    MainForm.setLastDir(jFileChooser.getSelectedFiles()[0].getAbsolutePath());
+                    for (File file : jFileChooser.getSelectedFiles()) {
+                        FileInputStream stream = null;
+                        try {
+                            stream = new FileInputStream(file);
+                            List<TransferPair> transferPairs = getReportContext().parseXMLList(stream);
+                            getReportContext().putTransfer(transferPairs, Files.getNameWithoutExtension(file.getName()));
+                            stream.close();
+                            populateTableData(getTableModel());
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (XMLStreamException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        });
+        mFile.add(miLoad);
+
+        bar.add(mFile);
+
+        return bar;
     }
 
     @Override

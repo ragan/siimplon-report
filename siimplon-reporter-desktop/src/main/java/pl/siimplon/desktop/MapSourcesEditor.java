@@ -31,14 +31,16 @@ public class MapSourcesEditor extends MapEditorDialog<List<AnalyzeItem>> {
 
     @Override
     public void onAddButton(JFrame frame, Map<String, List<AnalyzeItem>> map) {
-        JFileChooser jFileChooser = new JFileChooser(System.getProperty("user.home"));
-        int i = jFileChooser.showOpenDialog(frame);
-        if (i == JFileChooser.APPROVE_OPTION) {
+        JFileChooser jFileChooser = MainForm.getFileDialog("SHP Files", "shp");
+        int result = jFileChooser.showOpenDialog(frame);
+        if (result == JFileChooser.APPROVE_OPTION) {
             try {
-                File selectedFile = jFileChooser.getSelectedFile();
-                List<AnalyzeItem> features = getFeatures(selectedFile);
-                getReportContext().putFeature(features, selectedFile.getName());
-                getTableModel().addRow(new Object[]{selectedFile.getName(), features.toString()});
+                for (File file : jFileChooser.getSelectedFiles()) {
+                    List<AnalyzeItem> features = getFeatures(file);
+                    getReportContext().putFeature(features, file.getName());
+                    getTableModel().addRow(new Object[]{file.getName(), features.toString()});
+                }
+                MainForm.setLastDir(jFileChooser.getSelectedFiles()[0].getAbsolutePath());
             } catch (IOException e) {
                 e.printStackTrace();
             }

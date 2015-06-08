@@ -84,9 +84,18 @@ public abstract class MapEditorDialog<T> extends JDialog {
             }
         });
 
+        JMenuBar jMenuBar = makeJMenuBar();
+        if (jMenuBar != null) {
+            setJMenuBar(jMenuBar);
+        }
+
         setLocationRelativeTo(frame);
         pack();
         setVisible(true);
+    }
+
+    protected JMenuBar makeJMenuBar() {
+        return null;
     }
 
     private void delButton(String name) {
@@ -110,7 +119,7 @@ public abstract class MapEditorDialog<T> extends JDialog {
 
     public abstract void onAddButton(JFrame frame, Map<String, T> map);
 
-    private void populateTableData(DefaultTableModel myTableModel) {
+    protected void populateTableData(DefaultTableModel myTableModel) {
         if (myTableModel.getRowCount() > 0) {
             for (int i = myTableModel.getRowCount() - 1; i > - 1; i--) {
                 myTableModel.removeRow(i);

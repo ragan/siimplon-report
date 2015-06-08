@@ -36,18 +36,23 @@ public class ReportsMapDialog extends MapEditorDialog<Report> {
 
     @Override
     public void onAddButton(JFrame frame, Map<String, Report> map) {
-        JFileChooser jFileChooser = new JFileChooser(System.getProperty("user.home"));
-        FileNameExtensionFilter csvFilter = new FileNameExtensionFilter("csv file", "csv");
-        jFileChooser.setMultiSelectionEnabled(true);
-        jFileChooser.addChoosableFileFilter(csvFilter);
-        jFileChooser.setFileFilter(csvFilter);
+
+        JFileChooser jFileChooser = MainForm.getFileDialog("CSV Files", "csv");
         int result = jFileChooser.showOpenDialog(frame);
+
+//        JFileChooser jFileChooser = new JFileChooser(System.getProperty("user.home"));
+//        FileNameExtensionFilter csvFilter = new FileNameExtensionFilter("csv file", "csv");
+//        jFileChooser.setMultiSelectionEnabled(true);
+//        jFileChooser.addChoosableFileFilter(csvFilter);
+//        jFileChooser.setFileFilter(csvFilter);
+//        int result = jFileChooser.showOpenDialog(frame);
         if (result == JFileChooser.APPROVE_OPTION) {
             try {
                 for (File file : jFileChooser.getSelectedFiles()) {
                     Report report = parseCSV(file);
                     getReportContext().putReport(report, Files.getNameWithoutExtension(file.getName()));
                 }
+                MainForm.setLastDir(jFileChooser.getSelectedFiles()[0].getAbsolutePath());
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {

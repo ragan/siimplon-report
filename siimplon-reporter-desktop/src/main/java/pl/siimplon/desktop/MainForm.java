@@ -14,6 +14,8 @@ import pl.siimplon.reporttool.MyCallback;
 import pl.siimplon.reporttool.TransferRepository;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
@@ -21,13 +23,18 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
 
 public class MainForm extends JFrame {
+
+    public static final String PREF_LAST_DIR = "last_open_directory";
 
     private final ResourceBundle names;
 
     private final ReportContext context;
+    public static final Preferences preferences;
 
     private JPanel panelMain;
 
@@ -40,6 +47,27 @@ public class MainForm extends JFrame {
     private JComboBox<String> comboBoxColumnScheme;
 
     private JButton buttonMake;
+
+    static {
+        preferences = Preferences.systemNodeForPackage(MainForm.class);
+    }
+
+    public static JFileChooser getFileDialog(String description, String extension) {
+        JFileChooser jFileChooser = new JFileChooser(MainForm.getLastDir());
+        jFileChooser.setMultiSelectionEnabled(true);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(description, extension);
+        jFileChooser.addChoosableFileFilter(filter);
+        jFileChooser.setFileFilter(filter);
+        return jFileChooser;
+    }
+
+    public static String getLastDir() {
+        return preferences.get(PREF_LAST_DIR, System.getProperty("user.home"));
+    }
+
+    public static void setLastDir(String dir) {
+        preferences.put(PREF_LAST_DIR, dir);
+    }
 
     public MainForm(ReportContext context) {
         super();
