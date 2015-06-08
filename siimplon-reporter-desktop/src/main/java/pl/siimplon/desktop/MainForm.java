@@ -15,12 +15,12 @@ import pl.siimplon.reporttool.TransferRepository;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.xml.stream.XMLStreamException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -33,8 +33,12 @@ public class MainForm extends JFrame {
 
     private final ResourceBundle names;
 
-    private final ReportContext context;
+    private ReportContext context;
     public static final Preferences preferences;
+
+    private static String sourcesContextSource;
+
+    private static SourcesContext sourcesContext;
 
     private JPanel panelMain;
 
@@ -69,8 +73,34 @@ public class MainForm extends JFrame {
         preferences.put(PREF_LAST_DIR, dir);
     }
 
+    public static void addReportSource(String name, File file) {
+        sourcesContext.addReportURI(name, file.toURI());
+    }
+
+    public static void delReportSource(String name) {
+        sourcesContext.delReportURI(name);
+    }
+
+    public static void addSchemeSource(String name, File file) {
+        sourcesContext.addSchemeURI(name, file.toURI());
+    }
+
+    public static void delSchemeSource(String name) {
+        sourcesContext.delSchemeURI(name);
+    }
+
+    public static void addSourceSource(String name, File file) {
+        sourcesContext.addSourceURI(name, file.toURI());
+    }
+
+    public static void delSourceSource(String name) {
+        sourcesContext.delSourceURI(name);
+    }
+
     public MainForm(ReportContext context) {
         super();
+
+        sourcesContext = new SourcesContext();
 
         this.context = context;
 
@@ -146,6 +176,53 @@ public class MainForm extends JFrame {
         });
         menuTools.add(exportXLS);
 
+        JMenu menuFile = new JMenu("File");
+        JMenuItem miNew = new JMenuItem("New");
+        miNew.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser jFileChooser = new JFileChooser(MainForm.getLastDir());
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("Project file", "xml");
+                jFileChooser.addChoosableFileFilter(filter);
+                jFileChooser.setFileFilter(filter);
+                int result = jFileChooser.showSaveDialog(MainForm.this);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    sourcesContextSource = jFileChooser.getSelectedFile().getAbsolutePath();
+                }
+
+                sourcesContext = new SourcesContext();
+                setContext(new ReportContext());
+            }
+        });
+        JMenuItem miOpen = new JMenuItem("Open...");
+        miOpen.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser jFileChooser = new JFileChooser(System.getProperty("user.home"));
+                FileNameExtensionFilter xmlFilter = new FileNameExtensionFilter("Project file", "xml");
+                jFileChooser.addChoosableFileFilter(xmlFilter);
+                jFileChooser.setFileFilter(xmlFilter);
+                int result = jFileChooser.showOpenDialog(MainForm.this);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    sourcesContext = new SourcesContext();
+                    setContext(new ReportContext());
+
+                    File file = jFileChooser.getSelectedFile();
+                    try {
+                        sourcesContext.makeFromXml(new FileInputStream(file));
+                    } catch (XMLStreamException e1) {
+                        e1.printStackTrace();
+                    } catch (FileNotFoundException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+
+            }
+        });
+        menuFile.add(miNew);
+
+
+        jMenuBar.add(menuFile);
         jMenuBar.add(menuContext);
         jMenuBar.add(menuTools);
         setJMenuBar(jMenuBar);
@@ -212,27 +289,16 @@ public class MainForm extends JFrame {
 
                 new Thread(new Runnable() {
                     public void run() {
-                        getContext().make(reportAlias, firstSourceName, secondSourceName, firstSchemeName, secondSchemeName, new MyCallback());
+                        getContext().make(reportAlias, firstSourceName, secondSourceName,
+                                firstSchemeName, secondSchemeName, new MyCallback());
                     }
                 }).run();
-
-//                SwingWorker<Report, Void> worker = new SwingWorker<Report, Void>() {
-//                    @Override
-//                    protected Report doInBackground() throws Exception {
-//                        Report report;
-//                        try {
-//                            report = getContext().getReport(reportAlias);
-//                        } catch (IllegalArgumentException e) {
-//                            report = new Report(getContext().getColumnScheme(((String) comboBoxColumnScheme.getSelectedItem())));
-//                            getContext().putReport(report, reportAlias);
-//                        }
-//                        getContext().make(reportAlias, firstSourceName, secondSourceName, firstSchemeName, secondSchemeName, new MyCallback());
-//                        return report;
-//                    }
-//                };
-//                worker.execute();
             }
         });
+    }
+
+    private void setContext(ReportContext context) {
+        this.context = context;
     }
 
     public ReportContext getContext() {

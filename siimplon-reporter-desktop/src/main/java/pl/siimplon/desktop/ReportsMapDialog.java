@@ -40,12 +40,6 @@ public class ReportsMapDialog extends MapEditorDialog<Report> {
         JFileChooser jFileChooser = MainForm.getFileDialog("CSV Files", "csv");
         int result = jFileChooser.showOpenDialog(frame);
 
-//        JFileChooser jFileChooser = new JFileChooser(System.getProperty("user.home"));
-//        FileNameExtensionFilter csvFilter = new FileNameExtensionFilter("csv file", "csv");
-//        jFileChooser.setMultiSelectionEnabled(true);
-//        jFileChooser.addChoosableFileFilter(csvFilter);
-//        jFileChooser.setFileFilter(csvFilter);
-//        int result = jFileChooser.showOpenDialog(frame);
         if (result == JFileChooser.APPROVE_OPTION) {
             try {
                 for (File file : jFileChooser.getSelectedFiles()) {
