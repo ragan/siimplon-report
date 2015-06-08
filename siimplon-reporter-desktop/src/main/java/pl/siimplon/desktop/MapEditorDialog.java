@@ -33,9 +33,12 @@ public abstract class MapEditorDialog<T> extends JDialog {
 
     private ReportContext reportContext;
 
-    public MapEditorDialog(final JFrame frame, final Map<String, T> map, ReportContext reportContext) {
+    protected final MainForm mainForm;
+
+    public MapEditorDialog(final MainForm mainForm, final Map<String, T> map) {
+        this.mainForm = mainForm;
         this.map = map;
-        this.reportContext = reportContext;
+        this.reportContext = mainForm.getContext();
         setContentPane(contentPane);
         setModal(true);
 
@@ -68,7 +71,7 @@ public abstract class MapEditorDialog<T> extends JDialog {
 
         addButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                addButton(frame, map);
+                addButton(mainForm, map);
             }
         });
 
@@ -89,7 +92,7 @@ public abstract class MapEditorDialog<T> extends JDialog {
             setJMenuBar(jMenuBar);
         }
 
-        setLocationRelativeTo(frame);
+        setLocationRelativeTo(mainForm);
         pack();
         setVisible(true);
     }
@@ -121,7 +124,7 @@ public abstract class MapEditorDialog<T> extends JDialog {
 
     protected void populateTableData(DefaultTableModel myTableModel) {
         if (myTableModel.getRowCount() > 0) {
-            for (int i = myTableModel.getRowCount() - 1; i > - 1; i--) {
+            for (int i = myTableModel.getRowCount() - 1; i > -1; i--) {
                 myTableModel.removeRow(i);
             }
         }

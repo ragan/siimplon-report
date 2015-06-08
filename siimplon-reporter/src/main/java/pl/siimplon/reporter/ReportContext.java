@@ -270,6 +270,7 @@ public class ReportContext {
         return columnScheme;
     }
 
+    //TODO: this should not be here.
     public Document getTransferXML(List<TransferPair> list, String transferName) throws ParserConfigurationException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();

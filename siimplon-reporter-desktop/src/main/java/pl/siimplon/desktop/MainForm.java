@@ -1,8 +1,15 @@
 package pl.siimplon.desktop;
 
+import com.google.common.io.Files;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.geotools.data.shapefile.ShapefileDataStore;
+import org.geotools.data.simple.SimpleFeatureIterator;
+import org.w3c.dom.Document;
 import pl.siimplon.reporter.ContextListenerAdapter;
 import pl.siimplon.reporter.ReportContext;
 import pl.siimplon.reporter.analyzer.AnalyzeItem;
@@ -11,20 +18,24 @@ import pl.siimplon.reporter.report.record.Record;
 import pl.siimplon.reporter.report.value.Value;
 import pl.siimplon.reporter.scheme.transfer.TransferPair;
 import pl.siimplon.reporttool.MyCallback;
+import pl.siimplon.reporttool.SimpleFeatureAnalyzeItem;
 import pl.siimplon.reporttool.TransferRepository;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.URI;
+import java.nio.charset.Charset;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
 public class MainForm extends JFrame {
@@ -36,7 +47,7 @@ public class MainForm extends JFrame {
     private ReportContext context;
     public static final Preferences preferences;
 
-    private static String sourcesContextSource;
+    private static String sourcesContextSource = "";
 
     private static SourcesContext sourcesContext;
 
@@ -115,7 +126,7 @@ public class MainForm extends JFrame {
         menuItemSources.setName(names.getString("form.main.menuItem.sources"));
         menuItemSources.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                new MapSourcesEditor(MainForm.this, getContext().getFeaturesMap(), getContext());
+                new MapSourcesEditor(MainForm.this, getContext().getFeaturesMap());
             }
         });
         menuContext.add(menuItemSources);
@@ -123,7 +134,7 @@ public class MainForm extends JFrame {
         menuItemReports.setName(names.getString("form.main.menuItem.reports"));
         menuItemReports.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                new ReportsMapDialog(MainForm.this, getContext().getReportMap(), getContext());
+                new ReportsMapDialog(MainForm.this, getContext().getReportMap());
             }
         });
         menuContext.add(menuItemReports);
@@ -131,7 +142,7 @@ public class MainForm extends JFrame {
         menuItemTransfers.setName(names.getString("form.main.menuItem.context.transfers"));
         menuItemTransfers.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                new TransfersDialog(MainForm.this, getContext().getTransferMap(), getContext());
+                new TransfersDialog(MainForm.this, getContext().getTransferMap());
             }
         });
         menuContext.add(menuItemTransfers);
@@ -177,7 +188,9 @@ public class MainForm extends JFrame {
         menuTools.add(exportXLS);
 
         JMenu menuFile = new JMenu("File");
+        menuFile.setName("menu.file");
         JMenuItem miNew = new JMenuItem("New");
+        miNew.setName("menu.file.new");
         miNew.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -195,6 +208,7 @@ public class MainForm extends JFrame {
             }
         });
         JMenuItem miOpen = new JMenuItem("Open...");
+        miOpen.setName("menu.file.open");
         miOpen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -210,16 +224,61 @@ public class MainForm extends JFrame {
                     File file = jFileChooser.getSelectedFile();
                     try {
                         sourcesContext.makeFromXml(new FileInputStream(file));
-                    } catch (XMLStreamException e1) {
-                        e1.printStackTrace();
-                    } catch (FileNotFoundException e1) {
+
+                        for (Map.Entry<String, URI> entry : sourcesContext.getReportMap().entrySet()) {
+                            Report report = parseCSV(new File(entry.getValue()));
+                            getContext().putReport(report, entry.getKey());
+                        }
+
+                        for (Map.Entry<String, URI> entry : sourcesContext.getSchemeMap().entrySet()) {
+                            File xmlFile = new File(entry.getValue());
+                            getContext().parseXMLTransferList(new FileInputStream(xmlFile),
+                                    entry.getKey());
+                        }
+
+                        for (Map.Entry<String, URI> entry : sourcesContext.getSourceMap().entrySet()) {
+                            getContext().putFeature(getFeatures(new File(entry.getValue())), entry.getKey());
+                        }
+
+                        sourcesContextSource = jFileChooser.getSelectedFile().getAbsolutePath();
+
+                    } catch (XMLStreamException | IOException e1) {
                         e1.printStackTrace();
                     }
                 }
-
             }
         });
+        JMenuItem miSave = new JMenuItem("Save");
+        miSave.setName("menu.file.save");
+        miSave.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (sourcesContextSource.isEmpty()) {
+//                    JOptionPane.showConfirmDialog(MainForm.this, "Please make or open a project context.");
+                    JOptionPane.showMessageDialog(MainForm.this, "Please make or open a project context.");
+                    return;
+                }
+
+                try {
+                    Document document = sourcesContext.makeXmlDocument();
+                    TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                    Transformer transformer = transformerFactory.newTransformer();
+                    transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+                    transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+                    DOMSource source = new DOMSource(document);
+                    StreamResult xmlResult = new StreamResult(new File(sourcesContextSource));
+                    transformer.transform(source, xmlResult);
+                } catch (ParserConfigurationException e1) {
+                    e1.printStackTrace();
+                } catch (TransformerException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
         menuFile.add(miNew);
+        menuFile.add(miOpen);
+        menuFile.add(miSave);
 
 
         jMenuBar.add(menuFile);
@@ -268,7 +327,7 @@ public class MainForm extends JFrame {
         refreshColumnSchemes();
         refreshTransfers();
 
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         pack();
         setVisible(true);
         buttonMake.addActionListener(new ActionListener() {
@@ -332,5 +391,72 @@ public class MainForm extends JFrame {
             comboBoxFirstScheme.addItem(e.getKey());
             comboBoxSecondScheme.addItem(e.getKey());
         }
+    }
+
+    public void addReportFile(File file) throws IOException {
+        if (sourcesContextSource.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please make new project context.");
+            return;
+        }
+        Report report = parseCSV(file);
+        String fileName = Files.getNameWithoutExtension(file.getAbsolutePath());
+        getContext().putReport(report, fileName);
+        sourcesContext.addReportURI(fileName, file.toURI());
+    }
+
+    private Report parseCSV(File file) throws IOException {
+        FileReader fileReader = new FileReader(file);
+        CSVParser csvRecords = new CSVParser(fileReader, CSVFormat.EXCEL);
+        Report report = null;
+        List<String> values;
+
+        for (CSVRecord record : csvRecords) {
+            values = new ArrayList<>();
+            for (int i = 0; i < record.size(); i++) {
+                if (report == null) {
+                    report = new Report(record.size());
+                }
+                values.add(record.get(i));
+            }
+            if (report != null) report.addRecord(values);
+            values.clear();
+        }
+        return report;
+    }
+
+    public void addTransferList(File file) throws IOException, XMLStreamException {
+        if (sourcesContextSource.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please make new project context.");
+            return;
+        }
+        String fileName = Files.getNameWithoutExtension(file.getAbsolutePath());
+        sourcesContext.addSchemeURI(fileName, file.toURI());
+        FileInputStream stream = new FileInputStream(file);
+        getContext().parseXMLTransferList(stream, fileName);
+        stream.close();
+        setLastDir(file.getAbsolutePath());
+    }
+
+    private List<AnalyzeItem> getFeatures(File file) throws IOException {
+        ShapefileDataStore store = new ShapefileDataStore(file.toURI().toURL());
+        store.setCharset(Charset.forName("UTF-8"));
+        SimpleFeatureIterator features = store.getFeatureSource().getFeatures().features();
+        List<AnalyzeItem> featureList = new Vector<>();
+        while (features.hasNext()) {
+            featureList.add(new SimpleFeatureAnalyzeItem(features.next()));
+        }
+        features.close();
+        return featureList;
+    }
+
+    public void addMapSource(File file) throws IOException {
+        if (sourcesContextSource.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please make new project context.");
+            return;
+        }
+        List<AnalyzeItem> features = getFeatures(file);
+        String fileName = Files.getNameWithoutExtension(file.getAbsolutePath());
+        getContext().putFeature(features, fileName);
+        sourcesContext.addSourceURI(fileName, file.toURI());
     }
 }

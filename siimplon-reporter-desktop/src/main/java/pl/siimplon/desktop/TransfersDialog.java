@@ -17,8 +17,8 @@ import java.util.Map;
 
 public class TransfersDialog extends MapEditorDialog<List<TransferPair>> {
 
-    public TransfersDialog(JFrame frame, Map<String, List<TransferPair>> map, ReportContext reportContext) {
-        super(frame, map, reportContext);
+    public TransfersDialog(MainForm mainForm, Map<String, List<TransferPair>> map) {
+        super(mainForm, map);
     }
 
     @Override
@@ -43,18 +43,10 @@ public class TransfersDialog extends MapEditorDialog<List<TransferPair>> {
                 if (result == JFileChooser.APPROVE_OPTION) {
                     MainForm.setLastDir(jFileChooser.getSelectedFiles()[0].getAbsolutePath());
                     for (File file : jFileChooser.getSelectedFiles()) {
-                        FileInputStream stream;
                         try {
-                            stream = new FileInputStream(file);
-                            List<TransferPair> transferPairs = getReportContext().parseXMLList(stream);
-                            getReportContext().putTransfer(transferPairs, Files.getNameWithoutExtension(file.getName()));
-                            stream.close();
+                            mainForm.addTransferList(file);
                             populateTableData(getTableModel());
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        } catch (XMLStreamException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
+                        } catch (IOException | XMLStreamException e) {
                             e.printStackTrace();
                         }
                     }

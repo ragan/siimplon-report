@@ -20,8 +20,8 @@ import java.util.Map;
 
 public class ReportsMapDialog extends MapEditorDialog<Report> {
 
-    public ReportsMapDialog(JFrame frame, Map<String, Report> map, ReportContext reportContext) {
-        super(frame, map, reportContext);
+    public ReportsMapDialog(MainForm mainForm, Map<String, Report> map) {
+        super(mainForm, map);
     }
 
     @Override
@@ -43,36 +43,14 @@ public class ReportsMapDialog extends MapEditorDialog<Report> {
         if (result == JFileChooser.APPROVE_OPTION) {
             try {
                 for (File file : jFileChooser.getSelectedFiles()) {
-                    Report report = parseCSV(file);
-                    getReportContext().putReport(report, Files.getNameWithoutExtension(file.getName()));
+//                    Report report = mainForm.parseCSV(file);
+//                    getReportContext().putReport(report, Files.getNameWithoutExtension(file.getName()));
+                    mainForm.addReportFile(file);
                 }
                 MainForm.setLastDir(jFileChooser.getSelectedFiles()[0].getAbsolutePath());
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
-
-    private Report parseCSV(File file) throws IOException {
-        FileReader fileReader = new FileReader(file);
-        CSVParser csvRecords = new CSVParser(fileReader, CSVFormat.EXCEL);
-        Report report = null;
-        List<String> values;
-
-        for (CSVRecord record : csvRecords) {
-            values = new ArrayList<String>();
-            for (int i = 0; i < record.size(); i++) {
-                if (report == null) {
-                    report = new Report(record.size());
-                }
-                values.add(record.get(i));
-            }
-            if (report != null) report.addRecord(values);
-            values.clear();
-        }
-        return report;
-    }
-
 }

@@ -16,8 +16,8 @@ import java.util.Vector;
 
 public class MapSourcesEditor extends MapEditorDialog<List<AnalyzeItem>> {
 
-    public MapSourcesEditor(JFrame frame, Map<String, List<AnalyzeItem>> map, ReportContext reportContext) {
-        super(frame, map, reportContext);
+    public MapSourcesEditor(MainForm mainForm, Map<String, List<AnalyzeItem>> map) {
+        super(mainForm, map);
     }
 
     @Override
@@ -36,9 +36,8 @@ public class MapSourcesEditor extends MapEditorDialog<List<AnalyzeItem>> {
         if (result == JFileChooser.APPROVE_OPTION) {
             try {
                 for (File file : jFileChooser.getSelectedFiles()) {
-                    List<AnalyzeItem> features = getFeatures(file);
-                    getReportContext().putFeature(features, file.getName());
-                    getTableModel().addRow(new Object[]{file.getName(), features.toString()});
+                    mainForm.addMapSource(file);
+                    populateTableData(getTableModel());
                 }
                 MainForm.setLastDir(jFileChooser.getSelectedFiles()[0].getAbsolutePath());
             } catch (IOException e) {
@@ -47,15 +46,5 @@ public class MapSourcesEditor extends MapEditorDialog<List<AnalyzeItem>> {
         }
     }
 
-    private List<AnalyzeItem> getFeatures(File file) throws IOException {
-        ShapefileDataStore store = new ShapefileDataStore(file.toURI().toURL());
-        store.setCharset(Charset.forName("UTF-8"));
-        SimpleFeatureIterator features = store.getFeatureSource().getFeatures().features();
-        List<AnalyzeItem> featureList = new Vector<AnalyzeItem>();
-        while (features.hasNext()) {
-            featureList.add(new SimpleFeatureAnalyzeItem(features.next()));
-        }
-        features.close();
-        return featureList;
-    }
+
 }

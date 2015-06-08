@@ -19,10 +19,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SourcesContext {
 
@@ -125,5 +122,18 @@ public class SourcesContext {
         String name = reader.getAttributeValue(0);
         URI uri = URI.create(reader.getAttributeValue(1));
         map.put(name, uri);
+    }
+
+    public Map<String, URI> getReportMap() {
+        return Collections.unmodifiableMap(reportMap);
+    }
+
+    public Map<String, URI> getSourceMap() {
+        return Collections.unmodifiableMap(sourceMap);
+    }
+
+    //TODO: rename to transfer list
+    public Map<String, URI> getSchemeMap() {
+        return Collections.unmodifiableMap(schemeMap);
     }
 }

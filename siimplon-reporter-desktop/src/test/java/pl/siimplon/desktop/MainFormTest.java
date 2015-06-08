@@ -16,6 +16,7 @@ import pl.siimplon.reporter.report.value.Value;
 import pl.siimplon.reporter.scheme.transfer.TransferPair;
 
 import java.io.File;
+import java.net.URL;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
@@ -34,6 +35,37 @@ public class MainFormTest extends MainTest {
         requireButton("form.main.button.makeReport");
 
         requireMenuItem("form.main.menuItem.context");
+    }
+
+    @Test
+    public void testSaveAndLoad() throws Exception {
+        window.menuItem("menu.file").click();
+        window.menuItem("menu.file.new").click();
+
+        JFileChooserFixture fileChooser = window.fileChooser();
+        URL resource = Resources.getResource("");
+//        fileChooser.selectFile(new File(resource.getFile()));
+        fileChooser.setCurrentDirectory(new File(resource.getFile()));
+        fileChooser.fileNameTextBox().enterText("testProject.xml");
+        fileChooser.approve();
+        openMapSourcesDialog();
+        DialogFixture dialog = window.dialog(get("form.main.dialog.sourceDialog"));
+        JButtonFixture button = dialog.button(get("form.main.dialog.button.add"));
+        button.click();
+        fileChooser = window.fileChooser();
+        fileChooser.setCurrentDirectory(new File(Resources.getResource("/ew/ew.shp").getFile()));
+        dialog.close();
+
+        window.menuItem("menu.file").click();
+        window.menuItem("menu.file.save").click();
+
+        window.menuItem("menu.file").click();
+        window.menuItem("menu.file.open").click();
+
+        fileChooser = window.fileChooser();
+        fileChooser.setCurrentDirectory(new File(resource.getFile()));
+//        fileChooser.selectFile(new File(Resources.getResource("/testProject.xml")))
+
     }
 
     @Test
