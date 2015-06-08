@@ -39,6 +39,10 @@ import java.util.List;
 import java.util.prefs.Preferences;
 
 //TODO: save all that are not saved (if context have not saved files)
+//TODO: raport niech się sam podcina (niech nie jest taki szeroki) + ew. rozszerza jak potrzeba
+//TODO: jw. + nie potrzeba wyboru schematu skoro wszystko to stringi
+
+//TODO: buttony przenieść do swoich funkcji
 public class MainForm extends JFrame {
 
     public static final String PREF_LAST_DIR = "last_open_directory";
