@@ -10,6 +10,8 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.w3c.dom.Document;
+import pl.siimplon.desktop.batch.Batch;
+import pl.siimplon.desktop.batch.BatchEntry;
 import pl.siimplon.reporter.ContextListenerAdapter;
 import pl.siimplon.reporter.ReportContext;
 import pl.siimplon.reporter.analyzer.AnalyzeItem;
@@ -28,7 +30,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
@@ -43,6 +44,7 @@ import java.util.prefs.Preferences;
 //TODO: jw. + nie potrzeba wyboru schematu skoro wszystko to stringi
 
 //TODO: buttony przenieść do swoich funkcji
+//TODO: append extension to files when needed
 public class MainForm extends JFrame {
 
     public static final String PREF_LAST_DIR = "last_open_directory";
@@ -60,6 +62,8 @@ public class MainForm extends JFrame {
 
     private JTextField textFieldReportAlias;
 
+    private Batch batch;
+
     private JComboBox<String> comboBoxFirstSource;
     private JComboBox<String> comboBoxSecondSource;
     private JComboBox<String> comboBoxFirstScheme;
@@ -67,6 +71,7 @@ public class MainForm extends JFrame {
     private JComboBox<String> comboBoxColumnScheme;
 
     private JButton buttonMake;
+    private JButton buttonAddToBatch;
 
     static {
         preferences = Preferences.systemNodeForPackage(MainForm.class);
@@ -80,30 +85,6 @@ public class MainForm extends JFrame {
         preferences.put(PREF_LAST_DIR, dir);
     }
 
-    public static void addReportSource(String name, File file) {
-        sourcesContext.addReportURI(name, file.toURI());
-    }
-
-    public static void delReportSource(String name) {
-        sourcesContext.delReportURI(name);
-    }
-
-    public static void addSchemeSource(String name, File file) {
-        sourcesContext.addSchemeURI(name, file.toURI());
-    }
-
-    public static void delSchemeSource(String name) {
-        sourcesContext.delSchemeURI(name);
-    }
-
-    public static void addSourceSource(String name, File file) {
-        sourcesContext.addSourceURI(name, file.toURI());
-    }
-
-    public static void delSourceSource(String name) {
-        sourcesContext.delSourceURI(name);
-    }
-
     public MainForm(ReportContext context) {
         super();
 
@@ -112,6 +93,8 @@ public class MainForm extends JFrame {
         this.context = context;
 
         setContentPane(panelMain);
+
+        batch = new Batch();
 
         names = ResourceBundle.getBundle("names");
 
@@ -145,11 +128,40 @@ public class MainForm extends JFrame {
 
         JMenu menuTools = new JMenu("Tools");
         menuTools.setName(names.getString("form.main.menuItem.tools"));
+
+        JMenuItem miMakeBatch = new JMenuItem("Make Batch");
+        miMakeBatch.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                int result = JOptionPane.showConfirmDialog(MainForm.this, "RLY?");
+                if (result == JOptionPane.YES_OPTION) {
+                    for (BatchEntry entry : getBatch().getEntries()) {
+                        switch (entry.getType()) {
+                            case MAKE:
+                                make(
+                                        entry.getValues().get(0), entry.getValues().get(1), entry.getValues().get(2), entry.getValues().get(3), entry.getValues().get(4)
+                                );
+                                break;
+                            case MERGE:
+                                merge(
+                                        entry.getValues().get(0),
+                                        getContext().getReport(entry.getValues().get(1)),
+                                        getContext().getReport(entry.getValues().get(2))
+                                );
+                                break;
+                        }
+                    }
+                }
+            }
+        });
+        menuTools.add(miMakeBatch);
+        //TODO: refresh all elements when necessary
+//TODO: "please make new project" before file chooser
         JMenuItem menuItemMerge = new JMenuItem("Merge");
         menuItemMerge.setName(names.getString("form.main.menuItem.mergetool"));
         menuItemMerge.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                new MergeToolDialog(getContext()).setVisible(true);
+                new MergeToolDialog(getContext(), MainForm.this).setVisible(true);
             }
         });
         menuTools.add(menuItemMerge);
@@ -183,6 +195,15 @@ public class MainForm extends JFrame {
         });
         menuTools.add(exportXLS);
 
+        JMenuItem miBatch = new JMenuItem("Batch");
+        miBatch.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                new BatchDialog(MainForm.this).setVisible(true);
+            }
+        });
+        menuTools.add(miBatch);
+
         JMenu menuFile = new JMenu("File");
         menuFile.setName("menu.file");
         JMenuItem miNew = new JMenuItem("New");
@@ -198,9 +219,11 @@ public class MainForm extends JFrame {
                 if (result == JFileChooser.APPROVE_OPTION) {
                     sourcesContextSource = jFileChooser.getSelectedFile().getAbsolutePath();
                 }
-
                 sourcesContext = new SourcesContext();
                 setContext(new ReportContext());
+                refreshColumnSchemes();
+                refreshSources();
+                refreshTransfers();
             }
         });
         JMenuItem miOpen = new JMenuItem("Open...");
@@ -237,6 +260,9 @@ public class MainForm extends JFrame {
                         }
 
                         sourcesContextSource = jFileChooser.getSelectedFile().getAbsolutePath();
+                        refreshColumnSchemes();
+                        refreshSources();
+                        refreshTransfers();
 
                     } catch (XMLStreamException | IOException e1) {
                         e1.printStackTrace();
@@ -249,9 +275,7 @@ public class MainForm extends JFrame {
         miSave.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 //TODO: check if everything is saved
-
                 if (sourcesContextSource.isEmpty()) {
                     JOptionPane.showMessageDialog(MainForm.this, "Please make or open a project context.");
                     return;
@@ -272,10 +296,65 @@ public class MainForm extends JFrame {
             }
         });
 
+        JMenuItem miLoadBatch = new JMenuItem("Load Batch...");
+        miLoadBatch.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                JFileChooser fileChooser = getBatchFileChooser();
+                int result = fileChooser.showOpenDialog(MainForm.this);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    batch = new Batch();
+                    try {
+                        FileInputStream stream = new FileInputStream(fileChooser.getSelectedFile());
+                        batch.makeFromXml(stream);
+                        stream.close();
+                    } catch (XMLStreamException | FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        JMenuItem miSaveBatch = new JMenuItem("Save Batch...");
+        miSaveBatch.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                JFileChooser fileChooser = getBatchFileChooser();
+                int result = fileChooser.showSaveDialog(MainForm.this);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    Document document = null;
+                    try {
+                        document = batch.getXml();
+                    } catch (ParserConfigurationException e) {
+                        e.printStackTrace();
+                    }
+                    TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                    Transformer transformer = null;
+                    try {
+                        transformer = transformerFactory.newTransformer();
+                    } catch (TransformerConfigurationException e) {
+                        e.printStackTrace();
+                    }
+                    transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+                    transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+                    DOMSource source = new DOMSource(document);
+                    StreamResult xmlResult = new StreamResult(fileChooser.getSelectedFile());
+                    try {
+                        transformer.transform(source, xmlResult);
+                    } catch (TransformerException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
         menuFile.add(miNew);
         menuFile.add(miOpen);
         menuFile.add(miSave);
-
+        menuFile.addSeparator();
+        menuFile.add(miLoadBatch);
+        menuFile.add(miSaveBatch);
 
         jMenuBar.add(menuFile);
         jMenuBar.add(menuContext);
@@ -350,10 +429,48 @@ public class MainForm extends JFrame {
                 }).run();
             }
         });
+
+        buttonAddToBatch.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                onAddToBatch();
+            }
+        });
+    }
+
+    private void make(String reportAlias, String firstSourceName, String secondSourceName, String firstSchemeName, String secondSchemeName) {
+        Report report;
+        try {
+            report = getContext().getReport(reportAlias);
+        } catch (IllegalArgumentException e) {
+            report = new Report(getContext().getColumnScheme(((String) comboBoxColumnScheme.getSelectedItem())));
+            getContext().putReport(report, reportAlias);
+        }
+
+
+        getContext().make(reportAlias, firstSourceName, secondSourceName,
+                firstSchemeName, secondSchemeName, new MyCallback());
+
+    }
+
+    private void onAddToBatch() {
+        String reportAlias = textFieldReportAlias.getText();
+        String firstSource = (String) comboBoxFirstSource.getSelectedItem();
+        String secondSource = (String) comboBoxSecondSource.getSelectedItem();
+        String firstScheme = (String) comboBoxFirstScheme.getSelectedItem();
+        String secondScheme = (String) comboBoxSecondScheme.getSelectedItem();
+
+        BatchEntry batchEntry = new BatchEntry(new String[]{reportAlias, firstSource, secondSource, firstScheme, secondScheme});
+        getBatch().add(batchEntry);
+    }
+
+    public Batch getBatch() {
+        return batch;
     }
 
     private void setContext(ReportContext context) {
         this.context = context;
+        context.putColumnScheme(TransferRepository.zeroColumnScheme, "zero-column-scheme");
     }
 
     public ReportContext getContext() {
@@ -480,6 +597,10 @@ public class MainForm extends JFrame {
         return fc;
     }
 
+    public JFileChooser getBatchFileChooser() {
+        return getFileChooser(false, "XML", "xml");
+    }
+
     public JFileChooser getReportFileChooser() {
         return getReportFileChooser(true);
     }
@@ -502,5 +623,16 @@ public class MainForm extends JFrame {
 
     public JFileChooser getMapSourceFileChooser(boolean multiSelection) {
         return getFileChooser(multiSelection, "SHP File", "shp");
+    }
+
+    public void merge(String alias, Report first, Report second) {
+        Report finalReport = new Report(first.getTypes());
+        finalReport.add(first);
+        finalReport.add(second);
+        getContext().putReport(finalReport, alias);
+    }
+
+    public void addBatchEntry(BatchEntry.Type type, String... values) {
+        getBatch().add(new BatchEntry(values, type));
     }
 }

@@ -1,5 +1,6 @@
 package pl.siimplon.desktop;
 
+import pl.siimplon.desktop.batch.BatchEntry;
 import pl.siimplon.reporter.ReportContext;
 import pl.siimplon.reporter.report.Report;
 
@@ -15,18 +16,21 @@ public class MergeToolDialog extends JDialog implements ItemListener {
     private JComboBox<String> comboBoxSecond;
     private JButton buttonMerge;
     private JTextField textFieldAlias;
+    private JButton addToBatchButton;
 
     private Map<String, Report> reportMap;
 
     private ReportContext reportContext;
+    private MainForm mainForm;
 
-    public MergeToolDialog(ReportContext reportContext) {
-        this(reportContext.getReportMap(), reportContext);
+    public MergeToolDialog(ReportContext reportContext, MainForm mainForm) {
+        this(reportContext.getReportMap(), reportContext, mainForm);
     }
 
-    public MergeToolDialog(final Map<String, Report> reportMap, final ReportContext reportContext) {
+    public MergeToolDialog(final Map<String, Report> reportMap, final ReportContext reportContext, final MainForm mainForm) {
         this.reportMap = reportMap;
         this.reportContext = reportContext;
+        this.mainForm = mainForm;
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonMerge);
@@ -75,11 +79,19 @@ public class MergeToolDialog extends JDialog implements ItemListener {
                 Report first = reportMap.get(((String) comboBoxFirst.getSelectedItem()));
                 Report second = reportMap.get(((String) comboBoxSecond.getSelectedItem()));
 
-                Report finalReport = new Report(first.getTypes());
-                finalReport.add(first);
-                finalReport.add(second);
-                reportContext.putReport(finalReport, textFieldAlias.getText());
+
+                mainForm.merge(textFieldAlias.getText(), first, second);
+
                 dispose();
+            }
+        });
+        addToBatchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                Report first = reportMap.get(((String) comboBoxFirst.getSelectedItem()));
+                Report second = reportMap.get(((String) comboBoxSecond.getSelectedItem()));
+
+                mainForm.addBatchEntry(BatchEntry.Type.MERGE, (String) comboBoxFirst.getSelectedItem(), (String) comboBoxSecond.getSelectedItem());
             }
         });
 
