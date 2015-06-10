@@ -12,6 +12,7 @@ import pl.siimplon.reporter.scheme.transfer.TransferPair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -539,7 +540,20 @@ public class RowSchemeTest {
         RowScheme rowScheme = new RowScheme(Arrays.asList(
                 new TransferPair(Transfer.GET_PART_NUM_AND_SUM, report, 1, Arrays.asList("C"), Arrays.asList(0))
         ));
+        rowScheme.getRowValues(null, null);
+    }
+
+    @Test
+    public void testGetPartNumAndSumNoConditions() throws Exception {
+        Report report = new Report(LITERAL, NUMBER);
+        report.addRecord("A", "1.0");
+        report.addRecord("B", "1.0");
+
+        RowScheme rowScheme = new RowScheme(Arrays.asList(
+                new TransferPair(Transfer.GET_PART_NUM_AND_SUM, report, 1, Collections.emptyList(), Collections.emptyList())
+        ));
         String[] rowValues = rowScheme.getRowValues(null, null);
+        assertEquals("2.00", rowValues[0]);
     }
 
     @Test

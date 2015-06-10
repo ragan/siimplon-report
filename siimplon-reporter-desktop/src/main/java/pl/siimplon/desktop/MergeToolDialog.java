@@ -91,7 +91,7 @@ public class MergeToolDialog extends JDialog implements ItemListener {
                 Report first = reportMap.get(((String) comboBoxFirst.getSelectedItem()));
                 Report second = reportMap.get(((String) comboBoxSecond.getSelectedItem()));
 
-                mainForm.addBatchEntry(BatchEntry.Type.MERGE, (String) comboBoxFirst.getSelectedItem(), (String) comboBoxSecond.getSelectedItem());
+                mainForm.addBatchEntry(BatchEntry.Type.MERGE, textFieldAlias.getText(), (String) comboBoxFirst.getSelectedItem(), (String) comboBoxSecond.getSelectedItem());
             }
         });
 

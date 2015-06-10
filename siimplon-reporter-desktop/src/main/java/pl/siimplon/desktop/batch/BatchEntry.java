@@ -9,7 +9,7 @@ public class BatchEntry {
         MAKE, MERGE
     }
 
-    private final Type type;
+    private Type type;
 
     protected String[] values;
 
@@ -19,6 +19,7 @@ public class BatchEntry {
         if (type == Type.MAKE) size = 5;
         else if (type == Type.MERGE) size = 3;
         values = new String[size];
+        if (size == 3) this.type = Type.MERGE;
     }
 
     public BatchEntry(String[] values) {

@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.ResourceBundle;
 
 public class TransferEditor extends JDialog {
@@ -114,6 +115,7 @@ public class TransferEditor extends JDialog {
             case INTEGER_VECTOR:
                 ArrayList<Integer> ints = new ArrayList<Integer>();
                 String[] integerSplit = textFields[ix].getText().split(",");
+                if (integerSplit.length == 1 && integerSplit[0].isEmpty()) return Collections.emptyList();
                 for (int i = 0; i < integerSplit.length; i++) {
                     integerSplit[i] = integerSplit[i].trim();
                     ints.add(Integer.valueOf(integerSplit[i]));
@@ -122,6 +124,7 @@ public class TransferEditor extends JDialog {
             case STRING_VECTOR:
                 ArrayList<String> strings = new ArrayList<String>();
                 String[] stringSplit = textFields[ix].getText().split(",");
+                if (stringSplit.length == 1 && stringSplit[0].isEmpty()) return Collections.emptyList();
                 for (int i = 0; i < stringSplit.length; i++) {
                     stringSplit[i] = stringSplit[i].trim();
                     strings.add(String.valueOf(stringSplit[i]));

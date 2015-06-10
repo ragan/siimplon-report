@@ -42,6 +42,12 @@ public class BatchTest {
                 "    <value>d</value>\n" +
                 "    <value>e</value>\n" +
                 "  </entry>\n" +
+                "  <entry type=\"MERGE\">\n" +
+                "    <value>c</value>\n" +
+                "    <value>d</value>\n" +
+                "    <value>e</value>\n" +
+                "  </entry>\n" +
+
                 "</batch>\n";
         Batch batch = new Batch();
         ByteArrayInputStream stream = new ByteArrayInputStream(xml.getBytes());
@@ -51,5 +57,8 @@ public class BatchTest {
         assertNotNull(enty);
 
         assertEquals(BatchEntry.Type.MAKE, enty.getType());
+        enty = batch.getEntries().get(1);
+        assertNotNull(enty);
+        assertEquals(BatchEntry.Type.MERGE, enty.getType());
     }
 }

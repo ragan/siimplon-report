@@ -14,6 +14,7 @@ import pl.siimplon.desktop.batch.Batch;
 import pl.siimplon.desktop.batch.BatchEntry;
 import pl.siimplon.reporter.ContextListenerAdapter;
 import pl.siimplon.reporter.ReportContext;
+import pl.siimplon.reporter.ReportContextListener;
 import pl.siimplon.reporter.analyzer.AnalyzeItem;
 import pl.siimplon.reporter.report.Report;
 import pl.siimplon.reporter.report.record.Record;
@@ -45,7 +46,7 @@ import java.util.prefs.Preferences;
 
 //TODO: buttony przenieść do swoich funkcji
 //TODO: append extension to files when needed
-public class MainForm extends JFrame {
+public class MainForm extends JFrame implements ReportContextListener {
 
     public static final String PREF_LAST_DIR = "last_open_directory";
 
@@ -138,6 +139,7 @@ public class MainForm extends JFrame {
                     for (BatchEntry entry : getBatch().getEntries()) {
                         switch (entry.getType()) {
                             case MAKE:
+                                //TODO: matko bosko...
                                 make(
                                         entry.getValues().get(0), entry.getValues().get(1), entry.getValues().get(2), entry.getValues().get(3), entry.getValues().get(4)
                                 );
@@ -156,7 +158,7 @@ public class MainForm extends JFrame {
         });
         menuTools.add(miMakeBatch);
         //TODO: refresh all elements when necessary
-//TODO: "please make new project" before file chooser
+        //TODO: "please make new project" before file chooser
         JMenuItem menuItemMerge = new JMenuItem("Merge");
         menuItemMerge.setName(names.getString("form.main.menuItem.mergetool"));
         menuItemMerge.addActionListener(new ActionListener() {
@@ -361,42 +363,44 @@ public class MainForm extends JFrame {
         jMenuBar.add(menuTools);
         setJMenuBar(jMenuBar);
 
-        getContext().addContextListener(new ContextListenerAdapter() {
-            @Override
-            public void featureAdded(List<AnalyzeItem> features, String name) {
-                refreshSources();
-            }
+        getContext().addContextListener(this);
 
-            @Override
-            public void featureRemoved(List<AnalyzeItem> features, String name) {
-                refreshSources();
-            }
-
-            @Override
-            public void columnSchemeRemoved(List<Value.Type> scheme, String name) {
-                refreshColumnSchemes();
-            }
-
-            @Override
-            public void makeFinished(Report report) {
-                new ShowReportDialog(report).setVisible(true);
-            }
-
-            @Override
-            public void columnSchemeAdded(List<Value.Type> scheme, String name) {
-                refreshColumnSchemes();
-            }
-
-            @Override
-            public void transferAdded(List<TransferPair> transfer, String name) {
-                refreshTransfers();
-            }
-
-            @Override
-            public void transferRemoved(List<TransferPair> transfer, String name) {
-                refreshTransfers();
-            }
-        });
+//        getContext().addContextListener(new ContextListenerAdapter() {
+//            @Override
+//            public void featureAdded(List<AnalyzeItem> features, String name) {
+//                refreshSources();
+//            }
+//
+//            @Override
+//            public void featureRemoved(List<AnalyzeItem> features, String name) {
+//                refreshSources();
+//            }
+//
+//            @Override
+//            public void columnSchemeRemoved(List<Value.Type> scheme, String name) {
+//                refreshColumnSchemes();
+//            }
+//
+//            @Override
+//            public void makeFinished(Report report) {
+//                new ShowReportDialog(report).setVisible(true);
+//            }
+//
+//            @Override
+//            public void columnSchemeAdded(List<Value.Type> scheme, String name) {
+//                refreshColumnSchemes();
+//            }
+//
+//            @Override
+//            public void transferAdded(List<TransferPair> transfer, String name) {
+//                refreshTransfers();
+//            }
+//
+//            @Override
+//            public void transferRemoved(List<TransferPair> transfer, String name) {
+//                refreshTransfers();
+//            }
+//        });
 
         refreshSources();
         refreshColumnSchemes();
@@ -447,7 +451,6 @@ public class MainForm extends JFrame {
             getContext().putReport(report, reportAlias);
         }
 
-
         getContext().make(reportAlias, firstSourceName, secondSourceName,
                 firstSchemeName, secondSchemeName, new MyCallback());
 
@@ -471,6 +474,7 @@ public class MainForm extends JFrame {
     private void setContext(ReportContext context) {
         this.context = context;
         context.putColumnScheme(TransferRepository.zeroColumnScheme, "zero-column-scheme");
+        context.addContextListener(this);
     }
 
     public ReportContext getContext() {
@@ -590,6 +594,7 @@ public class MainForm extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (e.getActionCommand().equals(JFileChooser.APPROVE_SELECTION)) {
                     setLastDir(fc.getCurrentDirectory().getAbsolutePath());
+
                 }
             }
         });
@@ -634,5 +639,60 @@ public class MainForm extends JFrame {
 
     public void addBatchEntry(BatchEntry.Type type, String... values) {
         getBatch().add(new BatchEntry(values, type));
+    }
+
+    @Override
+    public void reportAdded(Report report, String name) {
+
+    }
+
+    @Override
+    public void reportRemoved(Report report, String name) {
+
+    }
+
+    @Override
+    public void featureAdded(List<AnalyzeItem> features, String name) {
+        refreshSources();
+    }
+
+    @Override
+    public void featureRemoved(List<AnalyzeItem> features, String name) {
+        refreshSources();
+    }
+
+    @Override
+    public void dictionaryAdded(Set<String> values, String name) {
+
+    }
+
+    @Override
+    public void dictionaryRemoved(Set<String> values, String name) {
+        refreshTransfers();
+    }
+
+    @Override
+    public void transferAdded(List<TransferPair> transfer, String name) {
+        refreshTransfers();
+    }
+
+    @Override
+    public void transferRemoved(List<TransferPair> transfer, String name) {
+
+    }
+
+    @Override
+    public void columnSchemeAdded(List<Value.Type> scheme, String name) {
+        refreshColumnSchemes();
+    }
+
+    @Override
+    public void columnSchemeRemoved(List<Value.Type> scheme, String name) {
+        refreshColumnSchemes();
+    }
+
+    @Override
+    public void makeFinished(Report report) {
+        //new ShowReportDialog(report).setVisible(true);
     }
 }

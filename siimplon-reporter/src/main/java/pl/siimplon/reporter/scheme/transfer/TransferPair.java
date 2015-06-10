@@ -3,6 +3,7 @@ package pl.siimplon.reporter.scheme.transfer;
 import com.sun.istack.internal.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
@@ -50,7 +51,8 @@ public class TransferPair {
                 for (Object val : o) {
                     sb.append(String.valueOf(val)).append(",");
                 }
-                sb.deleteCharAt(sb.length() - 1);
+                if (!sb.toString().isEmpty())
+                    sb.deleteCharAt(sb.length() - 1);
                 return sb.toString();
         }
         return "";
@@ -68,6 +70,10 @@ public class TransferPair {
             case INTEGER_VECTOR:
                 ArrayList<Integer> vals = new ArrayList<>();
                 String[] split = attributeValue.split(",");
+                if (split.length == 1 && split[0].isEmpty()) {
+                    attributes[attrIx] = Collections.emptyList();
+                    return;
+                }
                 for (int i = 0; i < split.length; i++) {
                     split[i] = split[i].trim();
                     vals.add(Integer.valueOf(split[i]));
@@ -77,6 +83,10 @@ public class TransferPair {
             case STRING_VECTOR:
                 ArrayList<String> stringVals = new ArrayList<>();
                 String[] stringSplit = attributeValue.split(",");
+                if (stringSplit.length == 1 && stringSplit[0].isEmpty()) {
+                    attributes[attrIx] = Collections.emptyList();
+                    return;
+                }
                 for (int i = 0; i < stringSplit.length; i++) {
                     stringSplit[i] = stringSplit[i].trim();
                     stringVals.add(stringSplit[i]);

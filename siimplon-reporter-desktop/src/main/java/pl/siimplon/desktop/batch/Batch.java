@@ -68,7 +68,6 @@ public class Batch {
         BatchEntry batchEntry = null;
         BatchEntry.Type type;
         while (reader.hasNext()) {
-
             if (reader.isStartElement()) {
                 switch (reader.getLocalName()) {
                     case "entry":
