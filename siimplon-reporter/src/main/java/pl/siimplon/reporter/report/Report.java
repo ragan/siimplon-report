@@ -96,10 +96,16 @@ public class Report {
     }
 
     public List<String> getStringsByContent(List<String> expValues, List<Integer> expCols) {
-        for (Record record : getRecords()) {
-            if (record.hasValues(expValues, expCols)) return record.getStringValues();
-        }
+        Record r = getRecordByContent(expValues, expCols);
+        if (r != null) return r.getStringValues();
         return Collections.emptyList();
+    }
+
+    public Record getRecordByContent(List<String> expValues, List<Integer> expCols) {
+        for (Record record : getRecords()) {
+            if (record.hasValues(expValues, expCols)) return record;
+        }
+        return null;
     }
 
     public int getCount() {

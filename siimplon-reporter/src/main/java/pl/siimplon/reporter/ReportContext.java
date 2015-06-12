@@ -55,6 +55,11 @@ public class ReportContext {
 
     public void make(String reportName, String mainFeatureName, String otherFeatureName, String mainTransferName,
                      String otherTransferName, AnalyzeCallback callback) {
+        make(reportName, mainFeatureName, otherFeatureName, mainTransferName, otherTransferName, callback, false);
+    }
+
+    public void make(String reportName, String mainFeatureName, String otherFeatureName, String mainTransferName,
+                     String otherTransferName, AnalyzeCallback callback, boolean makeError) {
         Analyzer a = new Analyzer(getReport(reportName));
         RowScheme mainScheme = null;
         if (!mainTransferName.isEmpty()) {
@@ -96,9 +101,23 @@ public class ReportContext {
             else
                 a.analyze(mainFeatures, otherFeatures, mainSchemeList, otherSchemeList, callback);
         }
+
+        Report error;
+        try {
+            error = getReport("ERROR");
+        } catch (IllegalArgumentException e) {
+            error = new Report(1);
+            putReport(error, "ERROR");
+        }
+        if (a.getErrorReport().getRecords().size() > 0) {
+            error.addRecord("REPORT NAME: " + reportName);
+            error.add(a.getErrorReport());
+        }
+
         for (ReportContextListener listener : contextListeners) {
             listener.makeFinished(getReport(reportName));
         }
+
     }
 
     private List<TransferPair> transform(List<TransferPair> transfer) {
@@ -120,6 +139,10 @@ public class ReportContext {
                 case COUNT_DISTINCT_VALUES_CONDITIONAL:
                 case PERCENT_FROM_DISTINCT_VALUES:
                     attributes[0] = getReport(((String) attrs[0]));
+                    break;
+                case INSERT_INTO_REPORT:
+                    attributes[0] = getReport(((String) attrs[0]));
+                    attributes[4] = getReport(((String) attrs[4]));
                     break;
                 default:
                     break;

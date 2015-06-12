@@ -10,8 +10,16 @@ public class Analyzer {
 
     private final Report report;
 
+    private final Report errorReport;
+
     public Analyzer(Report report) {
         this.report = report;
+
+        errorReport = new Report(1);
+    }
+
+    public Report getErrorReport() {
+        return errorReport;
     }
 
     public Report getReport() {
@@ -41,6 +49,7 @@ public class Analyzer {
                             String[] rowValues = mainScheme.getRowValues(main, other, report);
                             report.addRecord(Arrays.asList(rowValues));
                         } catch (Exception ignored) {
+                            errorReport.addRecord(ignored.getMessage());
                         }
                     }
                 }
@@ -50,6 +59,7 @@ public class Analyzer {
                     String[] rowValues = otherScheme.getRowValues(main, report);
                     report.addRecord(Arrays.asList(rowValues));
                 } catch (Exception ignored) {
+                    errorReport.addRecord(ignored.getMessage());
                 }
             }
         }
@@ -62,6 +72,7 @@ public class Analyzer {
                     String[] values = scheme.getRowValues(main, report);
                     report.addRecord(Arrays.asList(values));
                 } catch (IllegalStateException ignored) {
+                    errorReport.addRecord(ignored.toString());
                 }
             }
         }

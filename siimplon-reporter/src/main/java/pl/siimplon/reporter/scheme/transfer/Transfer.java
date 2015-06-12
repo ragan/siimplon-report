@@ -75,6 +75,30 @@ public enum Transfer {
      */
     UNION_AREA,
 
+    /**
+     * Takes value from one record and inserts it into another
+     * <ul>
+     *     <li>[0] - Report from which we take the value.</li>
+     *     <li>[1] - Column of input report.</li>
+     *     <li>[2] - Condition values vector.</li>
+     *     <li>[3] - Condition columns vector.</li>
+     *     <li>[4] - Output report.</li>
+     *     <li>[5] - Column in which to insert value.</li>
+     *     <li>[6] - Condition values.</li>
+     *     <li>[7] - Condition columns.</li>
+     * </ul>
+     */
+    INSERT_INTO_REPORT(8, new Descriptor[]{
+            Descriptor.STRING, // report alias
+            Descriptor.INTEGER, // column where to insert
+            Descriptor.STRING_VECTOR, // values
+            Descriptor.INTEGER_VECTOR, // columns
+            Descriptor.STRING, // input report alias
+            Descriptor.INTEGER, // input report column
+            Descriptor.STRING_VECTOR,
+            Descriptor.INTEGER_VECTOR
+    }),
+
     UNION_LENGTH_REVERSED,
 
     /**

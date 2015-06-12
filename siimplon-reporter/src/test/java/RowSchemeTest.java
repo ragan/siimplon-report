@@ -2,6 +2,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import pl.siimplon.reporter.ReportContext;
+import pl.siimplon.reporter.analyzer.AnalyzeCallback;
 import pl.siimplon.reporter.analyzer.AnalyzeItem;
 import pl.siimplon.reporter.report.Report;
 import pl.siimplon.reporter.report.record.Record;
@@ -544,16 +546,80 @@ public class RowSchemeTest {
     }
 
     @Test
+    public void testInsertValueIntoReport() throws Exception {
+        ReportContext context = new ReportContext();
+        Report reportA = new Report(3);
+        reportA.addRecord("A", "B", "C");
+        Report reportB = new Report(4);
+        reportB.addRecord("D", "", "", "G");
+
+        context.putReport(reportA, "report-a");
+        context.putReport(reportB, "report-b");
+
+        context.putTransfer(
+                Arrays.asList(new TransferPair(
+                        INSERT_INTO_REPORT,
+                        "report-a",
+                        1,
+                        Arrays.asList("A", "C"),
+                        Arrays.asList(0, 2),
+                        "report-b",
+                        1,
+                        Arrays.asList("D", "G"),
+                        Arrays.asList(0, 3)
+                )), "scheme"
+        );
+
+        context.putReport(new Report(1), "dump-report");
+
+        context.make("dump-report", "", "", "scheme", "", new AnalyzeCallback() {
+            @Override
+            public boolean isRelation(AnalyzeItem main, AnalyzeItem other) {
+                return true;
+            }
+        });
+
+        Report report = context.getReport("report-b");
+        assertEquals("D", report.getRecords().get(0).getValue(0).toString());
+        assertEquals("B", report.getRecords().get(0).getValue(1).toString());
+        assertEquals("", report.getRecords().get(0).getValue(2).toString());
+        assertEquals("G", report.getRecords().get(0).getValue(3).toString());
+
+
+    }
+
+    @Test
     public void testGetPartNumAndSumNoConditions() throws Exception {
         Report report = new Report(LITERAL, NUMBER);
         report.addRecord("A", "1.0");
         report.addRecord("B", "1.0");
 
         RowScheme rowScheme = new RowScheme(Arrays.asList(
-                new TransferPair(Transfer.GET_PART_NUM_AND_SUM, report, 1, Collections.emptyList(), Collections.emptyList())
+                new TransferPair(Transfer.GET_PART_NUM_AND_SUM_ZERO, report, 1, Collections.emptyList(), Collections.emptyList())
         ));
         String[] rowValues = rowScheme.getRowValues(null, null);
         assertEquals("2.00", rowValues[0]);
+
+        report = new Report(LITERAL, LITERAL);
+        report.addRecord("A", "10");
+        report.addRecord("B", "10");
+
+        rowScheme = new RowScheme(Arrays.asList(
+                new TransferPair(Transfer.GET_PART_NUM_AND_SUM_ZERO, report, 1, Collections.emptyList(), Collections.emptyList())
+        ));
+        rowValues = rowScheme.getRowValues(null, null);
+        assertEquals("20.00", rowValues[0]);
+
+        report = new Report(LITERAL, LITERAL);
+        report.addRecord("A", "10");
+        report.addRecord("B", "10");
+        report.addRecord("A", "10");
+
+        rowScheme = new RowScheme(Arrays.asList(
+                new TransferPair(Transfer.GET_PART_NUM_AND_SUM_ZERO, report, 1, Arrays.asList("A"), Arrays.asList(0))
+        ));
+        rowValues = rowScheme.getRowValues(null, null);
+        assertEquals("20.00", rowValues[0]);
     }
 
     @Test

@@ -160,11 +160,35 @@ public class RowScheme {
                             changeValuesByMacro((List<String>) p.getAttributes()[2], main, other),
                             (List<Integer>) p.getAttributes()[3]);
                     break;
+                case INSERT_INTO_REPORT:
+                    values[i] = "insert";
+                    onTransferData(
+                            ((Report) p.getAttributes()[0]),
+                            ((Integer) p.getAttributes()[1]),
+                            changeValuesByMacro(((List<String>) p.getAttributes()[2]), main, other),
+                            ((List<Integer>) p.getAttributes()[3]),
+                            ((Report) p.getAttributes()[4]),
+                            ((Integer) p.getAttributes()[5]),
+                            changeValuesByMacro(((List<String>) p.getAttributes()[6]), main, other),
+                            ((List<Integer>) p.getAttributes()[7])
+                    );
+                    break;
                 default:
                     throw new IllegalArgumentException("Unknown command.");
             }
         }
         return values;
+    }
+
+    private void onTransferData(Report inputReport, Integer inputColumn, List<String> inputConditions, List<Integer> inputColumns,
+                                Report outputReport, Integer outputColumn, List<String> outputConditions, List<Integer> outputColumns) {
+        List<String> inputRecord = inputReport.getStringsByContent(inputConditions, inputColumns);
+        System.out.println("inputRecordSize: " + inputRecord.size());
+        Record record = outputReport.getRecordByContent(outputConditions, outputColumns);
+        System.out.println("record null?: " + Boolean.valueOf(record == null));
+        if (inputRecord.isEmpty() || record == null) return;
+        Value outputValue = record.getValue(outputColumn);
+        outputValue.setValue(inputRecord.get(inputColumn));
     }
 
     private String onPercentDisctinctFromFound(Report report, Integer column,
@@ -248,7 +272,8 @@ public class RowScheme {
     private String onGetSum(Report report, Integer column, List<String> values, List<Integer> columns, boolean zero) {
         List<Record> content = report.getValuesByContent(values, columns);
         double sum;
-        if (content.size() == 0 && !zero) throw new IllegalArgumentException(String.format("No content %s, %s", values.toString(), column.toString()));
+        if (content.size() == 0 && !zero)
+            throw new IllegalArgumentException(String.format("No content %s, %s", values.toString(), column.toString()));
         sum = getSum(column, content);
         return new BigDecimal(sum).setScale(2, RoundingMode.HALF_UP).toString(); //TODO: set round as param
     }
@@ -296,7 +321,9 @@ public class RowScheme {
                 sb.append(String.format("%s ", expValues.get(i) + ":" + expCols.get(i)));
 
             }
-            throw new IllegalStateException(sb.toString() + ". Value not found at:" + col);
+//            System.out.println(sb.toString() + ". Value not found at:" + col);
+            //TODO: nie po polsku!
+            throw new IllegalStateException(sb.toString() + ". Nie znaleziono:" + col);
         } else return valuesByContent.get(col);
     }
 
