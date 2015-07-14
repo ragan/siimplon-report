@@ -1,11 +1,8 @@
 package pl.siimplon.reporter.scheme.transfer;
 
-import com.sun.istack.internal.NotNull;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Vector;
 
 public class TransferPair {
 

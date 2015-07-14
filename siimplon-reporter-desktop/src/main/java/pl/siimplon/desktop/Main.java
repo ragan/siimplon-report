@@ -1,9 +1,13 @@
 package pl.siimplon.desktop;
 
 import pl.siimplon.reporter.ReportContext;
-import pl.siimplon.reporttool.TransferRepository;
+import pl.siimplon.reporter.report.value.Value;
 
 import javax.swing.*;
+import java.util.Arrays;
+import java.util.List;
+
+import static pl.siimplon.reporter.report.value.Value.Type.LITERAL;
 
 public class Main {
 
@@ -13,28 +17,102 @@ public class Main {
                 try {
                     UIManager.setLookAndFeel(
                             UIManager.getSystemLookAndFeelClassName());
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (UnsupportedLookAndFeelException e) {
+                } catch (ClassNotFoundException | InstantiationException | UnsupportedLookAndFeelException |
+                        IllegalAccessException e) {
                     e.printStackTrace();
                 }
                 ReportContext reportContext = new ReportContext();
+                reportContext.putColumnScheme(zeroColumnScheme, "zero-column-scheme");
                 new MainForm(reportContext);
-//                reportContext.putTransfer(TransferRepository.zeroCableTransfer, "zero-cable-transfer");
-//                reportContext.putTransfer(TransferRepository.zeroSweepTransfer, "zero-sweep-transfer");
-//                reportContext.putTransfer(TransferRepository.zeroTurbineTransfer, "zero-turbine-transfer");
-//                reportContext.putTransfer(TransferRepository.zeroCableWnTransfer, "zero-cable-wn-transfer");
-//                reportContext.putTransfer(TransferRepository.zeroFinalRdTransfer, "zero-final-rd-transfer");
-//                reportContext.putTransfer(TransferRepository.zeroTempRdTransfer, "zero-temp-rd-transfer");
-//                reportContext.putTransfer(TransferRepository.summaryTransferSweep, "summary-transfer-sweep");
-                
-                reportContext.putColumnScheme(TransferRepository.zeroColumnScheme, "zero-column-scheme");
+
             }
         });
     }
+
+    public static final List<Value.Type> zeroColumnScheme = Arrays.asList(
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,    //was DICTIONARY
+            LITERAL,    //was DICTIONARY
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,    //was DICTIONARY
+            LITERAL,    //was DICTIONARY
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,    //was DICTIONARY
+            LITERAL,    //was DICTIONARY
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,    //was DICTIONARY
+            LITERAL,    //was DICTIONARY
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,    //was DICTIONARY
+            LITERAL,    //was DICTIONARY
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,    //was DICTIONARY
+            LITERAL,    //was DICTIONARY
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL,
+            LITERAL
+    );
+
 
 }

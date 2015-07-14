@@ -5,12 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>pl.siimplon</groupId>
-    <artifactId>reporter</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>siimple-reporter</artifactId>
+    <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
-    <modules>
-        <module>../siimplon-reporter-tool</module>
-    </modules>
 
     <dependencies>
         <dependency>

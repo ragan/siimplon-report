@@ -12,7 +12,6 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.w3c.dom.Document;
 import pl.siimplon.desktop.batch.Batch;
 import pl.siimplon.desktop.batch.BatchEntry;
-import pl.siimplon.reporter.ContextListenerAdapter;
 import pl.siimplon.reporter.ReportContext;
 import pl.siimplon.reporter.ReportContextListener;
 import pl.siimplon.reporter.analyzer.AnalyzeItem;
@@ -20,9 +19,6 @@ import pl.siimplon.reporter.report.Report;
 import pl.siimplon.reporter.report.record.Record;
 import pl.siimplon.reporter.report.value.Value;
 import pl.siimplon.reporter.scheme.transfer.TransferPair;
-import pl.siimplon.reporttool.MyCallback;
-import pl.siimplon.reporttool.SimpleFeatureAnalyzeItem;
-import pl.siimplon.reporttool.TransferRepository;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -37,7 +33,6 @@ import java.io.*;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.*;
-import java.util.List;
 import java.util.prefs.Preferences;
 
 //TODO: save all that are not saved (if context have not saved files)
@@ -87,12 +82,8 @@ public class MainForm extends JFrame implements ReportContextListener {
     }
 
     public MainForm(ReportContext context) {
-        super();
-
         sourcesContext = new SourcesContext();
-
         this.context = context;
-
         setContentPane(panelMain);
 
         batch = new Batch();
@@ -473,7 +464,7 @@ public class MainForm extends JFrame implements ReportContextListener {
 
     private void setContext(ReportContext context) {
         this.context = context;
-        context.putColumnScheme(TransferRepository.zeroColumnScheme, "zero-column-scheme");
+        context.putColumnScheme(Main.zeroColumnScheme, "zero-column-scheme");
         context.addContextListener(this);
     }
 

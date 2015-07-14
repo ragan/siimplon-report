@@ -7,7 +7,14 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/siimplon-reporter/pom.xml" />
+        <option value="$PROJECT_DIR$/siimplon-reporter-desktop/pom.xml" />
+        <option value="$PROJECT_DIR$/siimple-desktop/pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/siimple-desktop/pom.xml" />
+      </set>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" default="false" assert-keyword="true" jdk-15="true" project-jdk-name="1.7" project-jdk-type="JavaSDK" />

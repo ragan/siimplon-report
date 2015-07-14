@@ -17,6 +17,13 @@
       <profile default="true" name="Default" enabled="false">
         <processorPath useClasspath="true" />
       </profile>
+      <profile default="false" name="Annotation profile for reporter" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="reporter" />
+      </profile>
       <profile default="false" name="Annotation profile for report-desktop" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
@@ -29,6 +36,7 @@
       <module name="report-desktop" target="1.7" />
       <module name="report-tool" target="1.7" />
       <module name="reporter" target="1.7" />
+      <module name="siimple-desktop" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
