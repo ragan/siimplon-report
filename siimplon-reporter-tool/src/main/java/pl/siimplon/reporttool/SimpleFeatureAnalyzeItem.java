@@ -87,7 +87,7 @@ public class SimpleFeatureAnalyzeItem implements AnalyzeItem {
         feature.setDefaultGeometry(GeometryPrecisionReducer.reduce((Geometry) feature.getDefaultGeometry(), new PrecisionModel(1000)));
         SimpleFeatureCollection result = new ClipProcess()
                 .execute(DataUtilities.collection(feature),
-                        GeometryPrecisionReducer.reduce(otherGeom, new PrecisionModel(1000)));
+                        GeometryPrecisionReducer.reduce(otherGeom, new PrecisionModel(1000)), false);
         return result.features().next();
     }
 }
